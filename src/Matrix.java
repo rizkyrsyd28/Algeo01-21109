@@ -112,6 +112,7 @@ public class Matrix {
     {
         return this.row == this.col;
     }
+
         
 
     public Matrix subMatrix(int rowDel, int colDel){
@@ -155,6 +156,9 @@ public class Matrix {
         }
 
         return det;
+    
+    }
+
     public float determinantOBE()
     /* Prekondisi: isSquare(m) */
     /* Menghitung nilai determinan m */
@@ -213,4 +217,80 @@ public class Matrix {
         
     }
 
+    public void Gauss(){
+        int rowSwitch = -1;
+        float tempFloat, pengali = 1; 
+        boolean satuUtama;
+
+        for(int j = 0; j < this.col; j++){
+            for (int i = j+1; i < this.row; i++){
+                if (getELMT(j, j) == 0){
+                    for (int k = j+1; k < this.row; k++){
+                        if(getELMT(k, j) != 0){
+                            rowSwitch = k;
+                        }
+                    }
+                    if (rowSwitch != -1){
+                        for (int k = 0; k < this.col; k++){
+                            tempFloat = getELMT(rowSwitch, k);
+                            setELMT(rowSwitch, k, getELMT(j, k));
+                            setELMT(j, k, tempFloat);
+                        }
+                        rowSwitch = -1;
+                    }
+                }
+
+                pengali = getELMT(i, j)/getELMT(j, j);
+                for (int k = 0; k < this.row; k++){
+                    setELMT(i, k, getELMT(i, k) - pengali*getELMT(j, k));
+                }
+            }
+        }
+        // state : matrix segitiga
+        for (int i = 0; i < this.row; i++){
+            pengali = 1;
+            satuUtama = true;
+            for (int j = 0; j < this.col; j++){  
+                if (getELMT(i, j) != 0 && satuUtama){
+                    pengali = getELMT(i, j);
+                    setELMT(i, j, 1);
+                    satuUtama = false;
+                }
+                else if (!satuUtama){
+                    setELMT(i, j, getELMT(i, j)/pengali);
+                }
+                
+            }
+        }
+    }
+
+    public int satuUtamaIdx(int row){
+
+        for (int j = 0; j < this.col; j++){
+            if (getELMT(row, j) != 0){
+                return j;
+            }
+        }
+        
+        return -1;
+    }
+
+    public void GaussJordan(){
+        float pengali = 1; 
+        
+        this.Gauss();
+
+        for (int i = 0; i < this.row - 1; i++){
+            for (int k = i+1; k < this.row; k++){
+                pengali = getELMT(i, this.satuUtamaIdx(k))/getELMT(k, this.satuUtamaIdx(k));
+                for (int j = satuUtamaIdx(k); j < this.col; j++){
+                    setELMT(i, j, getELMT(i, j) - pengali * getELMT(k, j));
+                }
+            }
+        }
+    }
+
 }
+// 1 2 3
+// 0 1 4
+// 0 0 1
