@@ -98,4 +98,28 @@ public class Matrix {
         }     
     }
 
+    public Matrix subMatrix(int rowDel, int colDel){
+        int rowSub, colSub; 
+
+        Matrix subMat = new Matrix(this.row-1, this.col-1);
+
+        rowSub = 0;
+        for (int i = 0; i < this.row; i++){
+            colSub = 0; 
+            for (int j = 0; j < this.col; j++){
+                if (i != rowDel && j != colDel){
+                    subMat.data[rowSub][colSub] = this.data[i][j];
+
+                    colSub++;
+                    if (colSub == this.col - 1){
+                        rowSub++;
+                        colSub = 0;
+                    }
+                }
+            }
+        }
+
+        return subMat;
+    }
+
 }
