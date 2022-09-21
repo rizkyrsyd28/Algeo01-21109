@@ -108,18 +108,38 @@ public class Matrix {
             colSub = 0; 
             for (int j = 0; j < this.col; j++){
                 if (i != rowDel && j != colDel){
-                    subMat.data[rowSub][colSub] = this.data[i][j];
+                    subMat.setELMT(rowSub, colSub, this.getELMT(i, j));
 
                     colSub++;
                     if (colSub == this.col - 1){
                         rowSub++;
                         colSub = 0;
-                    }
+                    } 
                 }
             }
         }
 
         return subMat;
+    }
+
+    public float determinanKof(){
+        float det = 0; 
+        int sign = 1; 
+        
+        if (this.row == 1){
+            return this.data[0][0];
+        }
+
+        Matrix kof = new Matrix(this.row-1, this.col-1);
+
+        for (int i = 0; i < this.row; i++){
+            kof = this.subMatrix(0, i);
+            det += (sign * this.data[0][i] * kof.determinanKof());
+
+            sign = (-1) * sign;
+        }
+
+        return det;
     }
 
 }
