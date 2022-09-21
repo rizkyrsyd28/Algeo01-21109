@@ -94,9 +94,25 @@ public class Matrix {
                     System.out.print(" ");
                 }
             }
-            System.out.print("\n");       // Potensi salah di olympia    
+            System.out.print("\n");   
         }     
+        System.out.print("=====================\n");
     }
+
+    /* ********** Operasi lain ********** */
+    public int countElmt()                      //driver checked
+    /* Mengirimkan banyaknya elemen m */
+    {
+        return this.row*this.col;
+    }
+
+    /* ********** KELOMPOK TEST TERHADAP Matrix ********** */
+    public boolean isSquare()                      //driver checked
+    /* Mengirimkan true jika m adalah matriks dg ukuran baris dan kolom sama */
+    {
+        return this.row == this.col;
+    }
+        
 
     public Matrix subMatrix(int rowDel, int colDel){
         int rowSub, colSub; 
@@ -118,8 +134,65 @@ public class Matrix {
                 }
             }
         }
-
         return subMat;
+    }
+
+    public float determinantOBE()
+    /* Prekondisi: isSquare(m) */
+    /* Menghitung nilai determinan m */
+    {
+        // Kamus
+        int rowSwitch = -1;       
+        float pengali = 1, det = 1, tempfloat;
+
+        // Algoritma
+        if (!isSquare()) {
+            System.out.println("Harus matrix berbentuk persegi (ukuran n x n)! ");
+            return -9999;
+        }
+
+        else {
+            if (countElmt()==1) {      // Cek jika hanya 1 elemen
+                return (float) getELMT(0, 0);
+            }    
+            else {
+                for (int j = 0; j<=getLastIdxCol(); j++) {
+                    for (int i = j+1; i<=getLastIdxRow(); i++) {
+                        if (getELMT(j, j) == 0) {
+                            for (int k = j+1; k<=getLastIdxRow(); k++) {
+                                if (getELMT(k, j) != 0) {
+                                    rowSwitch = k;
+                                }
+                            } 
+                            if (rowSwitch == -1) {
+                                return (float) 0;
+                            }
+                            else {
+                                for (int k = 0; k<=getLastIdxCol(); k++) {
+                                    tempfloat = getELMT(rowSwitch, k);
+                                    setELMT(rowSwitch, k, getELMT(j, k));
+                                    setELMT(j, k, tempfloat);
+                                }
+                                rowSwitch = -1;
+                                det *= -1;
+                            }
+                        }
+    
+                        pengali = getELMT(i, j)/getELMT(j, j);
+                        for (int k = 0; k<=getLastIdxRow(); k++) {
+                            setELMT(i, k, getELMT(i, k) - pengali*getELMT(j, k));
+                        }
+                    }
+                } 
+    
+                for (int i  = 0; i<=getLastIdxCol(); i++) {
+                    det*=getELMT(i, i);
+                }
+                return det;          
+            }            
+            
+        }
+        
     }
 
 }

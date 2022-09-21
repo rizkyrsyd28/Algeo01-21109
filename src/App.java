@@ -1,9 +1,8 @@
 public class App{
     public static void main(String[] args){
-        Matrix m = new Matrix(3, 3);
+        Matrix m = new Matrix(2, 3);
         m.readMatrix();
-        m = m.subMatrix(0, 0);
         m.displayMatrix();
-        System.out.println(m.getElmtDiagonal(1));
+        System.out.println(m.determinantOBE());
     }
 }
