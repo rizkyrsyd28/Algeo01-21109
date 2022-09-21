@@ -121,5 +121,60 @@ public class Matrix {
 
         return subMat;
     }
+    
+    // Mengalikan setiap elemen matriks dengan suatu konstanta
+    public void multiplyByConst(float f) {
 
+        for (int i = 0; i < this.row; i++) {
+            for (int j = 0; j < this.col; j++) {
+                this.setELMT(i, j, this.getELMT(i, j) * f);
+            }
+        }
+    }
+    
+    // Transpose matrix
+    public void transposeMatrix() {
+        float temp;
+
+        for (int i = 1; i < this.row; i++) {
+            for (int j = 0; j < i; j++) {
+                temp = this.getELMT(i, j);
+                this.setELMT(i, j, this.getELMT(j, i));
+                this.setELMT(j, i, temp);
+            }
+        }
+    }
+
+    // Menghasilkan adjoint dari suatu matrix
+    public Matrix adjointMatrix(Matrix m) {
+        Matrix adjMat = new Matrix(m.row - 1, m.col - 1)
+
+        for (int i = 0; i < adjMat.row; i++) {
+            for (int j = 0; j < adjMat.col; j++) {
+                if ((i + j) % 2 == 0) {
+                    setELMT(i, j, determinantKof(m.subMatrix(i, j)));
+                } else {
+                    setELMT(i, j, -determinantKof(m.subMatrix(i, j)));
+                }
+            }
+        }
+
+        adjMat.transposeMatrix();
+        return adjMat;
+    }
+
+    // Menghasilkan inverse dari suatu matrix
+    public Matrix inverseMatrix(Matrix m) {
+        Matrix invMat = new Matrix(m.row - 1, m.col - 1);
+
+        float m_det = determinantKof(m);
+        if (m_det == 0) {
+            System.out.println("Determinan matriks sama dengan nol. Sehingga matriks tidak mempunyai invers.");
+            return null;
+        } else {
+            invMat = adjointMatrix(m);
+            invMat.multiplyByConst(1 / determinantKof(m));
+            return invMat;
+        }
+    }
 }
