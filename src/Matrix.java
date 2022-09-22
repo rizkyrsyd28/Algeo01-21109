@@ -88,7 +88,7 @@ public class Matrix {
         // Algoritma   
         for (int i = 0; i<=getLastIdxRow(); i++) {
             for (int j = 0; j<=getLastIdxCol(); j++) {
-                System.out.print(getELMT(i, j));
+                System.out.print(String.format("%.4f", getELMT(i, j)));
                 if (j!=getLastIdxCol()) {
                     System.out.print(" ");
                 }
@@ -150,7 +150,7 @@ public class Matrix {
         }
         return subMat;
     }
-
+    
     public float determinanKof(){
         float det = 0; 
         int sign = 1; 
@@ -158,9 +158,9 @@ public class Matrix {
         if (this.row == 1){
             return this.data[0][0];
         }
-
+        
         Matrix kof = new Matrix(this.row-1, this.col-1);
-
+        
         for (int i = 0; i < this.row; i++){
             kof = this.subMatrix(0, i);
             det += (sign * this.data[0][i] * kof.determinanKof());
@@ -169,7 +169,7 @@ public class Matrix {
         }
 
         return det;
-    
+        
     }
 
     public float determinantOBE()
@@ -231,51 +231,123 @@ public class Matrix {
         }
         
     }
+    // Mengalikan setiap elemen matriks dengan suatu konstanta
+    public void multiplyByConst(float f) {
+        for (int i = 0; i < this.row; i++) {
+            for (int j = 0; j < this.col; j++) {
+                this.setELMT(i, j, this.getELMT(i, j) * f);
+            }
+        }
+    }
+    
+    // Transpose matrix
+    public void transposeMatrix() {
+        float temp;
 
-    public void Gauss(){
-        int rowSwitch = -1;
-        float tempFloat, pengali = 1; 
-        boolean satuUtama;
+        for (int i = 1; i < this.row; i++) {
+            for (int j = 0; j < i; j++) {
+                temp = this.getELMT(i, j);
+                this.setELMT(i, j, this.getELMT(j, i));
+                this.setELMT(j, i, temp);
+            }
+        }
+    }
 
-        for(int j = 0; j < this.col; j++){
-            for (int i = j+1; i < this.row; i++){
-                if (getELMT(j, j) == 0){
-                    for (int k = j+1; k < this.row; k++){
-                        if(getELMT(k, j) != 0){
-                            rowSwitch = k;
-                        }
-                    }
-                    if (rowSwitch != -1){
-                        for (int k = 0; k < this.col; k++){
-                            tempFloat = getELMT(rowSwitch, k);
-                            setELMT(rowSwitch, k, getELMT(j, k));
-                            setELMT(j, k, tempFloat);
-                        }
-                        rowSwitch = -1;
-                    }
-                }
+    // Menghasilkan adjoint dari suatu matrix
+    public Matrix adjointMatrix() {
+        Matrix adjMat = new Matrix(this.row, this.col);
 
-                pengali = getELMT(i, j)/getELMT(j, j);
-                for (int k = 0; k < this.row; k++){
-                    setELMT(i, k, getELMT(i, k) - pengali*getELMT(j, k));
+        for (int i = 0; i < adjMat.row; i++) {
+            for (int j = 0; j < adjMat.col; j++) {
+                Matrix m_sub = this.subMatrix(i, j);
+
+                if ((i + j) % 2 == 0) {
+                    adjMat.setELMT(i, j, m_sub.determinanKof());
+                } else {
+                    adjMat.setELMT(i, j, -m_sub.determinanKof());
                 }
             }
         }
-        // state : matrix segitiga
-        for (int i = 0; i < this.row; i++){
-            pengali = 1;
-            satuUtama = true;
-            for (int j = 0; j < this.col; j++){  
-                if (getELMT(i, j) != 0 && satuUtama){
-                    pengali = getELMT(i, j);
-                    setELMT(i, j, 1);
-                    satuUtama = false;
-                }
-                else if (!satuUtama){
-                    setELMT(i, j, getELMT(i, j)/pengali);
-                }
-                
+
+        adjMat.transposeMatrix();
+        return adjMat;
+    }
+
+    // Menghasilkan inverse dari suatu matrix
+    public Matrix inverseMatrix() {
+        Matrix invMat = new Matrix(this.row, this.col);
+
+        float m_det = this.determinanKof();
+        if (m_det == 0) {
+            System.out.println("Determinan matriks sama dengan nol. Sehingga matriks tidak mempunyai invers.");
+            return null;
+        } else {
+            invMat = this.adjointMatrix();
+            invMat.multiplyByConst(1 / m_det);
+            return invMat;
+        }
+    }
+
+    public boolean rowZero(int row){
+        for (int j = 0; j < this.col; j++){
+            if (getELMT(row, j) != 0){
+                return false;
             }
+        }
+        return true;
+    }
+
+    public void Gauss(){
+        int i = 0, j = 0; 
+        while (i < this.row && j < this.col){
+            if (this.getELMT(i, j) == 0){
+                boolean cp = false;
+                for (int k = i + 1; k < this.row; k++){
+                    if (this.getELMT(k, j) != 0){
+                        float[] temp = this.data[i];
+                        this.data[i] = this.data[k];
+                        this.data[k] = temp;
+                        cp = true;
+                        break;
+                    }
+                }
+                if (rowZero(i) && i != this.getLastIdxRow()){
+                    float[] temp = this.data[i];
+                    this.data[i] = this.data[i+1];
+                    this.data[i+1] = temp;
+                }
+                if (!cp){
+                    j++;
+                }
+                // this.displayMatrix();
+            }
+            // safety  breaker
+            if (i >= this.row || j >= this.col){
+                break;
+            }
+
+            if (this.getELMT(i, j) != 0){
+                float ratio = 1;
+                if (this.getELMT(i, j) != 1){
+                    ratio = this.getELMT(i, j);
+                    for (int k = j; k < this.col; k++){
+                        setELMT(i, k, getELMT(i, k)/ratio);
+                    }
+                }
+                ratio = 1;
+                for (int k = i + 1; k < this.row; k++){
+                    ratio = getELMT(k, j)/getELMT(i, j);
+                    for (int l = j; l < this.col; l++){
+                        setELMT(k, l, getELMT(k, l) - ratio*getELMT(i, l));
+                    }
+                }
+                i++;
+                j++;
+                // this.displayMatrix();
+            }
+            
+            //this.displayMatrix();
+            // break;
         }
     }
 
@@ -336,4 +408,43 @@ public class Matrix {
         }
 
     }
+
+    public void setMatFromFile(float[][] m){
+        this.data = m;
+    }
+
+    public boolean isParametricSolution(){
+        if (this.row <  this.col-1){
+            return true;
+
+        }
+        else {
+            for (int j = 0; j < this.col; j++){
+                if (getELMT(this.getLastIdxRow(), j) != 0){
+                    return false; 
+                }
+            }
+            return true;
+        }
+    }
+
+    public boolean isNoSolution(){
+        for( int j = 0; j < this.col; j++){
+            if(j != this.getLastIdxCol() && getELMT(this.getLastIdxRow(), j) != 0){
+                return false;                
+            }
+            else if (j == this.getLastIdxCol() && getELMT(this.getLastIdxRow(), j) == 0){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isUniqueSolution(){
+        return (!this.isParametricSolution() && !this.isNoSolution());
+    }
 }
+
+// 1 2 3
+// 0 1 4
+// 0 0 1
