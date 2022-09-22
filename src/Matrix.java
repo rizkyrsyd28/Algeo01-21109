@@ -64,13 +64,12 @@ public class Matrix {
         // Kamus
         Scanner sc = new Scanner(System.in);
         System.out.println("Masukkan value matrix: ");
-
         for (int i = 0; i<=getLastIdxRow(); i++) {
             for (int j = 0; j<=getLastIdxCol(); j++) {
                 setELMT(i, j, sc.nextFloat());
             }
         }
-        sc.close();
+        
     }
 
     public void displayMatrix()                //driver checked
@@ -96,7 +95,7 @@ public class Matrix {
             }
             System.out.print("\n");   
         }     
-        System.out.print("=====================\n");
+        //System.out.print("=====================\n");
     }
 
     /* ********** Operasi lain ********** */
@@ -112,7 +111,22 @@ public class Matrix {
     {
         return this.row == this.col;
     }
-        
+
+    /* ********** Assignment  Matrix ********** */
+    public Matrix copyMatrix()                      // driver checked
+    /* Melakukan assignment mOut <- mIn */
+    {
+        // Kamus
+        Matrix mOut = new Matrix(this.row, this.col);
+
+        // Algoritma
+        for (int i = 0; i<=getLastIdxRow(); i++) {
+            for (int j = 0; j<=getLastIdxCol(); j++) {
+                mOut.setELMT(i, j, this.getELMT(i, j)); 
+            }
+        }
+        return mOut;
+    }    
 
     public Matrix subMatrix(int rowDel, int colDel){
         int rowSub, colSub; 
@@ -124,43 +138,65 @@ public class Matrix {
             colSub = 0; 
             for (int j = 0; j < this.col; j++){
                 if (i != rowDel && j != colDel){
-                    subMat.data[rowSub][colSub] = this.data[i][j];
+                    subMat.setELMT(rowSub, colSub, this.getELMT(i, j));
 
                     colSub++;
                     if (colSub == this.col - 1){
                         rowSub++;
                         colSub = 0;
-                    }
+                    } 
                 }
             }
         }
         return subMat;
     }
 
+    public float determinanKof(){
+        float det = 0; 
+        int sign = 1; 
+        
+        if (this.row == 1){
+            return this.data[0][0];
+        }
+
+        Matrix kof = new Matrix(this.row-1, this.col-1);
+
+        for (int i = 0; i < this.row; i++){
+            kof = this.subMatrix(0, i);
+            det += (sign * this.data[0][i] * kof.determinanKof());
+
+            sign = (-1) * sign;
+        }
+
+        return det;
+    
+    }
+
     public float determinantOBE()
     /* Prekondisi: isSquare(m) */
-    /* Menghitung nilai determinan m */
+    /* Menghitung nilai determinan m menggunakan metode operasi baris elementer*/
     {
         // Kamus
         int rowSwitch = -1;       
         float pengali = 1, det = 1, tempfloat;
+        Matrix mcopy = copyMatrix();
 
         // Algoritma
-        if (!isSquare()) {
+        if (!mcopy.isSquare()) {
             System.out.println("Harus matrix berbentuk persegi (ukuran n x n)! ");
-            return -9999;
+            return Float.NaN;
         }
 
         else {
-            if (countElmt()==1) {      // Cek jika hanya 1 elemen
-                return (float) getELMT(0, 0);
+            if (mcopy.countElmt()==1) {      // Cek jika hanya 1 elemen
+                return (float) mcopy.getELMT(0, 0);
             }    
             else {
-                for (int j = 0; j<=getLastIdxCol(); j++) {
-                    for (int i = j+1; i<=getLastIdxRow(); i++) {
-                        if (getELMT(j, j) == 0) {
-                            for (int k = j+1; k<=getLastIdxRow(); k++) {
-                                if (getELMT(k, j) != 0) {
+                for (int j = 0; j<=mcopy.getLastIdxCol(); j++) {
+                    for (int i = j+1; i<=mcopy.getLastIdxRow(); i++) {
+                        if (mcopy.getELMT(j, j) == 0) {
+                            for (int k = j+1; k<=mcopy.getLastIdxRow(); k++) {
+                                if (mcopy.getELMT(k, j) != 0) {
                                     rowSwitch = k;
                                 }
                             } 
@@ -168,25 +204,26 @@ public class Matrix {
                                 return (float) 0;
                             }
                             else {
-                                for (int k = 0; k<=getLastIdxCol(); k++) {
-                                    tempfloat = getELMT(rowSwitch, k);
-                                    setELMT(rowSwitch, k, getELMT(j, k));
-                                    setELMT(j, k, tempfloat);
+                                for (int k = 0; k<=mcopy.getLastIdxCol(); k++) {
+                                    tempfloat = mcopy.getELMT(rowSwitch, k);
+                                    mcopy.setELMT(rowSwitch, k, mcopy.getELMT(j, k));
+                                    mcopy.setELMT(j, k, tempfloat);
                                 }
                                 rowSwitch = -1;
                                 det *= -1;
                             }
                         }
     
-                        pengali = getELMT(i, j)/getELMT(j, j);
-                        for (int k = 0; k<=getLastIdxRow(); k++) {
-                            setELMT(i, k, getELMT(i, k) - pengali*getELMT(j, k));
+                        pengali = mcopy.getELMT(i, j)/mcopy.getELMT(j, j);
+                        for (int k = 0; k<=mcopy.getLastIdxRow(); k++) {
+                            mcopy.setELMT(i, k, mcopy.getELMT(i, k) - pengali*mcopy.getELMT(j, k));
                         }
                     }
                 } 
     
-                for (int i  = 0; i<=getLastIdxCol(); i++) {
-                    det*=getELMT(i, i);
+                //mcopy.displayMatrix();
+                for (int i  = 0; i<=mcopy.getLastIdxCol(); i++) {
+                    det*=mcopy.getELMT(i, i);
                 }
                 return det;          
             }            
@@ -195,4 +232,108 @@ public class Matrix {
         
     }
 
+    public void Gauss(){
+        int rowSwitch = -1;
+        float tempFloat, pengali = 1; 
+        boolean satuUtama;
+
+        for(int j = 0; j < this.col; j++){
+            for (int i = j+1; i < this.row; i++){
+                if (getELMT(j, j) == 0){
+                    for (int k = j+1; k < this.row; k++){
+                        if(getELMT(k, j) != 0){
+                            rowSwitch = k;
+                        }
+                    }
+                    if (rowSwitch != -1){
+                        for (int k = 0; k < this.col; k++){
+                            tempFloat = getELMT(rowSwitch, k);
+                            setELMT(rowSwitch, k, getELMT(j, k));
+                            setELMT(j, k, tempFloat);
+                        }
+                        rowSwitch = -1;
+                    }
+                }
+
+                pengali = getELMT(i, j)/getELMT(j, j);
+                for (int k = 0; k < this.row; k++){
+                    setELMT(i, k, getELMT(i, k) - pengali*getELMT(j, k));
+                }
+            }
+        }
+        // state : matrix segitiga
+        for (int i = 0; i < this.row; i++){
+            pengali = 1;
+            satuUtama = true;
+            for (int j = 0; j < this.col; j++){  
+                if (getELMT(i, j) != 0 && satuUtama){
+                    pengali = getELMT(i, j);
+                    setELMT(i, j, 1);
+                    satuUtama = false;
+                }
+                else if (!satuUtama){
+                    setELMT(i, j, getELMT(i, j)/pengali);
+                }
+                
+            }
+        }
+    }
+
+    public int satuUtamaIdx(int row){
+
+        for (int j = 0; j < this.col; j++){
+            if (getELMT(row, j) != 0){
+                return j;
+            }
+        }
+        
+        return -1;
+    }
+
+    public void GaussJordan(){
+        float pengali = 1; 
+        
+        this.Gauss();
+
+        for (int i = 0; i < this.row - 1; i++){
+            for (int k = i+1; k < this.row; k++){
+                pengali = getELMT(i, this.satuUtamaIdx(k))/getELMT(k, this.satuUtamaIdx(k));
+                for (int j = satuUtamaIdx(k); j < this.col; j++){
+                    setELMT(i, j, getELMT(i, j) - pengali * getELMT(k, j));
+                }
+            }
+        }
+    }
+
+// 1 2 3
+// 0 1 4
+// 0 0 1    
+    public Matrix switchCol(Matrix mCol, int colIdx) {  
+        // Switch suatu kolom dengan matrix tertentu yang memiliki ukuran (row, 1)
+        Matrix mOut = copyMatrix();
+
+        for (int i = 0; i<=mOut.getLastIdxRow(); i++) {
+            mOut.setELMT(i, colIdx, mCol.getELMT(i, 0));
+        }
+        return mOut;
+    }
+
+    public void cramer(Matrix mHasil) {
+        float x = determinantOBE();
+        float hasil;
+        Matrix m2;
+        //System.out.println(x);
+
+        if (isSquare()) {           // Jika berbentuk kotak
+            for (int i = 0; i<=getLastIdxCol(); i++) {
+                m2 = this.switchCol(mHasil, i);
+                //m2.displayMatrix();
+                hasil = m2.determinanKof()/x;
+                // System.out.println();
+                //System.out.println(m2.determinantOBE() + " / " + x + "-> x"+(i+1)+" : "+hasil);
+                System.out.println("x"+(i+1)+" : "+hasil);
+            }
+        }
+
+    }
 }
