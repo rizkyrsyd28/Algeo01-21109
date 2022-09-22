@@ -113,8 +113,6 @@ public class Matrix {
         return this.row == this.col;
     }
 
-        
-
     public Matrix subMatrix(int rowDel, int colDel){
         int rowSub, colSub; 
 
@@ -240,14 +238,16 @@ public class Matrix {
 
     // Menghasilkan adjoint dari suatu matrix
     public Matrix adjointMatrix(Matrix m) {
-        Matrix adjMat = new Matrix(m.row - 1, m.col - 1)
+        Matrix adjMat = new Matrix(m.row - 1, m.col - 1);
 
         for (int i = 0; i < adjMat.row; i++) {
             for (int j = 0; j < adjMat.col; j++) {
+                Matrix m_sub = m.subMatrix(i, j);
+
                 if ((i + j) % 2 == 0) {
-                    setELMT(i, j, determinantKof(m.subMatrix(i, j)));
+                    setELMT(i, j, m_sub.determinanKof());
                 } else {
-                    setELMT(i, j, -determinantKof(m.subMatrix(i, j)));
+                    setELMT(i, j, -m_sub.determinanKof());
                 }
             }
         }
@@ -260,13 +260,13 @@ public class Matrix {
     public Matrix inverseMatrix(Matrix m) {
         Matrix invMat = new Matrix(m.row - 1, m.col - 1);
 
-        float m_det = determinantKof(m);
+        float m_det = m.determinanKof();
         if (m_det == 0) {
             System.out.println("Determinan matriks sama dengan nol. Sehingga matriks tidak mempunyai invers.");
             return null;
         } else {
             invMat = adjointMatrix(m);
-            invMat.multiplyByConst(1 / determinantKof(m));
+            invMat.multiplyByConst(1 / m_det);
             return invMat;
         }
     }
