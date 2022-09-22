@@ -1,9 +1,13 @@
 public class App{
     public static void main(String[] args){
-        Matrix m = new Matrix(3, 3);
-        m.readMatrix();
-        m = m.subMatrix(0, 0);
+        String file = "test/text.txt";
+
+        Matrix m = new Matrix(ReadFile.getRow(file), ReadFile.getCol(file));
+        
+        m.setMatFromFile(ReadFile.readFileMat(file, ReadFile.getRow(file), ReadFile.getCol(file)));
+
+        m.GaussJordan();
+
         m.displayMatrix();
-        System.out.println(m.getElmtDiagonal(1));
     }
 }
