@@ -5,9 +5,10 @@ public class App{
         Matrix m = new Matrix(ReadFile.getRow(file), ReadFile.getCol(file));
         
         m.setMatFromFile(ReadFile.readFileMat(file, ReadFile.getRow(file), ReadFile.getCol(file)));
+        
+        Matrix invMat = m.inverseMatrix();
+        invMat.displayMatrix();
 
-        m.GaussJordan();
-
-        m.displayMatrix();
+        // invMat.displayMatrix();
     }
 }
