@@ -290,6 +290,41 @@ public class Matrix {
         }
     }
 
+    public void setMatFromFile(float[][] m){
+        this.data = m;
+    }
+
+    public boolean isParametricSolution(){
+        if (this.row <  this.col-1){
+            return true;
+
+        }
+        else {
+            for (int j = 0; j < this.col; j++){
+                if (getELMT(this.getLastIdxRow(), j) != 0){
+                    return false; 
+                }
+            }
+            return true;
+        }
+    }
+
+    public boolean isNoSolution(){
+        for( int j = 0; j < this.col; j++){
+            if(j != this.getLastIdxCol() && getELMT(this.getLastIdxRow(), j) != 0){
+                return false;                
+            }
+            else if (j == this.getLastIdxCol() && getELMT(this.getLastIdxRow(), j) == 0){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isUniqueSolution(){
+        return (!this.isParametricSolution() && !this.isNoSolution());
+    }
+
 }
 // 1 2 3
 // 0 1 4
