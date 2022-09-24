@@ -1,9 +1,9 @@
 import java.util.*;
 
 public class Matrix {
-    private int row;
-    private int col;
-    private float data[][];
+    protected int row;
+    protected int col;
+    protected float data[][];
 
     public Matrix(int row, int col) {       // driver checked
         this.row = row;
@@ -69,6 +69,8 @@ public class Matrix {
                 setELMT(i, j, sc.nextFloat());
             }
         }
+
+        //sc.close();
         
     }
 
@@ -297,60 +299,6 @@ public class Matrix {
         return true;
     }
 
-    public void Gauss(){
-        int i = 0, j = 0; 
-        while (i < this.row && j < this.col){
-            if (this.getELMT(i, j) == 0){
-                boolean cp = false;
-                for (int k = i + 1; k < this.row; k++){
-                    if (this.getELMT(k, j) != 0){
-                        float[] temp = this.data[i];
-                        this.data[i] = this.data[k];
-                        this.data[k] = temp;
-                        cp = true;
-                        break;
-                    }
-                }
-                if (rowZero(i) && i != this.getLastIdxRow()){
-                    float[] temp = this.data[i];
-                    this.data[i] = this.data[i+1];
-                    this.data[i+1] = temp;
-                }
-                if (!cp){
-                    j++;
-                }
-                // this.displayMatrix();
-            }
-            // safety  breaker
-            if (i >= this.row || j >= this.col){
-                break;
-            }
-
-            if (this.getELMT(i, j) != 0){
-                float ratio = 1;
-                if (this.getELMT(i, j) != 1){
-                    ratio = this.getELMT(i, j);
-                    for (int k = j; k < this.col; k++){
-                        setELMT(i, k, getELMT(i, k)/ratio);
-                    }
-                }
-                ratio = 1;
-                for (int k = i + 1; k < this.row; k++){
-                    ratio = getELMT(k, j)/getELMT(i, j);
-                    for (int l = j; l < this.col; l++){
-                        setELMT(k, l, getELMT(k, l) - ratio*getELMT(i, l));
-                    }
-                }
-                i++;
-                j++;
-                // this.displayMatrix();
-            }
-            
-            //this.displayMatrix();
-            // break;
-        }
-    }
-
     public int satuUtamaIdx(int row){
 
         for (int j = 0; j < this.col; j++){
@@ -362,20 +310,7 @@ public class Matrix {
         return -1;
     }
 
-    public void GaussJordan(){
-        float pengali = 1; 
-        
-        this.Gauss();
-
-        for (int i = 0; i < this.row - 1; i++){
-            for (int k = i+1; k < this.row; k++){
-                pengali = getELMT(i, this.satuUtamaIdx(k))/getELMT(k, this.satuUtamaIdx(k));
-                for (int j = satuUtamaIdx(k); j < this.col; j++){
-                    setELMT(i, j, getELMT(i, j) - pengali * getELMT(k, j));
-                }
-            }
-        }
-    }
+    
 
 // 1 2 3
 // 0 1 4
@@ -388,25 +323,6 @@ public class Matrix {
             mOut.setELMT(i, colIdx, mCol.getELMT(i, 0));
         }
         return mOut;
-    }
-
-    public void cramer(Matrix mHasil) {
-        float x = determinantOBE();
-        float hasil;
-        Matrix m2;
-        //System.out.println(x);
-
-        if (isSquare()) {           // Jika berbentuk kotak
-            for (int i = 0; i<=getLastIdxCol(); i++) {
-                m2 = this.switchCol(mHasil, i);
-                //m2.displayMatrix();
-                hasil = m2.determinanKof()/x;
-                // System.out.println();
-                //System.out.println(m2.determinantOBE() + " / " + x + "-> x"+(i+1)+" : "+hasil);
-                System.out.println("x"+(i+1)+" : "+hasil);
-            }
-        }
-
     }
 
     public void setMatFromFile(float[][] m){
@@ -442,6 +358,22 @@ public class Matrix {
 
     public boolean isUniqueSolution(){
         return (!this.isParametricSolution() && !this.isNoSolution());
+    }
+    
+    // Multiply matrix
+    // m1.multiplyMatrix(m2) == m1 * m2
+    public Matrix multiplyMatrix(Matrix m) {
+        Matrix m_mult = new Matrix(this.row, m.col);
+
+        for (int i = 0; i < this.row; i++) {
+            for (int j = 0; j < m.col; j++) {
+
+                for (int k = 0; k < this.col; k++) {
+                    m_mult.data[i][j] += this.data[i][k] * m.data[k][j];
+                }
+            }
+        }
+        return m_mult;
     }
 }
 
