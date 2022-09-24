@@ -415,9 +415,6 @@ public class Matrix {
         this.data = m;
     }
 
-    // Solusi parametrik
-    // 1. Cari 1 utama
-    // 2. Selain 1 utama, pindahkan ke ruas
     public boolean isParametricSolution(){
         if (this.row <  this.col-1){
             return true;
