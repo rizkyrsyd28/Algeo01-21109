@@ -1,9 +1,9 @@
 import java.util.*;
 
 public class Matrix {
-    private int row;
-    private int col;
-    private float data[][];
+    protected int row;
+    protected int col;
+    protected float data[][];
 
     public Matrix(int row, int col) {       // driver checked
         this.row = row;
@@ -69,6 +69,8 @@ public class Matrix {
                 setELMT(i, j, sc.nextFloat());
             }
         }
+
+        sc.close();
         
     }
 
@@ -413,6 +415,9 @@ public class Matrix {
         this.data = m;
     }
 
+    // Solusi parametrik
+    // 1. Cari 1 utama
+    // 2. Selain 1 utama, pindahkan ke ruas
     public boolean isParametricSolution(){
         if (this.row <  this.col-1){
             return true;
@@ -442,6 +447,22 @@ public class Matrix {
 
     public boolean isUniqueSolution(){
         return (!this.isParametricSolution() && !this.isNoSolution());
+    }
+    
+    // Multiply matrix
+    // m1.multiplyMatrix(m2) == m1 * m2
+    public Matrix multiplyMatrix(Matrix m) {
+        Matrix m_mult = new Matrix(this.row, m.col);
+
+        for (int i = 0; i < this.row; i++) {
+            for (int j = 0; j < m.col; j++) {
+
+                for (int k = 0; k < this.col; k++) {
+                    m_mult.data[i][j] += this.data[i][k] * m.data[k][j];
+                }
+            }
+        }
+        return m_mult;
     }
 }
 
