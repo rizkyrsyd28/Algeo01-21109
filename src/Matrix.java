@@ -22,6 +22,10 @@ public class Matrix {
         return this.data[i][j];
     }
 
+    public float[][] getData(){
+        return this.data;
+    }
+
     public boolean isMatrixIdxValid(int i, int j)             // driver checked    
     /* Mengirimkan true jika i, j adalah index yang valid untuk matriks apa pun */
     {

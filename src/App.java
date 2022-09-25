@@ -4,11 +4,13 @@ public class App{
         
         Matrix m = new Matrix(IOFile.getRow(file), IOFile.getCol(file));
         
-        m.setMatFromFile(IOFile.readFileMat(file, IOFile.getRow(file), IOFile.getCol(file)));
-        
-        Matrix invMat = m.inverseMatrix();
-        invMat.displayMatrix();
+        IOFile.readFileMat(m, file, IOFile.getRow(file), IOFile.getCol(file));
 
-        // invMat.displayMatrix();
+        
+        IOFile.createEmptyFile("main");
+        
+        m.displayMatrix();
+        
+        IOFile.writeMatrix("main", m.getData());
     }
 }

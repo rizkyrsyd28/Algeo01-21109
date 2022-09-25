@@ -55,8 +55,7 @@ public class IOFile{
         return colVal;
     }
 
-    public static float[][] readFileMat(String fileName, int row, int col){
-        float[][] data = new float[row][col];
+    public static void readFileMat(Matrix mat, String fileName, int row, int col){
         
         FileReader file = null;
         try {
@@ -69,12 +68,10 @@ public class IOFile{
 
         for (int i = 0; i < row; i++){
             for (int j = 0; j < col; j++){
-                data[i][j] = rowScan.nextFloat();
+                mat.setELMT(i, j, rowScan.nextFloat());
             }
         }
-
         rowScan.close();
-        return data; 
     }
 
     public static void createEmptyFile(String fileName){
@@ -90,11 +87,22 @@ public class IOFile{
         }
     }
 
-    // public static void writeMatrix(String fileName, double[][] data){
-    //     try {
-    //         FileWriter myWrite = new FileWriter("test/" + fileName + ".txt");
+    public static void writeMatrix(String fileName, float[][] data){
+        try {
+            FileWriter myWrite = new FileWriter("test/" + fileName + ".txt");
 
-    //         for (int )
-    //     }
-    // }
+            for (int i = 0; i < data.length; i++){
+                for(int j = 0; j < data[i].length; j++){
+                    myWrite.write(Float.toString(data[i][j]) + " ");
+                }
+                myWrite.write("\n");
+            }
+            myWrite.close();
+        }
+        catch (IOException e){
+            System.out.println("duar ERROR");
+        }
+
+        
+    }
 }
