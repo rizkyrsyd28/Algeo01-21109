@@ -1,9 +1,11 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
-public class ReadFile{
+public class IOFile{
 
     public static int getRow(String fileName){
         FileReader file = null;
@@ -73,6 +75,26 @@ public class ReadFile{
 
         rowScan.close();
         return data; 
+    }
 
+    public static void createEmptyFile(String fileName){
+        try{
+            File myFile = new File("test/" + fileName + ".txt");
+            if(myFile.createNewFile()){
+                System.out.println("File created: " + myFile.getName());
+            } else {
+                System.out.println("File already exist");
+            }
+        } catch(IOException e){
+            System.out.println("ERROR");
+        }
+    }
+
+    public static void writeMatrix(String fileName, double[][] data){
+        try {
+            FileWriter myWrite = new FileWriter("test/" + fileName + ".txt");
+
+            for (int )
+        }
     }
 }

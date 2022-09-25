@@ -216,51 +216,70 @@ public class Matrix {
         }
         
     }
-
-    public void Gauss(){
-        int rowSwitch = -1;
-        float tempFloat, pengali = 1; 
-        boolean satuUtama;
-
-        for(int j = 0; j < this.col; j++){
-            for (int i = j+1; i < this.row; i++){
-                if (getELMT(j, j) == 0){
-                    for (int k = j+1; k < this.row; k++){
-                        if(getELMT(k, j) != 0){
-                            rowSwitch = k;
-                        }
-                    }
-                    if (rowSwitch != -1){
-                        for (int k = 0; k < this.col; k++){
-                            tempFloat = getELMT(rowSwitch, k);
-                            setELMT(rowSwitch, k, getELMT(j, k));
-                            setELMT(j, k, tempFloat);
-                        }
-                        rowSwitch = -1;
-                    }
-                }
-
-                pengali = getELMT(i, j)/getELMT(j, j);
-                for (int k = 0; k < this.row; k++){
-                    setELMT(i, k, getELMT(i, k) - pengali*getELMT(j, k));
-                }
+    /*
+     * branch1 = bawah ada korban
+     * branch2 = utama satu
+     */
+    public boolean rowZero(int row){
+        for (int j = 0; j < this.col; j++){
+            if (getELMT(row, j) != 0){
+                return false;
             }
         }
-        // state : matrix segitiga
-        for (int i = 0; i < this.row; i++){
-            pengali = 1;
-            satuUtama = true;
-            for (int j = 0; j < this.col; j++){  
-                if (getELMT(i, j) != 0 && satuUtama){
-                    pengali = getELMT(i, j);
-                    setELMT(i, j, 1);
-                    satuUtama = false;
+        return true;
+    }
+
+    public void Gauss(){
+        int i = 0, j = 0; 
+        while (i < this.row && j < this.col){
+            if (this.getELMT(i, j) == 0){
+                boolean cp = false;
+                for (int k = i + 1; k < this.row; k++){
+                    if (this.getELMT(k, j) != 0){
+                        float[] temp = this.data[i];
+                        this.data[i] = this.data[k];
+                        this.data[k] = temp;
+                        cp = true;
+                        break;
+                    }
                 }
-                else if (!satuUtama){
-                    setELMT(i, j, getELMT(i, j)/pengali);
+                if (rowZero(i) && i != this.getLastIdxRow()){
+                    float[] temp = this.data[i];
+                    this.data[i] = this.data[i+1];
+                    this.data[i+1] = temp;
                 }
-                
+                if (!cp){
+                    j++;
+                }
+                // this.displayMatrix();
             }
+            // safety  breaker
+            if (i >= this.row || j >= this.col){
+                break;
+            }
+
+            if (this.getELMT(i, j) != 0){
+                float ratio = 1;
+                if (this.getELMT(i, j) != 1){
+                    ratio = this.getELMT(i, j);
+                    for (int k = j; k < this.col; k++){
+                        setELMT(i, k, getELMT(i, k)/ratio);
+                    }
+                }
+                ratio = 1;
+                for (int k = i + 1; k < this.row; k++){
+                    ratio = getELMT(k, j)/getELMT(i, j);
+                    for (int l = j; l < this.col; l++){
+                        setELMT(k, l, getELMT(k, l) - ratio*getELMT(i, l));
+                    }
+                }
+                i++;
+                j++;
+                // this.displayMatrix();
+            }
+            
+            //this.displayMatrix();
+            // break;
         }
     }
 
@@ -270,8 +289,7 @@ public class Matrix {
             if (getELMT(row, j) != 0){
                 return j;
             }
-        }
-        
+        }    
         return -1;
     }
 
