@@ -90,11 +90,11 @@ public class IOFile{
         }
     }
 
-    public static void writeMatrix(String fileName, double[][] data){
-        try {
-            FileWriter myWrite = new FileWriter("test/" + fileName + ".txt");
+    // public static void writeMatrix(String fileName, double[][] data){
+    //     try {
+    //         FileWriter myWrite = new FileWriter("test/" + fileName + ".txt");
 
-            for (int )
-        }
-    }
+    //         for (int )
+    //     }
+    // }
 }
