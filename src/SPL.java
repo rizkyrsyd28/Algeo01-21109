@@ -4,7 +4,7 @@ public class SPL extends Matrix {
         super(row, col);
     }
 
-    public static Matrix inverseSPL(Matrix augm) {
+    public Matrix inverseSPL(Matrix augm) {
         Matrix A = new Matrix(augm.row, augm.col - 1);
         Matrix b = new Matrix(augm.row, 1);
 
@@ -28,14 +28,49 @@ public class SPL extends Matrix {
         }
     }
     
-    
-    public static void displaySPL(Matrix m_sol) {
-        for (int i = 0; i < m_sol.row; i++) {
-            System.out.println(String.format("x_%d = %.4f", i, m_sol.getELMT(i, 0)));
+    // WARNING: DISPLAYSPL MASIH BELUM BENAR
+    public String displaySPL(Matrix m_sol) {
+        String hasil = "";
+        for (int i = 0; i <= m_sol.getLastIdxRow(); i++) {
+            if (m_sol.satuUtamaIdx(i) < 0) {
+                continue;
+            } else {
+                hasil += String.format("x_%d = ", m_sol.satuUtamaIdx(i) + 1);
+                for (int j = m_sol.satuUtamaIdx(i) + 1; j <= m_sol.getLastIdxCol(); j++) {
+                    if (j != m_sol.getLastIdxCol()) {
+                        
+                        if (m_sol.getELMT(i, j) == 0) {
+                            continue;
+                        } else {                            
+                            if (m_sol.getELMT(i, j) > 0) {
+                                hasil += String.format("%.3fx_%d", m_sol.getELMT(i, j), j + 1);
+                            } else if (m_sol.getELMT(i, j) < 0) {
+                                hasil += String.format("%.3fx_%d", -m_sol.getELMT(i, j), j + 1);
+                            }
+                        }
+                        
+                        if (m_sol.getELMT(i, j + 1) > 0) {
+                            hasil += " + ";
+                        } else if (m_sol.getELMT(i, j + 1) < 0) {
+                            hasil += " - ";
+                        }
+
+                    } else {
+                        if (m_sol.getELMT(i, j) == 0) {
+                            continue;
+                        } else {                            
+                            hasil += String.format("%.3f", m_sol.getELMT(i, j));
+                        }
+                    }                
+                }
+                hasil += "\n";
+            }
         }
+
+        return hasil;
     }
 
-    public static Matrix cramer(Matrix augm) {          // Driver checked
+    public Matrix cramer(Matrix augm) {          // Driver checked
         Matrix A = new Matrix(augm.row, augm.col - 1);
         Matrix b = new Matrix(augm.row, 1);
 
@@ -70,7 +105,7 @@ public class SPL extends Matrix {
 
     }
 
-    public static void makeSatuUtama(Matrix augm) {       // Bikin bentuk matrix jd punya satu utama di semua baris
+    public void makeSatuUtama(Matrix augm) {       // Bikin bentuk matrix jd punya satu utama di semua baris
         int i = 0, j = 0; 
         while (i < augm.row && j < augm.col){
             if (augm.getELMT(i, j) == 0){
@@ -121,10 +156,10 @@ public class SPL extends Matrix {
         }
     }
 
-    public static Matrix gauss(Matrix augm){          
+    public Matrix gauss(Matrix augm){          
         makeSatuUtama(augm);
         Matrix mHasil = new Matrix(augm.col-1, 1);      // Inisialisasi output matrix hasil
-        //augm.displayMatrix();
+        // augm.displayMatrix();
         if (augm.isUniqueSolution()) {
             
             float hasil;
@@ -142,16 +177,23 @@ public class SPL extends Matrix {
                 //System.out.println(" ======== " + hasil + " ======== ");
                 mHasil.setELMT(i, 0, hasil);
             }
+
+            return mHasil;
+
+        } else if (augm.isParametricSolution()) {
+
+            SPL spl_obj = new SPL(1, 1);
+            augm = spl_obj.SolFormatting(augm);
+            return augm;
+
+        } else {
+            return null;
         }
-
-        return mHasil;
-
-
     }   
 
 
 
-    public static Matrix gaussJordan(Matrix augm){
+    public Matrix gaussJordan(Matrix augm){
         float pengali = 1; 
         Matrix mHasil = new Matrix(augm.col-1, 1);          // Inisialisasi output matrix hasil    
 
@@ -171,14 +213,49 @@ public class SPL extends Matrix {
             for (int i = 0; i < mHasil.row; i++) {
                 mHasil.setELMT(i, 0, augm.getELMT(i, augm.getLastIdxCol()));
             }
+            return mHasil;
+        } else if (augm.isParametricSolution()) {
+            SPL spl_obj = new SPL(1,1);
+            augm = spl_obj.SolFormatting(augm);
+            return augm;
+        } else {
+            return null;
         }
-
-
-
-
-        return mHasil;
     }
 
+
+    public Matrix SolFormatting(Matrix m_sol) {
+
+        for (int i = m_sol.getLastIdxRow(); i >= 0; i--) {
+            // boolean foundUtama = false;
+            
+            if (m_sol.satuUtamaIdx(i) < 0) {    // Tidak ada satu utama di baris tersebut
+                continue;
+            } else {
+                for (int j = m_sol.satuUtamaIdx(i) + 1; j <= m_sol.getLastIdxCol(); j++) {
+                    if (j != m_sol.getLastIdxCol()) {
+                        m_sol.setELMT(i, j, m_sol.getELMT(i, j) * -1);
+                    }
+                }
+            }
+        }
+        for (int i = m_sol.getLastIdxRow(); i >= 0; i--) {
+            // boolean foundUtama = false;
+            
+            if (m_sol.satuUtamaIdx(i) < 0) {    // Tidak ada satu utama di baris tersebut
+                continue;
+            } else {
+                for (int j = i - 1; j >= 0; j--) {
+                    for (int k = m_sol.satuUtamaIdx(i) + 1; k <= m_sol.getLastIdxCol(); k++) {
+                        // m_sol.displayMatrix(); System.out.println();
+                        m_sol.setELMT(j, k, m_sol.getELMT(i, k) * m_sol.getELMT(j, m_sol.satuUtamaIdx(i)) + m_sol.getELMT(j, k));
+                    }
+                    m_sol.setELMT(j, m_sol.satuUtamaIdx(i), 0);
+                } 
+            }
+        }
+        return m_sol;
+    }
 }
 
 
