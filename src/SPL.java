@@ -121,36 +121,60 @@ public class SPL extends Matrix {
         }
     }
 
-    public static Matrix gauss(Matrix augm){
-        Matrix mHasil = new Matrix(augm.col-1, 1);  
+    public static Matrix gauss(Matrix augm){          
         makeSatuUtama(augm);
-        
+        Matrix mHasil = new Matrix(augm.col-1, 1);      // Inisialisasi output matrix hasil
+        //augm.displayMatrix();
+        if (augm.isUniqueSolution()) {
+            
+            float hasil;
 
-    
-        
-        return augm;
+            for (int i = augm.getLastIdxRow(); i >= 0; i--) {
+                hasil = augm.getELMT(i, augm.getLastIdxCol());
+                for (int j = i + 1; j <= augm.getLastIdxCol()-1 ; j++) {
+                    //mHasil.displayMatrix();
+                    //System.out.println(augm.getLastIdxRow() + " - " + i);
+                    //System.out.println(hasil + " - " + augm.getELMT(i, j) + " * " + mHasil.getELMT(mHasil.getLastIdxRow() - i,0));
+                    hasil -= augm.getELMT(i, j)*mHasil.getELMT(j,0);
+                    //System.out.println(i +" " + j);
+                }
+                //System.out.println(i);
+                //System.out.println(" ======== " + hasil + " ======== ");
+                mHasil.setELMT(i, 0, hasil);
+            }
+        }
+
+        return mHasil;
+
+
     }   
 
 
 
     public static Matrix gaussJordan(Matrix augm){
         float pengali = 1; 
-        Matrix mHasil = new Matrix(augm.col-1, 1);       
+        Matrix mHasil = new Matrix(augm.col-1, 1);          // Inisialisasi output matrix hasil    
 
         makeSatuUtama(augm);
-
         for (int i = 0; i < augm.row - 1; i++){
             for (int k = i+1; k < augm.row; k++){
-                pengali = augm.getELMT(i, augm.satuUtamaIdx(k))/augm.getELMT(k, augm.satuUtamaIdx(k));
-                for (int j = augm.satuUtamaIdx(k); j < augm.col; j++){
-                    augm.setELMT(i, j, augm.getELMT(i, j) - pengali * augm.getELMT(k, j));
+                if (augm.satuUtamaIdx(k)!=-1) {
+                    pengali = augm.getELMT(i, augm.satuUtamaIdx(k))/augm.getELMT(k, augm.satuUtamaIdx(k));
+                    for (int j = augm.satuUtamaIdx(k); j < augm.col; j++){
+                        augm.setELMT(i, j, augm.getELMT(i, j) - pengali * augm.getELMT(k, j));
+                    }
                 }
             }
         }
-
-        for (int i = 0; i < mHasil.row; i++) {
-            mHasil.setELMT(i, 0, augm.getELMT(i, augm.getLastIdxCol()));
+        
+        if (augm.isUniqueSolution()) {
+            for (int i = 0; i < mHasil.row; i++) {
+                mHasil.setELMT(i, 0, augm.getELMT(i, augm.getLastIdxCol()));
+            }
         }
+
+
+
 
         return mHasil;
     }
