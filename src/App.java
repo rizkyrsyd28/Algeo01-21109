@@ -15,7 +15,7 @@ public class App{
 
         Matrix m_sol = a.gauss(m);
         String hasil = a.displaySPL(m_sol);
-        m_sol.displayMatrix(); System.out.println();
+        // m_sol.displayMatrix(); System.out.println();
         System.out.print(hasil);
         
         // IOFile.writeMatrix("main", m.getData());

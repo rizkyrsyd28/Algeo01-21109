@@ -20,7 +20,7 @@ public class SPL extends Matrix {
 
         Matrix invMat = A.inverseMatrix();
         if (invMat == null) {
-            System.out.println("SPL ini tidak memiliki solusi tunggal karena tidak memiliki invers.");
+            System.out.println("SPL ini memiliki solusi banyak (lebih dari satu) atau SPL tidak memiliki solusi karena tidak memiliki invers.");
             return null;
         } else {
             Matrix x = invMat.multiplyMatrix(b);
@@ -28,42 +28,63 @@ public class SPL extends Matrix {
         }
     }
     
-    // WARNING: DISPLAYSPL MASIH BELUM BENAR
     public String displaySPL(Matrix m_sol) {
         String hasil = "";
-        for (int i = 0; i <= m_sol.getLastIdxRow(); i++) {
-            if (m_sol.satuUtamaIdx(i) < 0) {
-                continue;
-            } else {
-                hasil += String.format("x_%d = ", m_sol.satuUtamaIdx(i) + 1);
-                for (int j = m_sol.satuUtamaIdx(i) + 1; j <= m_sol.getLastIdxCol(); j++) {
-                    if (j != m_sol.getLastIdxCol()) {
-                        
-                        if (m_sol.getELMT(i, j) == 0) {
-                            continue;
-                        } else {                            
-                            if (m_sol.getELMT(i, j) > 0) {
-                                hasil += String.format("%.3fx_%d", m_sol.getELMT(i, j), j + 1);
-                            } else if (m_sol.getELMT(i, j) < 0) {
-                                hasil += String.format("%.3fx_%d", -m_sol.getELMT(i, j), j + 1);
-                            }
-                        }
-                        
-                        if (m_sol.getELMT(i, j + 1) > 0) {
-                            hasil += " + ";
-                        } else if (m_sol.getELMT(i, j + 1) < 0) {
-                            hasil += " - ";
-                        }
+        if (m_sol == null) {
+            
+            System.out.println("SPL tidak memiliki solusi.");
+            return null;
 
-                    } else {
-                        if (m_sol.getELMT(i, j) == 0) {
-                            continue;
-                        } else {                            
-                            hasil += String.format("%.3f", m_sol.getELMT(i, j));
-                        }
-                    }                
+        } else if (m_sol.col == 1) {
+            
+            for (int i = 0; i <= m_sol.getLastIdxRow(); i++) {
+                hasil += String.format("x_%d = %.3f\n", i, m_sol.getELMT(i, 0));
+            }
+
+        } else {
+
+            for (int i = 0; i <= m_sol.getLastIdxRow(); i++) {
+                if (m_sol.satuUtamaIdx(i) < 0) {
+                    continue;
+                } else {
+                    hasil += String.format("x_%d =", m_sol.satuUtamaIdx(i) + 1);
+                    for (int j = m_sol.satuUtamaIdx(i) + 1; j <= m_sol.getLastIdxCol(); j++) {
+                        if (j != m_sol.getLastIdxCol()) {
+                            
+                            if (m_sol.getELMT(i, j) == 0) {
+                                continue;
+                            } else {                            
+                                if (m_sol.getELMT(i, j) > 0 && j != m_sol.satuUtamaIdx(i) + 1) {
+                                    hasil += String.format(" + %.3fx_%d", m_sol.getELMT(i, j), j + 1);
+                                } else if (m_sol.getELMT(i, j) < 0) {
+                                    hasil += String.format(" - %.3fx_%d", -m_sol.getELMT(i, j), j + 1);
+                                } else {
+                                    hasil += String.format(" %.3fx_%d", m_sol.getELMT(i, j), j + 1);
+                                }
+                            }
+                            
+                            // if (m_sol.getELMT(i, j + 1) > 0) {
+                            //     hasil += " + ";
+                            // } else if (m_sol.getELMT(i, j + 1) < 0) {
+                            //     hasil += " - ";
+                            // }
+    
+                        } else {
+                            if (m_sol.getELMT(i, j) == 0) {
+                                continue;
+                            } else {                            
+                                if (m_sol.getELMT(i, j) > 0 && j != m_sol.satuUtamaIdx(i) + 1) {
+                                    hasil += String.format(" + %.3f", m_sol.getELMT(i, j), j + 1);
+                                } else if (m_sol.getELMT(i, j) < 0) {
+                                    hasil += String.format(" - %.3f", -m_sol.getELMT(i, j), j + 1);
+                                } else {
+                                    hasil += String.format(" %.3f", m_sol.getELMT(i, j), j + 1);
+                                }
+                            }
+                        }                
+                    }
+                    hasil += "\n";
                 }
-                hasil += "\n";
             }
         }
 
