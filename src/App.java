@@ -6,11 +6,12 @@ public class App{
         
         IOFile.readFileMat(m, file, IOFile.getRow(file), IOFile.getCol(file));
 
-        
+        float[][] temp = Regresi.solveRegresi(m.data);
+
+
         IOFile.createEmptyFile("main");
         
-        m.displayMatrix();
         
-        IOFile.writeMatrix("main", m.getData());
+        IOFile.writeMatrix("main", temp);
     }
 }
