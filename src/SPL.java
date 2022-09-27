@@ -204,7 +204,7 @@ public class SPL extends Matrix {
 
         } else if (augm.isParametricSolution()) {
 
-            augm = SPL.SolFormatting(augm);
+            augm = SolFormatting(augm);
             return augm;
 
         } else {
@@ -236,7 +236,7 @@ public class SPL extends Matrix {
             }
             return mHasil;
         } else if (augm.isParametricSolution()) {
-            augm = SPL.SolFormatting(augm);
+            augm = SolFormatting(augm);
             return augm;
         } else {
             return null;
@@ -276,6 +276,34 @@ public class SPL extends Matrix {
         }
         return m_sol;
     }
+
+    public static float interpolPolinom(Matrix koordinat, float val){       // input matrix ukuran (n, 2)
+        Matrix augm = new Matrix(koordinat.row, koordinat.row + 1);
+        Matrix mHasil;
+        float hasil=0;
+
+        for (int i = 0; i<=augm.getLastIdxRow(); i++) {
+            for (int j = 0; j<=augm.getLastIdxCol()-1; j++) {
+                //System.out.println(koordinat.getELMT(j, 0) + "^" + k);
+                //System.out.println(Math.pow(koordinat.getELMT(j, 0), k));
+                augm.setELMT(i, j, (float) Math.pow(koordinat.getELMT(i, 0), j));
+            }
+        }
+
+        for (int i = 0; i<=augm.getLastIdxRow(); i++) {
+            augm.setELMT(i, augm.getLastIdxCol(), koordinat.getELMT(i, 1));
+        }
+
+        mHasil = gauss(augm);
+        for (int i = 0; i<=mHasil.getLastIdxRow(); i++) {
+            hasil += ((float) Math.pow(val, i))*mHasil.getELMT(i, 0);
+        }
+
+        return hasil;
+
+    }
+
+
 }
 
 
