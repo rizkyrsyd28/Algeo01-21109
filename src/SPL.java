@@ -1,10 +1,11 @@
+import java.util.HashMap;
 public class SPL extends Matrix {
     
     public SPL(int row, int col) {
         super(row, col);
     }
 
-    public Matrix inverseSPL(Matrix augm) {
+    public static Matrix inverseSPL(Matrix augm) {
         Matrix A = new Matrix(augm.row, augm.col - 1);
         Matrix b = new Matrix(augm.row, 1);
 
@@ -28,7 +29,7 @@ public class SPL extends Matrix {
         }
     }
     
-    public String displaySPL(Matrix m_sol) {
+    public static String displaySPL(Matrix m_sol) {
         String hasil = "";
         if (m_sol == null) {
             
@@ -91,7 +92,7 @@ public class SPL extends Matrix {
         return hasil;
     }
 
-    public Matrix cramer(Matrix augm) {          // Driver checked
+    public static Matrix cramer(Matrix augm) {          // Driver checked
         Matrix A = new Matrix(augm.row, augm.col - 1);
         Matrix b = new Matrix(augm.row, 1);
 
@@ -126,7 +127,7 @@ public class SPL extends Matrix {
 
     }
 
-    public void makeSatuUtama(Matrix augm) {       // Bikin bentuk matrix jd punya satu utama di semua baris
+    public static void makeSatuUtama(Matrix augm) {       // Bikin bentuk matrix jd punya satu utama di semua baris
         int i = 0, j = 0; 
         while (i < augm.row && j < augm.col){
             if (augm.getELMT(i, j) == 0){
@@ -177,7 +178,7 @@ public class SPL extends Matrix {
         }
     }
 
-    public Matrix gauss(Matrix augm){          
+    public static Matrix gauss(Matrix augm){          
         makeSatuUtama(augm);
         Matrix mHasil = new Matrix(augm.col-1, 1);      // Inisialisasi output matrix hasil
         // augm.displayMatrix();
@@ -203,8 +204,7 @@ public class SPL extends Matrix {
 
         } else if (augm.isParametricSolution()) {
 
-            SPL spl_obj = new SPL(1, 1);
-            augm = spl_obj.SolFormatting(augm);
+            augm = SPL.SolFormatting(augm);
             return augm;
 
         } else {
@@ -214,7 +214,7 @@ public class SPL extends Matrix {
 
 
 
-    public Matrix gaussJordan(Matrix augm){
+    public static Matrix gaussJordan(Matrix augm){
         float pengali = 1; 
         Matrix mHasil = new Matrix(augm.col-1, 1);          // Inisialisasi output matrix hasil    
 
@@ -236,8 +236,7 @@ public class SPL extends Matrix {
             }
             return mHasil;
         } else if (augm.isParametricSolution()) {
-            SPL spl_obj = new SPL(1,1);
-            augm = spl_obj.SolFormatting(augm);
+            augm = SPL.SolFormatting(augm);
             return augm;
         } else {
             return null;
@@ -245,7 +244,7 @@ public class SPL extends Matrix {
     }
 
 
-    public Matrix SolFormatting(Matrix m_sol) {
+    public static Matrix SolFormatting(Matrix m_sol) {
 
         for (int i = m_sol.getLastIdxRow(); i >= 0; i--) {
             // boolean foundUtama = false;
