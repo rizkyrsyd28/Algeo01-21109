@@ -54,6 +54,7 @@ public class Matrix {
 
 
     /* ********** KELOMPOK BACA/TULIS ********** */
+
     public void readMatrix()           //driver checked
     /* I.S. isIdxValid(nRow,nCol) */
     /* F.S. m terdefinisi nilai elemen efektifnya, berukuran nRow x nCol */
@@ -77,6 +78,37 @@ public class Matrix {
         //sc.close();
         
     }
+    public void readMatrixPeubah()           //Khusus input matrix peubah
+    //input berupa a[i][j] 
+    {
+        // Kamus
+        Scanner sc = new Scanner(System.in);
+        for (int i = 0; i<=getLastIdxRow(); i++) {
+            for (int j = 0; j<=getLastIdxCol(); j++) {
+                System.out.print("a["+i+"]["+j+"]: ");
+                setELMT(i, j, sc.nextFloat());
+            }
+        }
+
+        //sc.close();
+        
+    }
+
+    public void readMatrixHasil()            //Khusus input matrix hasil
+   //input berupa b[i]
+    {
+        // Kamus
+        Scanner sc = new Scanner(System.in);
+        for (int i = 0; i<=getLastIdxRow(); i++) {
+            for (int j = 0; j<=getLastIdxCol(); j++) {
+                System.out.print("b["+i+"]: ");
+                setELMT(i, j, sc.nextFloat());
+            }
+        }
+
+        //sc.close();
+        
+    }    
 
     public void displayMatrix()                //driver checked
     /* I.S. m terdefinisi */
@@ -378,6 +410,72 @@ public class Matrix {
             }
         }
         return m_mult;
+    }
+
+    public Matrix concatCol(Matrix m) {  // jumlah baris harus sama
+        Matrix mOut = new Matrix(m.row, this.col + m.col);
+
+        for (int i = 0; i<=this.getLastIdxRow(); i++){
+            for (int j = 0; j<=this.getLastIdxCol(); j++) {
+                mOut.setELMT(i, j, this.getELMT(i, j));
+            }
+        }
+
+        for (int i = 0; i<= m.getLastIdxRow(); i++){
+            for (int j = 0; j<= m.getLastIdxCol(); j++) {
+                //System.out.println(i + " "+ j + this.col);
+                mOut.setELMT(i , j + this.col, m.getELMT(i, j));
+            }
+        }
+        return mOut;
+    }
+
+    public static void driverDeterminan() {
+        boolean notValid = false;
+
+        while (!notValid) {
+            int x;
+            System.out.println("\nMetode Determinan yang tersedia\n");
+            System.out.println("    1. Reduksi Baris");
+            System.out.println("    2. Ekspansi Kofaktor\n");
+            Scanner sc = new Scanner(System.in);
+            System.out.print("Pilih metode yang diinginkan: ");
+            x = sc.nextInt();
+            if (x==1) {
+                int n;
+                float hasil;
+                Matrix m;
+                System.out.print("Masukkan jumlah baris dan kolom matrix n: ");
+                n = sc.nextInt();
+
+                m = new Matrix(n, n);
+                m.readMatrixPeubah();
+                hasil = m.determinantOBE();
+                System.out.println("\nDeterminan dari matrix");
+                m.displayMatrix();
+                System.out.println("adalah: " + hasil);
+                notValid = true;
+            }
+            else if (x==2) {
+                int n;
+                float hasil;
+                Matrix m;
+                System.out.print("Masukkan jumlah baris dan kolom matrix n: ");
+                n = sc.nextInt();
+
+                m = new Matrix(n, n);
+                m.readMatrixPeubah();
+                hasil = m.determinanKof();
+                System.out.println("\nDeterminan dari matrix");
+                m.displayMatrix();
+                System.out.println("adalah: " + hasil);
+                notValid = true;
+            }
+            else {
+                System.out.println("\n======Input tidak valid! Ulangi======");
+            }
+        }
+
     }
 }
 

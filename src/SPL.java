@@ -1,8 +1,124 @@
-import java.util.HashMap;
+import java.util.*;
 public class SPL extends Matrix {
     
     public SPL(int row, int col) {
         super(row, col);
+    }
+
+    public static void driverSPL() {
+        boolean notValid = false;
+
+        while (!notValid) {
+            int x;
+            System.out.println("\nMetode SPL yang tersedia\n");
+            System.out.println("    1. Eliminasi Gauss");
+            System.out.println("    2. Eliminasi Gauss-jordan");
+            System.out.println("    3. Matrix Balikan");
+            System.out.println("    4. Kaidah Cramer\n");
+            Scanner sc = new Scanner(System.in);
+            System.out.print("Pilih metode yang diinginkan: ");
+            x = sc.nextInt();
+            if (x == 1) {
+                int m, n;
+                Matrix a, b, augm, mHasil;
+                System.out.print("\nMasukkan jumlah baris peubah m: ");
+                m = sc.nextInt();
+                System.out.print("Masukkan jumlah kolom peubah n: ");
+                n = sc.nextInt();
+    
+                a = new Matrix(m, n);
+                b = new Matrix(m, 1);
+                System.out.print("\n");
+    
+                System.out.println("Masukkan value matrix peubah dengan ukuran m x n: ");
+                a.readMatrixPeubah();
+                System.out.print("\n");
+                System.out.println("Masukkan value matrix hasil dengan ukuran m x 1: ");
+                b.readMatrixHasil();
+    
+                augm = a.concatCol(b);
+                mHasil = gauss(augm);
+                System.out.println("\nHasil SPL:");
+                System.out.println(SPL.displaySPL(mHasil)); 
+                notValid = true;
+            }
+    
+            else if (x==2) {
+                int m, n;
+                Matrix a, b, augm, mHasil;
+                System.out.print("\nMasukkan jumlah baris peubah m: ");
+                m = sc.nextInt();
+                System.out.print("Masukkan jumlah kolom peubah n: ");
+                n = sc.nextInt();
+    
+                //System.out.print("\n");
+                a = new Matrix(m, n);
+                b = new Matrix(m, 1);
+                System.out.print("\n");
+    
+                System.out.println("Masukkan value matrix peubah dengan ukuran m x n: ");
+                a.readMatrixPeubah();
+                System.out.print("\n");
+                System.out.println("Masukkan value matrix hasil dengan ukuran m x 1: ");
+                b.readMatrixHasil();
+    
+                augm = a.concatCol(b);
+                mHasil = gaussJordan(augm);
+                System.out.println("\nHasil SPL:");
+                System.out.println(SPL.displaySPL(mHasil));
+                notValid = true; 
+            }
+            else if (x==3) {
+                int n;
+                Matrix a, b, augm, mHasil;
+                System.out.print("\nMasukkan jumlah baris dan kolom peubah n: ");
+                n = sc.nextInt();
+    
+                //System.out.print("\n");
+                a = new Matrix(n, n);
+                b = new Matrix(n, 1);
+                System.out.print("\n");
+    
+                System.out.println("Masukkan value matrix peubah dengan ukuran n x n: ");
+                a.readMatrixPeubah();
+                System.out.print("\n");
+                System.out.println("Masukkan value matrix hasil dengan ukuran n x 1: ");
+                b.readMatrixHasil();
+    
+                augm = a.concatCol(b);
+                mHasil = inverseSPL(augm);
+                System.out.println("\nHasil SPL:");
+                System.out.println(SPL.displaySPL(mHasil)); 
+                notValid = true;
+            }
+            else if (x==4) {
+                int n;
+                Matrix a, b, augm, mHasil;
+                System.out.print("\nMasukkan jumlah baris dan kolom peubah n: ");
+                n = sc.nextInt();
+    
+                //System.out.print("\n");
+                a = new Matrix(n, n);
+                b = new Matrix(n, 1);
+                System.out.print("\n");
+    
+                System.out.println("Masukkan value matrix peubah dengan ukuran n x n: ");
+                a.readMatrixPeubah();
+                System.out.print("\n");
+                System.out.println("Masukkan value matrix hasil dengan ukuran n x 1: ");
+                b.readMatrixHasil();
+    
+                augm = a.concatCol(b);
+                mHasil = cramer(augm);
+                System.out.println("\nHasil SPL:");
+                System.out.println(SPL.displaySPL(mHasil)); 
+                notValid = true;
+            }            
+
+            else {
+                System.out.println("\n======Input tidak valid! Ulangi======");
+            }
+        }
     }
 
     public static Matrix inverseSPL(Matrix augm) {
