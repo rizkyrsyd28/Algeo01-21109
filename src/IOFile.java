@@ -55,23 +55,28 @@ public class IOFile{
         return colVal;
     }
 
-    public static void readFileMat(Matrix mat, String fileName, int row, int col){
-        
+    public static Matrix readFileMat(String fileName){  //Berubah jd ngereturn Matrix dan skrg parameternya cmn filename
         FileReader file = null;
+
         try {
             file = new FileReader(fileName);
-        } catch (FileNotFoundException notFound){
+            int row = getRow(fileName), col = getCol(fileName);
+
+            Scanner rowScan = new Scanner(file);
+            Matrix mOut = new Matrix(row, col);
+
+            for (int i = 0; i < row; i++){
+                for (int j = 0; j < col; j++){
+                    mOut.setELMT(i, j, rowScan.nextFloat());
+                }
+            }
+            return  mOut;
+
+
+        } catch (Exception notFound){
             System.out.println("File tidak ditemukan");
         }
-
-        Scanner rowScan = new Scanner(file);
-
-        for (int i = 0; i < row; i++){
-            for (int j = 0; j < col; j++){
-                mat.setELMT(i, j, rowScan.nextFloat());
-            }
-        }
-        rowScan.close();
+        return null;
     }
 
     public static void createEmptyFile(String fileName){
@@ -87,13 +92,13 @@ public class IOFile{
         }
     }
 
-    public static void writeMatrix(String fileName, float[][] data){
+    public static void writeMatrix(String fileName, Matrix data){
         try {
-            FileWriter myWrite = new FileWriter("test/" + fileName + ".txt");
+            FileWriter myWrite = new FileWriter("../test/" + fileName + ".txt");
 
-            for (int i = 0; i < data.length; i++){
-                for(int j = 0; j < data[i].length; j++){
-                    myWrite.write(Float.toString(data[i][j]) + " ");
+            for (int i = 0; i <= data.getLastIdxRow(); i++){
+                for(int j = 0; j <= data.getLastIdxCol(); j++){
+                    myWrite.write(Float.toString(data.getELMT(i, j)) + " ");
                 }
                 myWrite.write("\n");
             }
@@ -102,7 +107,16 @@ public class IOFile{
         catch (IOException e){
             System.out.println("duar ERROR");
         }
+    }
 
-        
+    public static void writeString(String fileName, String output) {
+        try {
+            FileWriter myWrite = new FileWriter("../test/" + fileName + ".txt");
+            myWrite.write(output);
+            myWrite.close();
+        }
+        catch (IOException e){
+            System.out.println("duar ERROR");
+        }        
     }
 }
