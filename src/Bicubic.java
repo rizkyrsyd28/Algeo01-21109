@@ -6,7 +6,7 @@ public class Bicubic extends SPL {
         super(row, col);
     }
 
-    public float bicubicInterpolation(Matrix m, float a, float b) {
+    public static float bicubicInterpolation(Matrix m, float a, float b) {
         Matrix X = new Matrix(16, 16);
         Matrix Y = new Matrix(16, 1);
         
