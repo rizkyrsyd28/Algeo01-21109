@@ -54,6 +54,7 @@ public class Matrix {
 
 
     /* ********** KELOMPOK BACA/TULIS ********** */
+
     public void readMatrix()           //driver checked
     /* I.S. isIdxValid(nRow,nCol) */
     /* F.S. m terdefinisi nilai elemen efektifnya, berukuran nRow x nCol */
@@ -77,6 +78,37 @@ public class Matrix {
         //sc.close();
         
     }
+    public void readMatrixPeubah()           //Khusus input matrix peubah
+    //input berupa a[i][j] 
+    {
+        // Kamus
+        Scanner sc = new Scanner(System.in);
+        for (int i = 0; i<=getLastIdxRow(); i++) {
+            for (int j = 0; j<=getLastIdxCol(); j++) {
+                System.out.print("a["+i+"]["+j+"]: ");
+                setELMT(i, j, sc.nextFloat());
+            }
+        }
+
+        //sc.close();
+        
+    }
+
+    public void readMatrixHasil()            //Khusus input matrix hasil
+   //input berupa b[i]
+    {
+        // Kamus
+        Scanner sc = new Scanner(System.in);
+        for (int i = 0; i<=getLastIdxRow(); i++) {
+            for (int j = 0; j<=getLastIdxCol(); j++) {
+                System.out.print("b["+i+"]: ");
+                setELMT(i, j, sc.nextFloat());
+            }
+        }
+
+        //sc.close();
+        
+    }    
 
     public void displayMatrix()                //driver checked
     /* I.S. m terdefinisi */
@@ -102,6 +134,23 @@ public class Matrix {
             System.out.print("\n");   
         }     
         //System.out.print("=====================\n");
+    }
+
+    public String matrixToString()                
+    {
+        // Kamus
+        String hasil="";
+        // Algoritma   
+        for (int i = 0; i<=getLastIdxRow(); i++) {
+            for (int j = 0; j<=getLastIdxCol(); j++) {
+                hasil += String.format("%.4f", getELMT(i, j));
+                if (j!=getLastIdxCol()) {
+                    hasil+=" ";
+                }
+            }
+            hasil+="\n";   
+        }     
+        return hasil;
     }
 
     /* ********** Operasi lain ********** */
@@ -378,6 +427,206 @@ public class Matrix {
             }
         }
         return m_mult;
+    }
+
+    public Matrix concatCol(Matrix m) {  // jumlah baris harus sama
+        Matrix mOut = new Matrix(m.row, this.col + m.col);
+
+        for (int i = 0; i<=this.getLastIdxRow(); i++){
+            for (int j = 0; j<=this.getLastIdxCol(); j++) {
+                mOut.setELMT(i, j, this.getELMT(i, j));
+            }
+        }
+
+        for (int i = 0; i<= m.getLastIdxRow(); i++){
+            for (int j = 0; j<= m.getLastIdxCol(); j++) {
+                //System.out.println(i + " "+ j + this.col);
+                mOut.setELMT(i , j + this.col, m.getELMT(i, j));
+            }
+        }
+        return mOut;
+    }
+
+    public static void driverDeterminan() {
+        boolean notValid = false;
+
+        while (!notValid) {
+            int x;
+            System.out.println("\nMetode Determinan yang tersedia");
+            System.out.println("    1. Reduksi Baris");
+            System.out.println("    2. Ekspansi Kofaktor");
+            Scanner sc = new Scanner(System.in);
+            System.out.print("Pilih metode yang diinginkan: ");
+            x = sc.nextInt();
+            if (x==1) {
+                int n, x2;
+                float hasil;
+                String sHasil = ""; 
+                boolean notValid2 = false;
+                Matrix m;
+                while (!notValid2) {
+                    sc = new Scanner(System.in);
+                    System.out.println("\nJenis input yang tersedia");
+                    System.out.println("    1. Terminal");
+                    System.out.println("    2. File txt");
+                    System.out.print("Pilih jenis input yang diinginkan: ");
+                    x2 = sc.nextInt();
+                    if (x2 == 1) {
+                        System.out.print("Masukkan jumlah baris dan kolom matrix n: ");
+                        n = sc.nextInt();
+                        m = new Matrix(n, n);
+                        m.readMatrixPeubah();
+                        hasil = m.determinantOBE();
+                        System.out.print("\n");
+                        sHasil += "Determinan dari matrix\n";
+                        sHasil += m.matrixToString();
+                        sHasil += "adalah: " + Float.toString(hasil);
+                        System.out.println(sHasil);
+                        SPL.simpan(sHasil);
+
+                        notValid2 = true;
+                    }
+                    else if (x2 == 2) {
+                        sc = new Scanner(System.in);
+                        String fileName;
+                        int row=0, col=0;
+
+                        System.out.print("\nMasukkan directory file: ");
+                        fileName = sc.nextLine();
+                        m = IOFile.readFileMat(fileName);
+
+                        if (m != null) {
+                            row = IOFile.getRow(fileName);
+                            col = IOFile.getCol(fileName);
+                        }
+           
+                        while (m == null | col!=row) {
+                            if (m != null) {
+                                row = IOFile.getRow(fileName);
+                                col = IOFile.getCol(fileName);
+                                if (col!=row) {
+                                    System.out.println("Bukan merupakan matrix dengan peubah n x n !");
+                                }
+                            }
+
+                            System.out.print("\nUlangi masukkan directory file: ");
+                            fileName = sc.nextLine();
+                            m = IOFile.readFileMat(fileName);
+                            if (m != null) {
+                                row = IOFile.getRow(fileName);
+                                col = IOFile.getCol(fileName);
+                            }
+                        }
+                        hasil = m.determinantOBE();
+                        System.out.print("\n");
+                        sHasil += "Determinan dari matrix\n";
+                        sHasil += m.matrixToString();
+                        sHasil += "adalah: " + Float.toString(hasil);
+                        System.out.println(sHasil);
+                        SPL.simpan(sHasil);
+
+                        notValid2 = true;
+                    }
+                    else {
+                        System.out.println("Input tidak valid! Ulangi");
+                    }
+                }
+                notValid = true;
+            }
+
+            else if (x==2) {
+                int n, x2;
+                float hasil;
+                String sHasil = ""; 
+                boolean notValid2 = false;
+                Matrix m;
+                while (!notValid2) {
+                    sc = new Scanner(System.in);
+                    System.out.println("\nJenis input yang tersedia");
+                    System.out.println("    1. Terminal");
+                    System.out.println("    2. File txt");
+                    System.out.print("Pilih jenis input yang diinginkan: ");
+                    x2 = sc.nextInt();
+                    if (x2 == 1) {
+                        System.out.print("Masukkan jumlah baris dan kolom matrix n: ");
+                        n = sc.nextInt();
+                        m = new Matrix(n, n);
+                        m.readMatrixPeubah();
+                        hasil = m.determinanKof();
+                        System.out.print("\n");
+                        sHasil += "Determinan dari matrix\n";
+                        sHasil += m.matrixToString();
+                        sHasil += "adalah: " + Float.toString(hasil);
+                        System.out.println(sHasil);
+                        SPL.simpan(sHasil);
+
+                        notValid2 = true;
+                    }
+                    else if (x2 == 2) {
+                        sc = new Scanner(System.in);
+                        String fileName;
+                        int row=0, col=0;
+
+                        System.out.print("\nMasukkan directory file: ");
+                        fileName = sc.nextLine();
+                        m = IOFile.readFileMat(fileName);
+
+                        if (m != null) {
+                            row = IOFile.getRow(fileName);
+                            col = IOFile.getCol(fileName);
+                        }
+           
+                        while (m == null | col!=row) {
+                            if (m != null) {
+                                row = IOFile.getRow(fileName);
+                                col = IOFile.getCol(fileName);
+                                if (col!=row) {
+                                    System.out.println("Bukan merupakan matrix dengan peubah n x n !");
+                                }
+                            }
+
+                            System.out.print("\nUlangi masukkan directory file: ");
+                            fileName = sc.nextLine();
+                            m = IOFile.readFileMat(fileName);
+                            if (m != null) {
+                                row = IOFile.getRow(fileName);
+                                col = IOFile.getCol(fileName);
+                            }
+                        }
+                        hasil = m.determinanKof();
+                        System.out.print("\n");
+                        sHasil += "Determinan dari matrix\n";
+                        sHasil += m.matrixToString();
+                        sHasil += "adalah: " + Float.toString(hasil);
+                        System.out.println(sHasil);
+                        SPL.simpan(sHasil);
+
+                        notValid2 = true;
+                    }
+                    else {
+                        System.out.println("Input tidak valid! Ulangi");
+                    }
+                }
+                notValid = true;
+            }
+            else {
+                System.out.println("\n======Input tidak valid! Ulangi======");
+            }
+        }
+
+    }
+
+    public static void driverInverse() {
+        Scanner sc = new Scanner(System.in);
+        int n;
+        Matrix m, mhasil;
+        System.out.print("Masukkan jumlah baris dan kolom matrix n: ");
+        n = sc.nextInt();
+        m = new Matrix(n, n);
+        m.readMatrixPeubah();
+        mhasil = m.inverseMatrix();
+        System.out.println("\nInverse dari matrix input adalah:");
+        mhasil.displayMatrix();
     }
 }
 

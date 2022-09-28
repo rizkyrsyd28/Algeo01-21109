@@ -1,8 +1,377 @@
 import java.util.HashMap;
+import java.util.*;
 public class SPL extends Matrix {
     
     public SPL(int row, int col) {
         super(row, col);
+    }
+
+    public static void simpan(String output) {
+        boolean notValid = false;
+        Scanner sc = new Scanner(System.in);
+        while (!notValid) {
+            Character c;
+            System.out.print("Apakah jawabannya mau disimpan?(y/n): ");
+            c = sc.next().charAt(0);
+            if (c == 'y') {
+                sc = new Scanner(System.in); 
+                String fileName;
+                System.out.print("Jawaban tersebut mau disimpan dengan nama file apa?: ");
+                fileName = sc.nextLine();
+                IOFile.writeString(fileName, output);
+                System.out.println("Jawabanmu telah disimpan!");
+                notValid = true;
+            }
+            else if (c=='n') {
+                System.out.println("Jawabanmu tidak disimpan!");
+                notValid = true;
+            }
+            else {
+                System.out.println("Input salah! Ulangi");
+            }
+        }
+    }
+
+    public static void driverSPL() {
+        boolean notValid = false;
+
+        while (!notValid) {
+            int x;
+            System.out.println("\nMetode SPL yang tersedia");
+            System.out.println("    1. Eliminasi Gauss");
+            System.out.println("    2. Eliminasi Gauss-jordan");
+            System.out.println("    3. Matrix Balikan");
+            System.out.println("    4. Kaidah Cramer");
+            Scanner sc = new Scanner(System.in);
+            System.out.print("Pilih metode yang diinginkan: ");
+            x = sc.nextInt();
+            if (x == 1) {       //1. Eliminasi gauss
+                boolean notValid2 = false;
+                int x2;
+                while (!notValid2) {
+                    Matrix augm, mHasil;
+
+                    sc = new Scanner(System.in);
+                    System.out.println("\nJenis input yang tersedia");
+                    System.out.println("    1. Terminal");
+                    System.out.println("    2. File txt");
+                    System.out.print("Pilih jenis input yang diinginkan: ");
+                    x2 = sc.nextInt();
+                    if (x2 == 1) {
+                        int m, n;
+                        Matrix a, b;
+                        sc = new Scanner(System.in);
+
+                        System.out.print("\nMasukkan jumlah baris peubah m: ");
+                        m = sc.nextInt();
+                        System.out.print("Masukkan jumlah kolom peubah n: ");
+                        n = sc.nextInt();
+            
+                        a = new Matrix(m, n);
+                        b = new Matrix(m, 1);
+                        System.out.print("\n");
+            
+                        System.out.println("Masukkan value matrix peubah dengan ukuran m x n: ");
+                        a.readMatrixPeubah();
+                        System.out.print("\n");
+                        System.out.println("Masukkan value matrix hasil dengan ukuran m x 1: ");
+                        b.readMatrixHasil();
+
+                        // ======== jawaban-start==========//
+                        augm = a.concatCol(b);
+                        mHasil = gauss(augm);
+                        // ======== jawaban-end==========//
+                        System.out.println("\nHasil SPL:");
+                        System.out.println(SPL.displaySPL(mHasil));
+                        simpan(SPL.displaySPL(mHasil));
+
+                        notValid2 = true;
+                    }
+
+                    else if (x2 == 2) {
+                        sc = new Scanner(System.in);
+                        String fileName;
+
+                        System.out.print("\nMasukkan directory file: ");
+                        fileName = sc.nextLine();
+                        augm = IOFile.readFileMat(fileName);
+
+                        while (augm == null) {
+                            System.out.print("\nUlangi masukkan directory file: ");
+                            fileName = sc.nextLine();
+                            augm = IOFile.readFileMat(fileName);
+                        }
+
+                        // ======== jawaban-start==========//
+                        mHasil = gauss(augm);
+                        // ======== jawaban-end==========//
+                        System.out.println("\nHasil SPL:");
+                        System.out.println(SPL.displaySPL(mHasil));
+                        simpan(SPL.displaySPL(mHasil));
+
+                        notValid2 = true;
+                    }
+                    else {
+                        System.out.println("Input tidak valid! Ulangi");
+                    }
+                }
+                notValid = true;
+            }
+    
+            else if (x==2) {       //2. Eliminasi gauss-jordan
+                boolean notValid2 = false;
+                int x2;
+                while (!notValid2) {
+                    Matrix augm, mHasil;
+
+                    sc = new Scanner(System.in);
+                    System.out.println("\nJenis input yang tersedia");
+                    System.out.println("    1. Terminal");
+                    System.out.println("    2. File txt");
+                    System.out.print("Pilih jenis input yang diinginkan: ");
+                    x2 = sc.nextInt();
+                    if (x2 == 1) {
+                        int m, n;
+                        Matrix a, b;
+                        sc = new Scanner(System.in);
+
+                        System.out.print("\nMasukkan jumlah baris peubah m: ");
+                        m = sc.nextInt();
+                        System.out.print("Masukkan jumlah kolom peubah n: ");
+                        n = sc.nextInt();
+            
+                        a = new Matrix(m, n);
+                        b = new Matrix(m, 1);
+                        System.out.print("\n");
+            
+                        System.out.println("Masukkan value matrix peubah dengan ukuran m x n: ");
+                        a.readMatrixPeubah();
+                        System.out.print("\n");
+                        System.out.println("Masukkan value matrix hasil dengan ukuran m x 1: ");
+                        b.readMatrixHasil();
+
+                        // ======== jawaban-start==========//
+                        augm = a.concatCol(b);
+                        mHasil = gaussJordan(augm);
+                        // ======== jawaban-end==========//
+                        System.out.println("\nHasil SPL:");
+                        System.out.println(SPL.displaySPL(mHasil));
+                        simpan(SPL.displaySPL(mHasil));
+
+                        notValid2 = true;
+                    }
+
+                    else if (x2 == 2) {
+                        sc = new Scanner(System.in);
+                        String fileName;
+
+                        System.out.print("\nMasukkan directory file: ");
+                        fileName = sc.nextLine();
+                        augm = IOFile.readFileMat(fileName);
+
+                        while (augm == null) {
+                            System.out.print("\nUlangi masukkan directory file: ");
+                            fileName = sc.nextLine();
+                            augm = IOFile.readFileMat(fileName);
+                        }
+
+                        // ======== jawaban-start==========//
+                        mHasil = gauss(augm);
+                        // ======== jawaban-end==========//
+                        System.out.println("\nHasil SPL:");
+                        System.out.println(SPL.displaySPL(mHasil));
+                        simpan(SPL.displaySPL(mHasil));
+
+                        notValid2 = true;
+                    }
+                    else {
+                        System.out.println("Input tidak valid! Ulangi");
+                    }
+                }
+                notValid = true; 
+            }
+            else if (x==3) {       //3. Matrix balikan
+                boolean notValid2 = false;
+                int x2;
+                while (!notValid2) {
+                    Matrix augm, mHasil;
+
+                    sc = new Scanner(System.in);
+                    System.out.println("\nJenis input yang tersedia");
+                    System.out.println("    1. Terminal");
+                    System.out.println("    2. File txt");
+                    System.out.print("Pilih jenis input yang diinginkan: ");
+                    x2 = sc.nextInt();
+                    if (x2 == 1) {
+                        int n;
+                        Matrix a, b;
+                        sc = new Scanner(System.in);
+
+                        System.out.print("\nMasukkan jumlah baris dan kolom peubah n: ");
+                        n = sc.nextInt();
+            
+                        a = new Matrix(n, n);
+                        b = new Matrix(n, 1);
+                        System.out.print("\n");
+            
+                        System.out.println("Masukkan value matrix peubah dengan ukuran n x n: ");
+                        a.readMatrixPeubah();
+                        System.out.print("\n");
+                        System.out.println("Masukkan value matrix hasil dengan ukuran n x 1: ");
+                        b.readMatrixHasil();
+
+                        // ======== jawaban-start==========//
+                        augm = a.concatCol(b);
+                        mHasil = inverseSPL(augm);
+                        // ======== jawaban-end==========//
+                        System.out.println("\nHasil SPL:");
+                        System.out.println(SPL.displaySPL(mHasil));
+                        simpan(SPL.displaySPL(mHasil));
+
+                        notValid2 = true;
+                    }
+
+                    else if (x2 == 2) {
+                        sc = new Scanner(System.in);
+                        String fileName;
+                        int row=0, col=0;
+
+                        System.out.print("\nMasukkan directory file: ");
+                        fileName = sc.nextLine();
+                        augm = IOFile.readFileMat(fileName);
+
+                        if (augm != null) {
+                            row = IOFile.getRow(fileName);
+                            col = IOFile.getCol(fileName);
+                        }
+           
+                        while (augm == null | col-1!=row) {
+                            if (augm != null) {
+                                row = IOFile.getRow(fileName);
+                                col = IOFile.getCol(fileName);
+                                if (col-1!=row) {
+                                    System.out.println("Bukan merupakan matrix dengan peubah n x n !");
+                                }
+                            }
+
+                            System.out.print("\nUlangi masukkan directory file: ");
+                            fileName = sc.nextLine();
+                            augm = IOFile.readFileMat(fileName);
+                            if (augm != null) {
+                                row = IOFile.getRow(fileName);
+                                col = IOFile.getCol(fileName);
+                            }
+                        }
+
+                        // ======== jawaban-start==========//
+                        mHasil = inverseSPL(augm);
+                        // ======== jawaban-end==========//
+                        System.out.println("\nHasil SPL:");
+                        System.out.println(SPL.displaySPL(mHasil));
+                        simpan(SPL.displaySPL(mHasil));
+
+                        notValid2 = true;
+                    }
+                    else {
+                        System.out.println("Input tidak valid! Ulangi");
+                    }
+                }
+                notValid = true; 
+            }
+
+            else if (x==4) {        // Kaidah cramer
+                boolean notValid2 = false;
+                int x2;
+                while (!notValid2) {
+                    Matrix augm, mHasil;
+
+                    sc = new Scanner(System.in);
+                    System.out.println("\nJenis input yang tersedia");
+                    System.out.println("    1. Terminal");
+                    System.out.println("    2. File txt");
+                    System.out.print("Pilih jenis input yang diinginkan: ");
+                    x2 = sc.nextInt();
+                    if (x2 == 1) {
+                        int n;
+                        Matrix a, b;
+                        sc = new Scanner(System.in);
+
+                        System.out.print("\nMasukkan jumlah baris dan kolom peubah n: ");
+                        n = sc.nextInt();
+            
+                        a = new Matrix(n, n);
+                        b = new Matrix(n, 1);
+                        System.out.print("\n");
+            
+                        System.out.println("Masukkan value matrix peubah dengan ukuran n x n: ");
+                        a.readMatrixPeubah();
+                        System.out.print("\n");
+                        System.out.println("Masukkan value matrix hasil dengan ukuran n x 1: ");
+                        b.readMatrixHasil();
+
+                        // ======== jawaban-start==========//
+                        augm = a.concatCol(b);
+                        mHasil = cramer(augm);
+                        // ======== jawaban-end==========//
+                        System.out.println("\nHasil SPL:");
+                        System.out.println(SPL.displaySPL(mHasil));
+                        simpan(SPL.displaySPL(mHasil));
+
+                        notValid2 = true;
+                    }
+
+                    else if (x2 == 2) {
+                        sc = new Scanner(System.in);
+                        String fileName;
+                        int row=0, col=0;
+
+                        System.out.print("\nMasukkan directory file: ");
+                        fileName = sc.nextLine();
+                        augm = IOFile.readFileMat(fileName);
+
+                        if (augm != null) {
+                            row = IOFile.getRow(fileName);
+                            col = IOFile.getCol(fileName);
+                        }
+           
+                        while (augm == null | col-1!=row) {
+                            if (augm != null) {
+                                row = IOFile.getRow(fileName);
+                                col = IOFile.getCol(fileName);
+                                if (col-1!=row) {
+                                    System.out.println("Bukan merupakan matrix dengan peubah n x n !");
+                                }
+                            }
+
+                            System.out.print("\nUlangi masukkan directory file: ");
+                            fileName = sc.nextLine();
+                            augm = IOFile.readFileMat(fileName);
+                            if (augm != null) {
+                                row = IOFile.getRow(fileName);
+                                col = IOFile.getCol(fileName);
+                            }
+                        }
+
+                        // ======== jawaban-start==========//
+                        mHasil = cramer(augm);
+                        // ======== jawaban-end==========//
+                        System.out.println("\nHasil SPL:");
+                        System.out.println(SPL.displaySPL(mHasil));
+                        simpan(SPL.displaySPL(mHasil));
+
+                        notValid2 = true;
+                    }
+                    else {
+                        System.out.println("Input tidak valid! Ulangi");
+                    }
+                }
+                notValid = true; 
+            }            
+
+            else {
+                System.out.println("\n======Input tidak valid! Ulangi======");
+            }
+        }
     }
 
     public static Matrix inverseSPL(Matrix augm) {
@@ -44,6 +413,43 @@ public class SPL extends Matrix {
 
         } else {
 
+            HashMap<Integer, String> colType = new HashMap<Integer, String>();
+            HashMap<Integer, Integer> idxColSatuUtama = new HashMap<Integer, Integer>();
+            // Bisa tiga jenis nilai char, yaitu a, b, c.
+            // a : kolom satu utama
+            // b : kolom kosong (nilainya 0 semua)
+            // a_idxPar : kolom dengan variabel yang dinyatakan dengan parametrik
+
+            for (int i = 0; i <= m_sol.getLastIdxRow(); i++) {
+                idxColSatuUtama.put(i, m_sol.satuUtamaIdx(i));
+            }
+            
+            int idxPar = 0;
+
+            for (int j = 0; j < m_sol.getLastIdxCol(); j++) {
+                boolean allZeroCol = true;
+                for (int i = 0; i <= m_sol.getLastIdxRow(); i++) {
+                    if (j == idxColSatuUtama.get(i)) {
+                        colType.put(j, "a");
+                        break;
+                    }
+
+                    if (m_sol.getELMT(i, j) != 0) {
+                        allZeroCol = false;
+                    }
+
+                    if (i == m_sol.getLastIdxRow()) {
+                        if (allZeroCol) {
+                            colType.put(j, "b");
+                        } else {
+                            colType.put(j, String.format("a_%d", idxPar));
+                            idxPar++;
+                        }
+                    }
+                }
+            }
+            
+            
             for (int i = 0; i <= m_sol.getLastIdxRow(); i++) {
                 if (m_sol.satuUtamaIdx(i) < 0) {
                     continue;
@@ -56,20 +462,14 @@ public class SPL extends Matrix {
                                 continue;
                             } else {                            
                                 if (m_sol.getELMT(i, j) > 0 && j != m_sol.satuUtamaIdx(i) + 1) {
-                                    hasil += String.format(" + %.3fx_%d", m_sol.getELMT(i, j), j + 1);
+                                    hasil += String.format(" + %.3f" + colType.get(j), m_sol.getELMT(i, j), j + 1);
                                 } else if (m_sol.getELMT(i, j) < 0) {
-                                    hasil += String.format(" - %.3fx_%d", -m_sol.getELMT(i, j), j + 1);
+                                    hasil += String.format(" - %.3f" + colType.get(j), -m_sol.getELMT(i, j), j + 1);
                                 } else {
-                                    hasil += String.format(" %.3fx_%d", m_sol.getELMT(i, j), j + 1);
+                                    hasil += String.format(" %.3f" + colType.get(j), m_sol.getELMT(i, j), j + 1);
                                 }
                             }
                             
-                            // if (m_sol.getELMT(i, j + 1) > 0) {
-                            //     hasil += " + ";
-                            // } else if (m_sol.getELMT(i, j + 1) < 0) {
-                            //     hasil += " - ";
-                            // }
-    
                         } else {
                             if (m_sol.getELMT(i, j) == 0) {
                                 continue;
@@ -84,6 +484,13 @@ public class SPL extends Matrix {
                             }
                         }                
                     }
+                    hasil += "\n";
+                }
+            }
+
+            for (int j = 0; j < m_sol.getLastIdxCol(); j++) {
+                if (colType.get(j) != "a" && colType.get(j) != "b") {
+                    hasil += String.format("x_%d = " + colType.get(j), j + 1);
                     hasil += "\n";
                 }
             }
@@ -204,7 +611,7 @@ public class SPL extends Matrix {
 
         } else if (augm.isParametricSolution()) {
 
-            augm = SPL.SolFormatting(augm);
+            augm = SolFormatting(augm);
             return augm;
 
         } else {
@@ -236,7 +643,7 @@ public class SPL extends Matrix {
             }
             return mHasil;
         } else if (augm.isParametricSolution()) {
-            augm = SPL.SolFormatting(augm);
+            augm = SolFormatting(augm);
             return augm;
         } else {
             return null;
@@ -276,6 +683,34 @@ public class SPL extends Matrix {
         }
         return m_sol;
     }
+
+    public static float interpolPolinom(Matrix koordinat, float val){       // input matrix ukuran (n, 2)
+        Matrix augm = new Matrix(koordinat.row, koordinat.row + 1);
+        Matrix mHasil;
+        float hasil=0;
+
+        for (int i = 0; i<=augm.getLastIdxRow(); i++) {
+            for (int j = 0; j<=augm.getLastIdxCol()-1; j++) {
+                //System.out.println(koordinat.getELMT(j, 0) + "^" + k);
+                //System.out.println(Math.pow(koordinat.getELMT(j, 0), k));
+                augm.setELMT(i, j, (float) Math.pow(koordinat.getELMT(i, 0), j));
+            }
+        }
+
+        for (int i = 0; i<=augm.getLastIdxRow(); i++) {
+            augm.setELMT(i, augm.getLastIdxCol(), koordinat.getELMT(i, 1));
+        }
+
+        mHasil = gauss(augm);
+        for (int i = 0; i<=mHasil.getLastIdxRow(); i++) {
+            hasil += ((float) Math.pow(val, i))*mHasil.getELMT(i, 0);
+        }
+
+        return hasil;
+
+    }
+
+
 }
 
 

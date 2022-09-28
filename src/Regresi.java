@@ -1,4 +1,4 @@
-public class Regresi extends App{
+public class Regresi{
     public static float[] solveRegresi(float[][] m){
         float[][] augMat = new float[m.length][m[1].length + 1];
         
@@ -32,7 +32,7 @@ public class Regresi extends App{
         
         nee.displayMatrix();
         
-        nee.GaussJordan();
+        SPL.gaussJordan(nee);
         
 
         float [] coef = new float[nee.row];
