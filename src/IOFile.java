@@ -102,4 +102,15 @@ public class IOFile{
 
         
     }
+    public static void writeString(String fileName, String s){
+        try {
+            FileWriter myWrite = new FileWriter("test/" + fileName + ".txt");
+
+            myWrite.write(s);
+            myWrite.close();
+        }
+        catch (IOException e){
+            System.out.println("duar ERROR");
+        }
+    }
 }

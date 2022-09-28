@@ -1,6 +1,5 @@
 public class Regresi extends App{
-    public static float[][] solveRegresi(float[][] m){
-        
+    public static float[] solveRegresi(float[][] m){
         float[][] augMat = new float[m.length][m[1].length + 1];
         
         // tambah kolom di awal untuk koef b0, isinya 1 
@@ -26,11 +25,23 @@ public class Regresi extends App{
             }
         }
 
+        Matrix nee = new Matrix(NEE.length, NEE[1].length);
+
+        nee.data = NEE;
+        
+        
+        nee.displayMatrix();
+        
+        nee.GaussJordan();
         
 
-        return NEE;
+        float [] coef = new float[nee.row];
 
-        
+        for (int i = 0; i < nee.row; i++){
+            coef[i] = nee.getELMT(i, nee.getLastIdxCol());
+        }
+
+        return coef;
     }
 
     public static void MultiRegresi(){
