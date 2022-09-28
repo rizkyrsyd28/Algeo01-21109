@@ -2,14 +2,22 @@ public class App{
     public static void main(String[] args){
         String file = "test/text.txt";
         
-        Matrix m = new Matrix(ReadFile.getRow(file), ReadFile.getCol(file));
+        Matrix m = new Matrix(IOFile.getRow(file), IOFile.getCol(file));
         
-        m.setMatFromFile(ReadFile.readFileMat(file, ReadFile.getRow(file), ReadFile.getCol(file)));
+        IOFile.readFileMat(m, file, IOFile.getRow(file), IOFile.getCol(file));
+
         
-        Matrix invMat = m.inverseMatrix();
-        invMat.displayMatrix();
+        // IOFile.createEmptyFile("main");
+        SPL a = new SPL(1, 1);
 
-        // invMat.displayMatrix();
+        // Matrix m_sol = a.SolFormatting(m);
+        // m_sol.displayMatrix(); System.out.println();
 
+        Matrix m_sol = a.gauss(m);
+        String hasil = a.displaySPL(m_sol);
+        // m_sol.displayMatrix(); System.out.println();
+        System.out.print(hasil);
+        
+        // IOFile.writeMatrix("main", m.getData());
     }
 }

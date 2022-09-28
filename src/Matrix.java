@@ -22,6 +22,10 @@ public class Matrix {
         return this.data[i][j];
     }
 
+    public float[][] getData(){
+        return this.data;
+    }
+
     public boolean isMatrixIdxValid(int i, int j)             // driver checked    
     /* Mengirimkan true jika i, j adalah index yang valid untuk matriks apa pun */
     {
@@ -50,6 +54,7 @@ public class Matrix {
 
 
     /* ********** KELOMPOK BACA/TULIS ********** */
+
     public void readMatrix()           //driver checked
     /* I.S. isIdxValid(nRow,nCol) */
     /* F.S. m terdefinisi nilai elemen efektifnya, berukuran nRow x nCol */
@@ -70,9 +75,40 @@ public class Matrix {
             }
         }
 
-        sc.close();
+        //sc.close();
         
     }
+    public void readMatrixPeubah()           //Khusus input matrix peubah
+    //input berupa a[i][j] 
+    {
+        // Kamus
+        Scanner sc = new Scanner(System.in);
+        for (int i = 0; i<=getLastIdxRow(); i++) {
+            for (int j = 0; j<=getLastIdxCol(); j++) {
+                System.out.print("a["+i+"]["+j+"]: ");
+                setELMT(i, j, sc.nextFloat());
+            }
+        }
+
+        //sc.close();
+        
+    }
+
+    public void readMatrixHasil()            //Khusus input matrix hasil
+   //input berupa b[i]
+    {
+        // Kamus
+        Scanner sc = new Scanner(System.in);
+        for (int i = 0; i<=getLastIdxRow(); i++) {
+            for (int j = 0; j<=getLastIdxCol(); j++) {
+                System.out.print("b["+i+"]: ");
+                setELMT(i, j, sc.nextFloat());
+            }
+        }
+
+        //sc.close();
+        
+    }    
 
     public void displayMatrix()                //driver checked
     /* I.S. m terdefinisi */
@@ -299,60 +335,6 @@ public class Matrix {
         return true;
     }
 
-    public void Gauss(){
-        int i = 0, j = 0; 
-        while (i < this.row && j < this.col){
-            if (this.getELMT(i, j) == 0){
-                boolean cp = false;
-                for (int k = i + 1; k < this.row; k++){
-                    if (this.getELMT(k, j) != 0){
-                        float[] temp = this.data[i];
-                        this.data[i] = this.data[k];
-                        this.data[k] = temp;
-                        cp = true;
-                        break;
-                    }
-                }
-                if (rowZero(i) && i != this.getLastIdxRow()){
-                    float[] temp = this.data[i];
-                    this.data[i] = this.data[i+1];
-                    this.data[i+1] = temp;
-                }
-                if (!cp){
-                    j++;
-                }
-                // this.displayMatrix();
-            }
-            // safety  breaker
-            if (i >= this.row || j >= this.col){
-                break;
-            }
-
-            if (this.getELMT(i, j) != 0){
-                float ratio = 1;
-                if (this.getELMT(i, j) != 1){
-                    ratio = this.getELMT(i, j);
-                    for (int k = j; k < this.col; k++){
-                        setELMT(i, k, getELMT(i, k)/ratio);
-                    }
-                }
-                ratio = 1;
-                for (int k = i + 1; k < this.row; k++){
-                    ratio = getELMT(k, j)/getELMT(i, j);
-                    for (int l = j; l < this.col; l++){
-                        setELMT(k, l, getELMT(k, l) - ratio*getELMT(i, l));
-                    }
-                }
-                i++;
-                j++;
-                // this.displayMatrix();
-            }
-            
-            //this.displayMatrix();
-            // break;
-        }
-    }
-
     public int satuUtamaIdx(int row){
 
         for (int j = 0; j < this.col; j++){
@@ -364,20 +346,7 @@ public class Matrix {
         return -1;
     }
 
-    public void GaussJordan(){
-        float pengali = 1; 
-        
-        this.Gauss();
-
-        for (int i = 0; i < this.row - 1; i++){
-            for (int k = i+1; k < this.row; k++){
-                pengali = getELMT(i, this.satuUtamaIdx(k))/getELMT(k, this.satuUtamaIdx(k));
-                for (int j = satuUtamaIdx(k); j < this.col; j++){
-                    setELMT(i, j, getELMT(i, j) - pengali * getELMT(k, j));
-                }
-            }
-        }
-    }
+    
 
 // 1 2 3
 // 0 1 4
@@ -390,25 +359,6 @@ public class Matrix {
             mOut.setELMT(i, colIdx, mCol.getELMT(i, 0));
         }
         return mOut;
-    }
-
-    public void cramer(Matrix mHasil) {
-        float x = determinantOBE();
-        float hasil;
-        Matrix m2;
-        //System.out.println(x);
-
-        if (isSquare()) {           // Jika berbentuk kotak
-            for (int i = 0; i<=getLastIdxCol(); i++) {
-                m2 = this.switchCol(mHasil, i);
-                //m2.displayMatrix();
-                hasil = m2.determinanKof()/x;
-                // System.out.println();
-                //System.out.println(m2.determinantOBE() + " / " + x + "-> x"+(i+1)+" : "+hasil);
-                System.out.println("x"+(i+1)+" : "+hasil);
-            }
-        }
-
     }
 
     public void setMatFromFile(float[][] m){
@@ -460,6 +410,85 @@ public class Matrix {
             }
         }
         return m_mult;
+    }
+
+    public Matrix concatCol(Matrix m) {  // jumlah baris harus sama
+        Matrix mOut = new Matrix(m.row, this.col + m.col);
+
+        for (int i = 0; i<=this.getLastIdxRow(); i++){
+            for (int j = 0; j<=this.getLastIdxCol(); j++) {
+                mOut.setELMT(i, j, this.getELMT(i, j));
+            }
+        }
+
+        for (int i = 0; i<= m.getLastIdxRow(); i++){
+            for (int j = 0; j<= m.getLastIdxCol(); j++) {
+                //System.out.println(i + " "+ j + this.col);
+                mOut.setELMT(i , j + this.col, m.getELMT(i, j));
+            }
+        }
+        return mOut;
+    }
+
+    public static void driverDeterminan() {
+        boolean notValid = false;
+
+        while (!notValid) {
+            int x;
+            System.out.println("\nMetode Determinan yang tersedia\n");
+            System.out.println("    1. Reduksi Baris");
+            System.out.println("    2. Ekspansi Kofaktor\n");
+            Scanner sc = new Scanner(System.in);
+            System.out.print("Pilih metode yang diinginkan: ");
+            x = sc.nextInt();
+            if (x==1) {
+                int n;
+                float hasil;
+                Matrix m;
+                System.out.print("Masukkan jumlah baris dan kolom matrix n: ");
+                n = sc.nextInt();
+
+                m = new Matrix(n, n);
+                m.readMatrixPeubah();
+                hasil = m.determinantOBE();
+                System.out.println("\nDeterminan dari matrix");
+                m.displayMatrix();
+                System.out.println("adalah: " + hasil);
+                notValid = true;
+            }
+            else if (x==2) {
+                int n;
+                float hasil;
+                Matrix m;
+                System.out.print("Masukkan jumlah baris dan kolom matrix n: ");
+                n = sc.nextInt();
+
+                m = new Matrix(n, n);
+                m.readMatrixPeubah();
+                hasil = m.determinanKof();
+                System.out.println("\nDeterminan dari matrix");
+                m.displayMatrix();
+                System.out.println("adalah: " + hasil);
+                notValid = true;
+            }
+            else {
+                System.out.println("\n======Input tidak valid! Ulangi======");
+            }
+        }
+
+    }
+
+    public static void driverInverse() {
+        Scanner sc = new Scanner(System.in);
+        int n;
+        Matrix m, mhasil;
+        System.out.print("Masukkan jumlah baris dan kolom matrix n: ");
+        n = sc.nextInt();
+        m = new Matrix(n, n);
+        m.readMatrixPeubah();
+        mhasil = m.inverseMatrix();
+        System.out.println("\nInverse dari matrix input adalah:");
+        mhasil.displayMatrix();
     }
 }
 

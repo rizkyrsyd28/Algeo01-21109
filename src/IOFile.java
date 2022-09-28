@@ -1,9 +1,11 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
-public class ReadFile{
+public class IOFile{
 
     public static int getRow(String fileName){
         FileReader file = null;
@@ -53,8 +55,7 @@ public class ReadFile{
         return colVal;
     }
 
-    public static float[][] readFileMat(String fileName, int row, int col){
-        float[][] data = new float[row][col];
+    public static void readFileMat(Matrix mat, String fileName, int row, int col){
         
         FileReader file = null;
         try {
@@ -67,12 +68,41 @@ public class ReadFile{
 
         for (int i = 0; i < row; i++){
             for (int j = 0; j < col; j++){
-                data[i][j] = rowScan.nextFloat();
+                mat.setELMT(i, j, rowScan.nextFloat());
             }
         }
-
         rowScan.close();
-        return data; 
+    }
 
+    public static void createEmptyFile(String fileName){
+        try{
+            File myFile = new File("test/" + fileName + ".txt");
+            if(myFile.createNewFile()){
+                System.out.println("File created: " + myFile.getName());
+            } else {
+                System.out.println("File already exist");
+            }
+        } catch(IOException e){
+            System.out.println("ERROR");
+        }
+    }
+
+    public static void writeMatrix(String fileName, float[][] data){
+        try {
+            FileWriter myWrite = new FileWriter("test/" + fileName + ".txt");
+
+            for (int i = 0; i < data.length; i++){
+                for(int j = 0; j < data[i].length; j++){
+                    myWrite.write(Float.toString(data[i][j]) + " ");
+                }
+                myWrite.write("\n");
+            }
+            myWrite.close();
+        }
+        catch (IOException e){
+            System.out.println("duar ERROR");
+        }
+
+        
     }
 }
