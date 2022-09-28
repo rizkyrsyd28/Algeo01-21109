@@ -1,3 +1,4 @@
+import java.util.HashMap;
 import java.util.*;
 public class SPL extends Matrix {
     
@@ -160,6 +161,43 @@ public class SPL extends Matrix {
 
         } else {
 
+            HashMap<Integer, String> colType = new HashMap<Integer, String>();
+            HashMap<Integer, Integer> idxColSatuUtama = new HashMap<Integer, Integer>();
+            // Bisa tiga jenis nilai char, yaitu a, b, c.
+            // a : kolom satu utama
+            // b : kolom kosong (nilainya 0 semua)
+            // a_idxPar : kolom dengan variabel yang dinyatakan dengan parametrik
+
+            for (int i = 0; i <= m_sol.getLastIdxRow(); i++) {
+                idxColSatuUtama.put(i, m_sol.satuUtamaIdx(i));
+            }
+            
+            int idxPar = 0;
+
+            for (int j = 0; j < m_sol.getLastIdxCol(); j++) {
+                boolean allZeroCol = true;
+                for (int i = 0; i <= m_sol.getLastIdxRow(); i++) {
+                    if (j == idxColSatuUtama.get(i)) {
+                        colType.put(j, "a");
+                        break;
+                    }
+
+                    if (m_sol.getELMT(i, j) != 0) {
+                        allZeroCol = false;
+                    }
+
+                    if (i == m_sol.getLastIdxRow()) {
+                        if (allZeroCol) {
+                            colType.put(j, "b");
+                        } else {
+                            colType.put(j, String.format("a_%d", idxPar));
+                            idxPar++;
+                        }
+                    }
+                }
+            }
+            
+            
             for (int i = 0; i <= m_sol.getLastIdxRow(); i++) {
                 if (m_sol.satuUtamaIdx(i) < 0) {
                     continue;
@@ -172,20 +210,14 @@ public class SPL extends Matrix {
                                 continue;
                             } else {                            
                                 if (m_sol.getELMT(i, j) > 0 && j != m_sol.satuUtamaIdx(i) + 1) {
-                                    hasil += String.format(" + %.3fx_%d", m_sol.getELMT(i, j), j + 1);
+                                    hasil += String.format(" + %.3f" + colType.get(j), m_sol.getELMT(i, j), j + 1);
                                 } else if (m_sol.getELMT(i, j) < 0) {
-                                    hasil += String.format(" - %.3fx_%d", -m_sol.getELMT(i, j), j + 1);
+                                    hasil += String.format(" - %.3f" + colType.get(j), -m_sol.getELMT(i, j), j + 1);
                                 } else {
-                                    hasil += String.format(" %.3fx_%d", m_sol.getELMT(i, j), j + 1);
+                                    hasil += String.format(" %.3f" + colType.get(j), m_sol.getELMT(i, j), j + 1);
                                 }
                             }
                             
-                            // if (m_sol.getELMT(i, j + 1) > 0) {
-                            //     hasil += " + ";
-                            // } else if (m_sol.getELMT(i, j + 1) < 0) {
-                            //     hasil += " - ";
-                            // }
-    
                         } else {
                             if (m_sol.getELMT(i, j) == 0) {
                                 continue;
@@ -200,6 +232,13 @@ public class SPL extends Matrix {
                             }
                         }                
                     }
+                    hasil += "\n";
+                }
+            }
+
+            for (int j = 0; j < m_sol.getLastIdxCol(); j++) {
+                if (colType.get(j) != "a" && colType.get(j) != "b") {
+                    hasil += String.format("x_%d = " + colType.get(j), j + 1);
                     hasil += "\n";
                 }
             }
