@@ -615,6 +615,19 @@ public class Matrix {
         }
 
     }
+
+    public static void driverInverse() {
+        Scanner sc = new Scanner(System.in);
+        int n;
+        Matrix m, mhasil;
+        System.out.print("Masukkan jumlah baris dan kolom matrix n: ");
+        n = sc.nextInt();
+        m = new Matrix(n, n);
+        m.readMatrixPeubah();
+        mhasil = m.inverseMatrix();
+        System.out.println("\nInverse dari matrix input adalah:");
+        mhasil.displayMatrix();
+    }
 }
 
 // 1 2 3
