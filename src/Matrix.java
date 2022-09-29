@@ -491,30 +491,30 @@ public class Matrix {
                         String fileName;
                         int row=0, col=0;
 
-                        System.out.print("\nMasukkan directory file: ");
+                        System.out.print("\nMasukkan nama file: ");
                         fileName = sc.nextLine();
-                        m = IOFile.readFileMat(fileName);
+                        m = IOFile.readFileMat("test/" + fileName + ".txt");
 
                         if (m != null) {
-                            row = IOFile.getRow(fileName);
-                            col = IOFile.getCol(fileName);
+                            row = IOFile.getRow("test/" + fileName + ".txt");
+                            col = IOFile.getCol("test/" + fileName + ".txt");
                         }
            
                         while (m == null | col!=row) {
                             if (m != null) {
-                                row = IOFile.getRow(fileName);
-                                col = IOFile.getCol(fileName);
+                                row = IOFile.getRow("test/" + fileName + ".txt");
+                                col = IOFile.getCol("test/" + fileName + ".txt");
                                 if (col!=row) {
                                     System.out.println("Bukan merupakan matrix dengan peubah n x n !");
                                 }
                             }
 
-                            System.out.print("\nUlangi masukkan directory file: ");
+                            System.out.print("\nUlangi masukkan nama file: ");
                             fileName = sc.nextLine();
-                            m = IOFile.readFileMat(fileName);
+                            m = IOFile.readFileMat("test/" + fileName + ".txt");
                             if (m != null) {
-                                row = IOFile.getRow(fileName);
-                                col = IOFile.getCol(fileName);
+                                row = IOFile.getRow("test/" + fileName + ".txt");
+                                col = IOFile.getCol("test/" + fileName + ".txt");
                             }
                         }
                         hasil = m.determinantOBE();
@@ -567,30 +567,30 @@ public class Matrix {
                         String fileName;
                         int row=0, col=0;
 
-                        System.out.print("\nMasukkan directory file: ");
+                        System.out.print("\nMasukkan nama file: ");
                         fileName = sc.nextLine();
-                        m = IOFile.readFileMat(fileName);
+                        m = IOFile.readFileMat("test/" + fileName + ".txt");
 
                         if (m != null) {
-                            row = IOFile.getRow(fileName);
-                            col = IOFile.getCol(fileName);
+                            row = IOFile.getRow("test/" + fileName + ".txt");
+                            col = IOFile.getCol("test/" + fileName + ".txt");
                         }
            
                         while (m == null | col!=row) {
                             if (m != null) {
-                                row = IOFile.getRow(fileName);
-                                col = IOFile.getCol(fileName);
+                                row = IOFile.getRow("test/" + fileName + ".txt");
+                                col = IOFile.getCol("test/" + fileName + ".txt");
                                 if (col!=row) {
                                     System.out.println("Bukan merupakan matrix dengan peubah n x n !");
                                 }
                             }
 
-                            System.out.print("\nUlangi masukkan directory file: ");
+                            System.out.print("\nUlangi masukkan nama file: ");
                             fileName = sc.nextLine();
-                            m = IOFile.readFileMat(fileName);
+                            m = IOFile.readFileMat("test/" + fileName + ".txt");
                             if (m != null) {
-                                row = IOFile.getRow(fileName);
-                                col = IOFile.getCol(fileName);
+                                row = IOFile.getRow("test/" + fileName + ".txt");
+                                col = IOFile.getCol("test/" + fileName + ".txt");
                             }
                         }
                         hasil = m.determinanKof();
@@ -651,7 +651,7 @@ public class Matrix {
                 String fileName;
                 int row=0, col=0;
 
-                System.out.print("\nMasukkan directory file: ");
+                System.out.print("\nMasukkan nama file: ");
                 fileName = sc.nextLine();
                 m = IOFile.readFileMat("test/" + fileName + ".txt");
 
@@ -669,7 +669,7 @@ public class Matrix {
                         }
                     }
 
-                    System.out.print("\nUlangi masukkan directory file: ");
+                    System.out.print("\nUlangi masukkan nama file: ");
                     fileName = sc.nextLine();
                     m = IOFile.readFileMat("test/" + fileName + ".txt");
                     if (m != null) {

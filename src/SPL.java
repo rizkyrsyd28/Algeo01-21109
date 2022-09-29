@@ -92,14 +92,14 @@ public class SPL extends Matrix {
                         sc = new Scanner(System.in);
                         String fileName;
 
-                        System.out.print("\nMasukkan directory file: ");
+                        System.out.print("\nMasukkan nama file: ");
                         fileName = sc.nextLine();
-                        augm = IOFile.readFileMat(fileName);
+                        augm = IOFile.readFileMat("test/" + fileName + ".txt");
 
                         while (augm == null) {
-                            System.out.print("\nUlangi masukkan directory file: ");
+                            System.out.print("\nUlangi masukkan nama file: ");
                             fileName = sc.nextLine();
-                            augm = IOFile.readFileMat(fileName);
+                            augm = IOFile.readFileMat("test/" + fileName + ".txt");
                         }
 
                         // ======== jawaban-start==========//
@@ -165,14 +165,14 @@ public class SPL extends Matrix {
                         sc = new Scanner(System.in);
                         String fileName;
 
-                        System.out.print("\nMasukkan directory file: ");
+                        System.out.print("\nMasukkan nama file: ");
                         fileName = sc.nextLine();
-                        augm = IOFile.readFileMat(fileName);
+                        augm = IOFile.readFileMat("test/" + fileName + ".txt");
 
                         while (augm == null) {
-                            System.out.print("\nUlangi masukkan directory file: ");
+                            System.out.print("\nUlangi masukkan nama file: ");
                             fileName = sc.nextLine();
-                            augm = IOFile.readFileMat(fileName);
+                            augm = IOFile.readFileMat("test/" + fileName + ".txt");
                         }
 
                         // ======== jawaban-start==========//
@@ -236,30 +236,30 @@ public class SPL extends Matrix {
                         String fileName;
                         int row=0, col=0;
 
-                        System.out.print("\nMasukkan directory file: ");
+                        System.out.print("\nMasukkan nama file: ");
                         fileName = sc.nextLine();
-                        augm = IOFile.readFileMat(fileName);
+                        augm = IOFile.readFileMat("test/" + fileName + ".txt");
 
                         if (augm != null) {
-                            row = IOFile.getRow(fileName);
-                            col = IOFile.getCol(fileName);
+                            row = IOFile.getRow("test/" + fileName + ".txt");
+                            col = IOFile.getCol("test/" + fileName + ".txt");
                         }
            
                         while (augm == null | col-1!=row) {
                             if (augm != null) {
-                                row = IOFile.getRow(fileName);
-                                col = IOFile.getCol(fileName);
+                                row = IOFile.getRow("test/" + fileName + ".txt");
+                                col = IOFile.getCol("test/" + fileName + ".txt");
                                 if (col-1!=row) {
                                     System.out.println("Bukan merupakan matrix dengan peubah n x n !");
                                 }
                             }
 
-                            System.out.print("\nUlangi masukkan directory file: ");
+                            System.out.print("\nUlangi masukkan nama file: ");
                             fileName = sc.nextLine();
-                            augm = IOFile.readFileMat(fileName);
+                            augm = IOFile.readFileMat("test/" + fileName + ".txt");
                             if (augm != null) {
-                                row = IOFile.getRow(fileName);
-                                col = IOFile.getCol(fileName);
+                                row = IOFile.getRow("test/" + fileName + ".txt");
+                                col = IOFile.getCol("test/" + fileName + ".txt");
                             }
                         }
 
@@ -325,30 +325,30 @@ public class SPL extends Matrix {
                         String fileName;
                         int row=0, col=0;
 
-                        System.out.print("\nMasukkan directory file: ");
+                        System.out.print("\nMasukkan nama file: ");
                         fileName = sc.nextLine();
-                        augm = IOFile.readFileMat(fileName);
+                        augm = IOFile.readFileMat("test/" + fileName + ".txt");
 
                         if (augm != null) {
-                            row = IOFile.getRow(fileName);
-                            col = IOFile.getCol(fileName);
+                            row = IOFile.getRow("test/" + fileName + ".txt");
+                            col = IOFile.getCol("test/" + fileName + ".txt");
                         }
            
                         while (augm == null | col-1!=row) {
                             if (augm != null) {
-                                row = IOFile.getRow(fileName);
-                                col = IOFile.getCol(fileName);
+                                row = IOFile.getRow("test/" + fileName + ".txt");
+                                col = IOFile.getCol("test/" + fileName + ".txt");
                                 if (col-1!=row) {
                                     System.out.println("Bukan merupakan matrix dengan peubah n x n !");
                                 }
                             }
 
-                            System.out.print("\nUlangi masukkan directory file: ");
+                            System.out.print("\nUlangi masukkan nama file: ");
                             fileName = sc.nextLine();
-                            augm = IOFile.readFileMat(fileName);
+                            augm = IOFile.readFileMat("test/" + fileName + ".txt");
                             if (augm != null) {
-                                row = IOFile.getRow(fileName);
-                                col = IOFile.getCol(fileName);
+                                row = IOFile.getRow("test/" + fileName + ".txt");
+                                col = IOFile.getCol("test/" + fileName + ".txt");
                             }
                         }
 
