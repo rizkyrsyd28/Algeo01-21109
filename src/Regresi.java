@@ -1,5 +1,6 @@
-public class Regresi{
-    public static float[] solveRegresi(float[][] m){
+public class Regresi extends UI {
+    public static float[] getCoefRegresi(float[][] m){
+        
         float[][] augMat = new float[m.length][m[1].length + 1];
         
         // tambah kolom di awal untuk koef b0, isinya 1 
@@ -45,6 +46,123 @@ public class Regresi{
     }
 
     public static void MultiRegresi(){
+        System.out.println("pilihan input\n1. Input Terminal\n2. Input File");
+        int mode; 
+        float[][] augm;
+        mode = Pilih(2);
 
+        if (mode == 1){
+            int n, m;
+
+            System.out.print("Masukan peubah : ");
+            n = sc.nextInt();             
+            System.out.print("Masukan banyak persamaan : ");
+            m = sc.nextInt();
+            System.out.printf("Masukan %d persamaan\n", m);
+            augm = new float[m][n+1];
+            for (int i = 0; i < m; i++){
+                for (int j = 0; j < n; j++){
+                    augm[i][j] = sc.nextFloat();
+                }
+            }
+        } else {
+            String fileName; 
+
+            System.out.print("Masukkan nama file\n> ");
+            fileName = sc.next();
+
+            while(!IOFile.isFileExist(fileName)){
+                System.out.println("Masukkan salah, silahkan masukkan ulang!");
+                System.out.print("Masukkan nama file\n> ");
+                fileName = sc.nextLine();
+            }
+            augm = new float[IOFile.getRow(fileName)][IOFile.getCol(fileName)];
+            augm = IOFile.readFileMat(fileName).data;
+        }
+        
+        float[] coef = getCoefRegresi(augm);
+
+        System.out.println("Persamaan regresi linier berganda : ");
+        
+        if (coef[0] == 0){
+            System.out.printf("y = %fx1", coef[1]);
+            for (int i = 2; i < coef.length; i++){
+                if (coef[i] > 0){
+                    System.out.printf(" + %f x%d", coef[i], i);
+                } else if (coef[i] < 0){
+                    System.out.printf(" %f x%d", coef[i], i);
+                }
+            }
+        } else {
+            System.out.printf("y = %f ", coef[0]);
+            for (int i = 1; i < coef.length; i++){
+                if (coef[i] > 0){
+                    System.out.printf(" + %f x%d", coef[i], i);
+                } else if (coef[i] < 0){
+                    System.out.printf(" %f x%d", coef[i], i);
+                }
+            }
+        }
+
+        System.out.println("Menaksir nilai fungsi");
+        System.out.printf("Masukkan %d peubah yang akan ditaksir nilai fungsinyan\n", coef.length - 1);
+
+        float taksir = coef[0];
+        
+        float[] input = new float[coef.length-1];
+
+        for (int i = 0; i < coef.length-1; i++){
+            input[0]=  sc.nextFloat();
+        }
+        for (int i = 0; i < input.length; i++){
+            taksir += input[0] * coef[i+1];
+        }
+
+        System.out.printf("Nilai taksirannya adalah %f\n\n", taksir);
+
+        boolean saveFile = save2File();
+
+        if (saveFile){
+            String output = "Persamaan Regresi Linier yang diperoleh\n";
+
+            if (coef[0] == 0){
+                output += ("y = " + coef[1] + " x1");
+                for (int i = 2; i < coef.length; i++){
+                    if (coef[i] > 0){
+                        output += (" + " + coef[i] + "x" + i);
+                    } else if (coef[i] < 0){
+                        output += (" - " + (-1 * coef[i]) + "x" + i);
+                    }
+                }
+            } else {
+                output += ("y = " + coef[0]);
+                for (int i = 1; i < coef.length; i++){
+                    if (coef[i] > 0){
+                        output += (" + " + coef[i] + "x" + i);
+                    } else if (coef[i] < 0){
+                        output += (" - " + (-1 * coef[i]) + "x" + i);
+                    }
+                }
+            }
+            output += ("\nNilai taksirannya adalah " + taksir);
+
+
+            System.out.print("Masukkan nama File\n> ");
+            String fileDir = sc.next();
+            if (!IOFile.isFileExist(fileDir)){
+                IOFile.createEmptyFile(fileDir);
+            }
+            IOFile.writeString(fileDir, output);
+
+        }
+
+        // float[] ans;
+        // // ans = solveRegresi(m.data);
+
+        // System.out.print(ans[0]);
+        // for (int i = 1; i < ans.length; i++){
+        //     System.out.print(" + " + ans[i] + "x" + i);
+        // }
+        // System.out.println(" ");
     }
 }
