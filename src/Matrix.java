@@ -638,6 +638,9 @@ public class Matrix {
                 m = new Matrix(n, n);
                 m.readMatrixPeubah();
                 mhasil = m.inverseMatrix();
+                if (mhasil == null) {
+                    break;
+                }
                 System.out.println();
                 sHasil += "Inverse dari matrix input adalah:\n";
                 sHasil += mhasil.matrixToString();
@@ -679,6 +682,9 @@ public class Matrix {
                 }
 
                 mhasil = m.inverseMatrix();
+                if (mhasil == null) {
+                    break;
+                }
                 System.out.println();
                 sHasil += "Inverse dari matrix input adalah:\n";
                 sHasil += mhasil.matrixToString();

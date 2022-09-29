@@ -1,13 +1,15 @@
 public class App{
     public static void main(String[] args){
-        String file = "../test/text.txt";
+        String file = "test/text.txt";
         
-        Matrix m = new Matrix(IOFile.getRow(file), IOFile.getCol(file));
-        
-        //IOFile.readFileMat(m, file, IOFile.getRow(file), IOFile.getCol(file));
+        Matrix m = IOFile.readFileMat(file);
 
         m.displayMatrix();
 
-        IOFile.writeMatrix("test10", m);
+        // IOFile.writeMatrix("test10", m);
+
+        // Matrix.driverInverse();
+        // Matrix.driverDeterminan();
+        SPL.driverSPL();
     }
 }
