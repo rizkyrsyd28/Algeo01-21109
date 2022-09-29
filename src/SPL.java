@@ -225,8 +225,14 @@ public class SPL extends Matrix {
                         mHasil = inverseSPL(augm);
                         // ======== jawaban-end==========//
                         System.out.println("\nHasil SPL:");
-                        System.out.println(SPL.displaySPL(mHasil));
-                        simpan(SPL.displaySPL(mHasil));
+                        if (mHasil == null) {
+                            String hasil = "SPL ini memiliki solusi banyak (lebih dari satu) atau SPL tidak memiliki solusi karena tidak memiliki invers.";
+                            System.out.println(hasil);
+                            simpan(hasil);
+                        } else {
+                            System.out.println(SPL.displaySPL(mHasil));
+                            simpan(SPL.displaySPL(mHasil));
+                        }
 
                         notValid2 = true;
                     }
@@ -267,8 +273,14 @@ public class SPL extends Matrix {
                         mHasil = inverseSPL(augm);
                         // ======== jawaban-end==========//
                         System.out.println("\nHasil SPL:");
-                        System.out.println(SPL.displaySPL(mHasil));
-                        simpan(SPL.displaySPL(mHasil));
+                        if (mHasil == null) {
+                            String hasil = "SPL ini memiliki solusi banyak atau SPL tidak memiliki solusi karena tidak memiliki invers.";
+                            System.out.println(hasil);
+                            simpan(hasil);
+                        } else {
+                            System.out.println(SPL.displaySPL(mHasil));
+                            simpan(SPL.displaySPL(mHasil));
+                        }
 
                         notValid2 = true;
                     }
@@ -356,8 +368,14 @@ public class SPL extends Matrix {
                         mHasil = cramer(augm);
                         // ======== jawaban-end==========//
                         System.out.println("\nHasil SPL:");
-                        System.out.println(SPL.displaySPL(mHasil));
-                        simpan(SPL.displaySPL(mHasil));
+                        if (mHasil == null) {
+                            String hasil = "SPL memiliki solusi banyak atau tidak memiliki solusi karena determinan matrix sama dengan 0.";
+                            System.out.println(hasil);
+                            simpan(hasil);
+                        } else {
+                            System.out.println(SPL.displaySPL(mHasil));
+                            simpan(SPL.displaySPL(mHasil));
+                        }
 
                         notValid2 = true;
                     }
@@ -390,7 +408,6 @@ public class SPL extends Matrix {
 
         Matrix invMat = A.inverseMatrix();
         if (invMat == null) {
-            System.out.println("SPL ini memiliki solusi banyak (lebih dari satu) atau SPL tidak memiliki solusi karena tidak memiliki invers.");
             return null;
         } else {
             Matrix x = invMat.multiplyMatrix(b);
@@ -402,8 +419,8 @@ public class SPL extends Matrix {
         String hasil = "";
         if (m_sol == null) {
             
-            System.out.println("SPL tidak memiliki solusi.");
-            return null;
+            hasil += "SPL tidak memiliki solusi.";
+            return hasil;
 
         } else if (m_sol.col == 1) {
             
@@ -514,6 +531,9 @@ public class SPL extends Matrix {
         }
 
         float x = A.determinantOBE();
+        if (x == 0) {
+            return null;
+        }
         float hasil;
         Matrix m2;
         Matrix mHasil = new Matrix(A.col, 1);
