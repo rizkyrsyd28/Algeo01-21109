@@ -94,7 +94,7 @@ public class IOFile{
 
     public static void writeMatrix(String fileName, Matrix data){
         try {
-            FileWriter myWrite = new FileWriter("../test/" + fileName + ".txt");
+            FileWriter myWrite = new FileWriter("test/" + fileName + ".txt");
 
             for (int i = 0; i <= data.getLastIdxRow(); i++){
                 for(int j = 0; j <= data.getLastIdxCol(); j++){
@@ -111,7 +111,7 @@ public class IOFile{
 
     public static void writeString(String fileName, String output) {
         try {
-            FileWriter myWrite = new FileWriter("../test/" + fileName + ".txt");
+            FileWriter myWrite = new FileWriter("test/" + fileName + ".txt");
             myWrite.write(output);
             myWrite.close();
         }

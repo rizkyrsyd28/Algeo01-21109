@@ -617,17 +617,79 @@ public class Matrix {
     }
 
     public static void driverInverse() {
-        Scanner sc = new Scanner(System.in);
-        int n;
-        Matrix m, mhasil;
-        System.out.print("Masukkan jumlah baris dan kolom matrix n: ");
-        n = sc.nextInt();
-        m = new Matrix(n, n);
-        m.readMatrixPeubah();
-        mhasil = m.inverseMatrix();
-        System.out.println("\nInverse dari matrix input adalah:");
-        mhasil.displayMatrix();
+        boolean notValid = false;        
+        int x;
+        while (!notValid) {
+            String sHasil = "";
+            Matrix m, mhasil;
+            Scanner sc = new Scanner(System.in);
+            System.out.println("\nJenis input yang tersedia");
+            System.out.println("    1. Terminal");
+            System.out.println("    2. File txt");
+            System.out.print("Pilih jenis input yang diinginkan: ");
+            x = sc.nextInt();
+
+            if (x == 1) {
+                notValid = true;
+                int n;
+                System.out.print("Masukkan jumlah baris dan kolom matrix n: ");
+                sc = new Scanner(System.in);
+                n = sc.nextInt();
+                m = new Matrix(n, n);
+                m.readMatrixPeubah();
+                mhasil = m.inverseMatrix();
+                System.out.println();
+                sHasil += "Inverse dari matrix input adalah:\n";
+                sHasil += mhasil.matrixToString();
+                System.out.println(sHasil);
+                SPL.simpan(sHasil);
+
+            } else if (x == 2) {
+                notValid = true;
+                sc = new Scanner(System.in);
+                sc = new Scanner(System.in);
+                String fileName;
+                int row=0, col=0;
+
+                System.out.print("\nMasukkan directory file: ");
+                fileName = sc.nextLine();
+                m = IOFile.readFileMat("test/" + fileName + ".txt");
+
+                if (m != null) {
+                    row = IOFile.getRow("test/" + fileName + ".txt");
+                    col = IOFile.getCol("test/" + fileName + ".txt");
+                }
+   
+                while (m == null | col!=row) {
+                    if (m != null) {
+                        row = IOFile.getRow("test/" + fileName + ".txt");
+                        col = IOFile.getCol("test/" + fileName + ".txt");
+                        if (col!=row) {
+                            System.out.println("Bukan merupakan matrix dengan peubah n x n !");
+                        }
+                    }
+
+                    System.out.print("\nUlangi masukkan directory file: ");
+                    fileName = sc.nextLine();
+                    m = IOFile.readFileMat("test/" + fileName + ".txt");
+                    if (m != null) {
+                        row = IOFile.getRow("test/" + fileName + ".txt");
+                        col = IOFile.getCol("test/" + fileName + ".txt");
+                    }
+                }
+
+                mhasil = m.inverseMatrix();
+                System.out.println();
+                sHasil += "Inverse dari matrix input adalah:\n";
+                sHasil += mhasil.matrixToString();
+                System.out.println(sHasil);
+                SPL.simpan(sHasil);
+            } else {
+                System.out.println("Input tidak valid! Ulangi.");
+            }
+        }
     }
+
 }
 
 // 1 2 3
