@@ -152,6 +152,7 @@ public class IOFile{
 
     public static void writeMatrix(String fileName, Matrix data){
         try {
+
             FileWriter myWrite = new FileWriter("test/output/" + fileName);
 
             for (int i = 0; i <= data.getLastIdxRow(); i++){
@@ -170,8 +171,10 @@ public class IOFile{
 
     public static void writeString(String fileName, String s){
         try {
+
             FileWriter myWrite = new FileWriter("test/output/" + fileName);
             myWrite.write(s);
+
             myWrite.close();
             System.out.println("Berhasil menyimpan hasil ke file " + fileName + " di folder ./test/output");
         }

@@ -92,14 +92,14 @@ public class SPL extends Matrix {
                         sc = new Scanner(System.in);
                         String fileName;
 
-                        System.out.print("\nMasukkan directory file: ");
+                        System.out.print("\nMasukkan nama file: ");
                         fileName = sc.nextLine();
-                        augm = IOFile.readFileMat(fileName);
+                        augm = IOFile.readFileMat("test/" + fileName + ".txt");
 
                         while (augm == null) {
-                            System.out.print("\nUlangi masukkan directory file: ");
+                            System.out.print("\nUlangi masukkan nama file: ");
                             fileName = sc.nextLine();
-                            augm = IOFile.readFileMat(fileName);
+                            augm = IOFile.readFileMat("test/" + fileName + ".txt");
                         }
 
                         // ======== jawaban-start==========//
@@ -165,14 +165,14 @@ public class SPL extends Matrix {
                         sc = new Scanner(System.in);
                         String fileName;
 
-                        System.out.print("\nMasukkan directory file: ");
+                        System.out.print("\nMasukkan nama file: ");
                         fileName = sc.nextLine();
-                        augm = IOFile.readFileMat(fileName);
+                        augm = IOFile.readFileMat("test/" + fileName + ".txt");
 
                         while (augm == null) {
-                            System.out.print("\nUlangi masukkan directory file: ");
+                            System.out.print("\nUlangi masukkan nama file: ");
                             fileName = sc.nextLine();
-                            augm = IOFile.readFileMat(fileName);
+                            augm = IOFile.readFileMat("test/" + fileName + ".txt");
                         }
 
                         // ======== jawaban-start==========//
@@ -225,8 +225,14 @@ public class SPL extends Matrix {
                         mHasil = inverseSPL(augm);
                         // ======== jawaban-end==========//
                         System.out.println("\nHasil SPL:");
-                        System.out.println(SPL.displaySPL(mHasil));
-                        simpan(SPL.displaySPL(mHasil));
+                        if (mHasil == null) {
+                            String hasil = "SPL ini memiliki solusi banyak (lebih dari satu) atau SPL tidak memiliki solusi karena tidak memiliki invers.";
+                            System.out.println(hasil);
+                            simpan(hasil);
+                        } else {
+                            System.out.println(SPL.displaySPL(mHasil));
+                            simpan(SPL.displaySPL(mHasil));
+                        }
 
                         notValid2 = true;
                     }
@@ -236,30 +242,30 @@ public class SPL extends Matrix {
                         String fileName;
                         int row=0, col=0;
 
-                        System.out.print("\nMasukkan directory file: ");
+                        System.out.print("\nMasukkan nama file: ");
                         fileName = sc.nextLine();
-                        augm = IOFile.readFileMat(fileName);
+                        augm = IOFile.readFileMat("test/" + fileName + ".txt");
 
                         if (augm != null) {
-                            row = IOFile.getRow(fileName);
-                            col = IOFile.getCol(fileName);
+                            row = IOFile.getRow("test/" + fileName + ".txt");
+                            col = IOFile.getCol("test/" + fileName + ".txt");
                         }
            
                         while (augm == null | col-1!=row) {
                             if (augm != null) {
-                                row = IOFile.getRow(fileName);
-                                col = IOFile.getCol(fileName);
+                                row = IOFile.getRow("test/" + fileName + ".txt");
+                                col = IOFile.getCol("test/" + fileName + ".txt");
                                 if (col-1!=row) {
                                     System.out.println("Bukan merupakan matrix dengan peubah n x n !");
                                 }
                             }
 
-                            System.out.print("\nUlangi masukkan directory file: ");
+                            System.out.print("\nUlangi masukkan nama file: ");
                             fileName = sc.nextLine();
-                            augm = IOFile.readFileMat(fileName);
+                            augm = IOFile.readFileMat("test/" + fileName + ".txt");
                             if (augm != null) {
-                                row = IOFile.getRow(fileName);
-                                col = IOFile.getCol(fileName);
+                                row = IOFile.getRow("test/" + fileName + ".txt");
+                                col = IOFile.getCol("test/" + fileName + ".txt");
                             }
                         }
 
@@ -267,8 +273,14 @@ public class SPL extends Matrix {
                         mHasil = inverseSPL(augm);
                         // ======== jawaban-end==========//
                         System.out.println("\nHasil SPL:");
-                        System.out.println(SPL.displaySPL(mHasil));
-                        simpan(SPL.displaySPL(mHasil));
+                        if (mHasil == null) {
+                            String hasil = "SPL ini memiliki solusi banyak atau SPL tidak memiliki solusi karena tidak memiliki invers.";
+                            System.out.println(hasil);
+                            simpan(hasil);
+                        } else {
+                            System.out.println(SPL.displaySPL(mHasil));
+                            simpan(SPL.displaySPL(mHasil));
+                        }
 
                         notValid2 = true;
                     }
@@ -325,30 +337,30 @@ public class SPL extends Matrix {
                         String fileName;
                         int row=0, col=0;
 
-                        System.out.print("\nMasukkan directory file: ");
+                        System.out.print("\nMasukkan nama file: ");
                         fileName = sc.nextLine();
-                        augm = IOFile.readFileMat(fileName);
+                        augm = IOFile.readFileMat("test/" + fileName + ".txt");
 
                         if (augm != null) {
-                            row = IOFile.getRow(fileName);
-                            col = IOFile.getCol(fileName);
+                            row = IOFile.getRow("test/" + fileName + ".txt");
+                            col = IOFile.getCol("test/" + fileName + ".txt");
                         }
            
                         while (augm == null | col-1!=row) {
                             if (augm != null) {
-                                row = IOFile.getRow(fileName);
-                                col = IOFile.getCol(fileName);
+                                row = IOFile.getRow("test/" + fileName + ".txt");
+                                col = IOFile.getCol("test/" + fileName + ".txt");
                                 if (col-1!=row) {
                                     System.out.println("Bukan merupakan matrix dengan peubah n x n !");
                                 }
                             }
 
-                            System.out.print("\nUlangi masukkan directory file: ");
+                            System.out.print("\nUlangi masukkan nama file: ");
                             fileName = sc.nextLine();
-                            augm = IOFile.readFileMat(fileName);
+                            augm = IOFile.readFileMat("test/" + fileName + ".txt");
                             if (augm != null) {
-                                row = IOFile.getRow(fileName);
-                                col = IOFile.getCol(fileName);
+                                row = IOFile.getRow("test/" + fileName + ".txt");
+                                col = IOFile.getCol("test/" + fileName + ".txt");
                             }
                         }
 
@@ -356,8 +368,14 @@ public class SPL extends Matrix {
                         mHasil = cramer(augm);
                         // ======== jawaban-end==========//
                         System.out.println("\nHasil SPL:");
-                        System.out.println(SPL.displaySPL(mHasil));
-                        simpan(SPL.displaySPL(mHasil));
+                        if (mHasil == null) {
+                            String hasil = "SPL memiliki solusi banyak atau tidak memiliki solusi karena determinan matrix sama dengan 0.";
+                            System.out.println(hasil);
+                            simpan(hasil);
+                        } else {
+                            System.out.println(SPL.displaySPL(mHasil));
+                            simpan(SPL.displaySPL(mHasil));
+                        }
 
                         notValid2 = true;
                     }
@@ -390,7 +408,6 @@ public class SPL extends Matrix {
 
         Matrix invMat = A.inverseMatrix();
         if (invMat == null) {
-            System.out.println("SPL ini memiliki solusi banyak (lebih dari satu) atau SPL tidak memiliki solusi karena tidak memiliki invers.");
             return null;
         } else {
             Matrix x = invMat.multiplyMatrix(b);
@@ -402,8 +419,8 @@ public class SPL extends Matrix {
         String hasil = "";
         if (m_sol == null) {
             
-            System.out.println("SPL tidak memiliki solusi.");
-            return null;
+            hasil += "SPL tidak memiliki solusi.";
+            return hasil;
 
         } else if (m_sol.col == 1) {
             
@@ -514,6 +531,9 @@ public class SPL extends Matrix {
         }
 
         float x = A.determinantOBE();
+        if (x == 0) {
+            return null;
+        }
         float hasil;
         Matrix m2;
         Matrix mHasil = new Matrix(A.col, 1);
@@ -684,10 +704,14 @@ public class SPL extends Matrix {
         return m_sol;
     }
 
-    public static float interpolPolinom(Matrix koordinat, float val){       // input matrix ukuran (n, 2)
+    public static String interpolPolinom(Matrix koordinat, float val){       // input matrix ukuran (n, 2)
         Matrix augm = new Matrix(koordinat.row, koordinat.row + 1);
         Matrix mHasil;
         float hasil=0;
+        String fx = "f(x) =";
+        String fval = "f("+val+") ="; 
+        String sOut;
+
 
         for (int i = 0; i<=augm.getLastIdxRow(); i++) {
             for (int j = 0; j<=augm.getLastIdxCol()-1; j++) {
@@ -704,13 +728,118 @@ public class SPL extends Matrix {
         mHasil = gauss(augm);
         for (int i = 0; i<=mHasil.getLastIdxRow(); i++) {
             hasil += ((float) Math.pow(val, i))*mHasil.getELMT(i, 0);
+            if (i!=0) {
+                if (mHasil.getELMT(i, 0)>=0) {
+                    fx += " + " + mHasil.getELMT(i, 0) + "x^"+i;
+                    fval += " + " + mHasil.getELMT(i, 0) +"*"+((float) Math.pow(val, i));
+                }
+                else {
+                    fx += " - " + (-1)*mHasil.getELMT(i, 0) + "x^"+i;
+                    fval += " - " + (-1)*mHasil.getELMT(i, 0) +"*"+((float) Math.pow(val, i));
+                }
+                
+            }
+            else {
+                if (mHasil.getELMT(i, 0)>=0) {
+                    fx+= " " + mHasil.getELMT(i, 0);
+                    fval += " " + mHasil.getELMT(i, 0);
+                }
+                else {
+                    fx+= " - " +  mHasil.getELMT(i, 0);
+                    fval += " - " + mHasil.getELMT(i, 0);
+                }
+                
+            }
         }
 
-        return hasil;
+        sOut = fx + "\n" + fval + "\n" + "f("+val+") = "+hasil; 
+        System.out.println(sOut);
 
+        return sOut;
     }
 
+    public static void driverInterpolPolinom(){
+        int x;
+        Scanner sc = new Scanner(System.in);
+        boolean notValid = false;
 
+        while (!notValid) {
+            Matrix koordinat;
+            float val;
+            String hasil;
+            System.out.println("\nJenis input yang tersedia");
+            System.out.println("    1. Terminal");
+            System.out.println("    2. File txt");
+            System.out.print("Pilih jenis input yang diinginkan: ");
+            x = sc.nextInt();
+
+            if (x == 1) {
+                int n;
+
+                System.out.print("\nMasukkan nilai n: ");
+                n = sc.nextInt();
+                koordinat = new Matrix(n+1, 2);
+                System.out.println("Masukkan koordinat dalam format \nx0 y0\nx1 y1\n..\ndst sampai n kali\n");
+                koordinat.readMatrix();
+                sc = new Scanner(System.in);
+                System.out.print("\nMasukkan titik yang ingin ditaksir nilainya: ");
+                val = sc.nextFloat();
+
+                hasil = SPL.interpolPolinom(koordinat, val); 
+                System.out.print("\n");
+                simpan(hasil);
+                notValid = true;
+            }
+
+            else if (x==2) {
+                String fileName;
+                int row=0, col=0;
+
+                System.out.println("Format koordinat dalam file adalah \nx1 y1\nx2 y2\n..\ndst sampai n kali");
+                System.out.print("\nMasukkan nama file: ");
+
+                sc = new Scanner(System.in);
+
+                fileName = sc.nextLine();
+                koordinat = IOFile.readFileMat("test/" + fileName + ".txt");
+
+                if (koordinat != null) {
+                    col = IOFile.getCol("test/" + fileName + ".txt");
+                }
+
+                while (koordinat == null | col!=2) {
+                    if (koordinat != null) {
+                        col = IOFile.getCol("test/" + fileName + ".txt");
+                        if (col!=2) {
+                            System.out.println("Tidak sesuai format !");
+                        }
+                    }
+
+                    System.out.print("\nUlangi masukkan nama file: ");
+                    fileName = sc.nextLine();
+                    koordinat = IOFile.readFileMat("test/" + fileName + ".txt");
+                    
+                    if (koordinat != null) {
+                        col = IOFile.getCol("test/" + fileName + ".txt");
+                    }
+                    
+                }
+
+                sc = new Scanner(System.in);
+                System.out.print("\nMasukkan titik yang ingin ditaksir nilainya: ");
+                val = sc.nextFloat();
+
+
+                hasil = SPL.interpolPolinom(koordinat, val); 
+                System.out.print("\n");
+                simpan(hasil);
+                notValid = true;
+            }
+            else {
+                System.out.println("Input tidak valid! Ulangi");
+            }
+        }
+    }
 }
 
 

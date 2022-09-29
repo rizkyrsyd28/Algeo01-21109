@@ -30,7 +30,6 @@ public class App extends UI{
 
         for (int i = 0; i < 2; i++){
                 System.out.println(coor[i] + "\n");
-        }
-        
+        }   
     }
 }
