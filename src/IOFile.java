@@ -111,20 +111,24 @@ public class IOFile{
     public static float[] coorBcb(String fileName){
         FileReader file = null;
         float[] coor = new float[2];
+
         try {
             file = new FileReader("test/" + fileName);
-            int row = getRow(fileName);
 
             Scanner rowScan = new Scanner(file);
-
-            for (int i = 0; i < row; i++){
-                for (int j = 0; j < 2; j++){
-                    if (i == row-1){
-                        coor[j] = rowScan.nextFloat();
-                    }
-                }
+            
+            String row = null;
+            while(rowScan.hasNextLine()){
+                row = rowScan.nextLine();
             }
+            Scanner colScan = new Scanner(row);
 
+            int i = 0;
+            while (colScan.hasNextFloat()){
+                coor[i] = colScan.nextFloat();
+                i++;
+            } 
+            colScan.close();
             rowScan.close();
 
             return  coor;

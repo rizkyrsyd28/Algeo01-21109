@@ -1,6 +1,6 @@
 public class App extends UI{
     public static void main(String[] args){
-        String dir = "text.txt"         
+        String dir = "text.txt";       
         // boolean run = true; int mode;
 
 
@@ -20,13 +20,11 @@ public class App extends UI{
         //                 run = false;
         //     }
         // }
-        Matrix m = new Matrix(IOFile.getRow(dir), IOFile.getCol(dir));
-
-        m.data = IOFile.readBcb(dir);
+        Matrix m = IOFile.readBcb(dir);
 
         m.displayMatrix();
 
-        float[2] coor = IOFile.coorBcb(dir);
+        float[] coor = IOFile.coorBcb(dir);
 
         for (int i = 0; i < 2; i++){
                 System.out.println(coor[i] + "\n");
