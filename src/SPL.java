@@ -776,10 +776,10 @@ public class SPL extends Matrix {
             if (x == 1) {
                 int n;
 
-                System.out.print("\nBerapa banyak titik koordinat yang ingin dimasukkan?: ");
+                System.out.print("\nMasukkan nilai n: ");
                 n = sc.nextInt();
-                koordinat = new Matrix(n, 2);
-                System.out.println("Masukkan koordinat dalam format \nx1 y1\nx2 y2\n..\ndst sampai n kali\n");
+                koordinat = new Matrix(n+1, 2);
+                System.out.println("Masukkan koordinat dalam format \nx0 y0\nx1 y1\n..\ndst sampai n kali\n");
                 koordinat.readMatrix();
                 sc = new Scanner(System.in);
                 System.out.print("\nMasukkan titik yang ingin ditaksir nilainya: ");
