@@ -100,47 +100,23 @@ public class Bicubic extends SPL {
             } else if (x == 2) {
                 notValid = true;
                 sc = new Scanner(System.in);
-                sc = new Scanner(System.in);
                 String fileName;
-                int row=0, col=0;
 
                 System.out.print("\nMasukkan nama file: ");
                 fileName = sc.nextLine();
-                m = IOFile.readFileMat("test/" + fileName + ".txt");
+                m = IOFile.readBcb("test/" + fileName + ".txt");
+                float[] coor = IOFile.coorBcb("test/" + fileName + ".txt");
 
-                if (m != null) {
-                    row = IOFile.getRow("test/" + fileName + ".txt");
-                    col = IOFile.getCol("test/" + fileName + ".txt");
-                }
-   
-                while (m == null | col!=row) {
-                    if (m != null) {
-                        row = IOFile.getRow("test/" + fileName + ".txt");
-                        col = IOFile.getCol("test/" + fileName + ".txt");
-                        if (col != 4 && row != 4) {
-                            System.out.println("Bukan merupakan matrix dengan ukuran 4 x 4 !");
-                        }
-                    }
-
+                while (m == null || coor == null || m.row != 4 || m.col != 4 || coor.length != 2) {
                     System.out.print("\nUlangi masukkan nama file: ");
                     fileName = sc.nextLine();
-                    m = IOFile.readFileMat("test/" + fileName + ".txt");
-                    if (m != null) {
-                        row = IOFile.getRow("test/" + fileName + ".txt");
-                        col = IOFile.getCol("test/" + fileName + ".txt");
-                    }
+                    m = IOFile.readBcb("test/" + fileName + ".txt");
+                    coor = IOFile.coorBcb("test/" + fileName + ".txt");
                 }
 
-                System.out.print("Masukkan koordinat (a, b) yang akan diinterpolasi (Interval nilai a dan b adalah [0,1]): ");
-                sc = new Scanner(System.in);
-                System.out.print("a: ");
-                a = sc.nextFloat();
-                System.out.print("b: ");
-                b = sc.nextFloat();
-                
-                interpolate_val = Bicubic.bicubicInterpolation(m, a, b);
+                interpolate_val = Bicubic.bicubicInterpolation(m, coor[0], coor[1]);
                 System.out.println();
-                sHasil += String.format("Nilai f(%.2f, %.2f) = %.4f", a, b, interpolate_val);
+                sHasil += String.format("Nilai f(%.2f, %.2f) = %.4f", coor[0], coor[1], interpolate_val);
                 System.out.println(sHasil);
                 SPL.simpan(sHasil);
             } else {
