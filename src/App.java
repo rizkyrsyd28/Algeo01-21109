@@ -1,4 +1,4 @@
-public class App extends UI{
+public class App{
     public static void main(String[] args){
         String dir = "text.txt";       
         // boolean run = true; int mode;
@@ -24,7 +24,7 @@ public class App extends UI{
 
         m.displayMatrix();
 
-        float[] coor = IOFile.coorBcb(dir);
+        double[] coor = IOFile.coorBcb(dir);
 
         for (int i = 0; i < 2; i++){
                 System.out.println(coor[i] + "\n");

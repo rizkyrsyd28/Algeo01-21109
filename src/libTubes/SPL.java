@@ -1,35 +1,10 @@
+package libTubes;
 import java.util.HashMap;
 import java.util.*;
 public class SPL extends Matrix {
     
     public SPL(int row, int col) {
         super(row, col);
-    }
-
-    public static void simpan(String output) {
-        boolean notValid = false;
-        Scanner sc = new Scanner(System.in);
-        while (!notValid) {
-            Character c;
-            System.out.print("Apakah jawabannya mau disimpan?(y/n): ");
-            c = sc.next().charAt(0);
-            if (c == 'y') {
-                sc = new Scanner(System.in); 
-                String fileName;
-                System.out.print("Jawaban tersebut mau disimpan dengan nama file apa?: ");
-                fileName = sc.nextLine();
-                IOFile.writeString(fileName, output);
-                System.out.println("Jawabanmu telah disimpan!");
-                notValid = true;
-            }
-            else if (c=='n') {
-                System.out.println("Jawabanmu tidak disimpan!");
-                notValid = true;
-            }
-            else {
-                System.out.println("Input salah! Ulangi");
-            }
-        }
     }
 
     public static void driverSPL() {
@@ -83,7 +58,7 @@ public class SPL extends Matrix {
                         // ======== jawaban-end==========//
                         System.out.println("\nHasil SPL:");
                         System.out.println(SPL.displaySPL(mHasil));
-                        simpan(SPL.displaySPL(mHasil));
+                        UI.simpan(SPL.displaySPL(mHasil));
 
                         notValid2 = true;
                     }
@@ -107,7 +82,7 @@ public class SPL extends Matrix {
                         // ======== jawaban-end==========//
                         System.out.println("\nHasil SPL:");
                         System.out.println(SPL.displaySPL(mHasil));
-                        simpan(SPL.displaySPL(mHasil));
+                        UI.simpan(SPL.displaySPL(mHasil));
 
                         notValid2 = true;
                     }
@@ -156,7 +131,7 @@ public class SPL extends Matrix {
                         // ======== jawaban-end==========//
                         System.out.println("\nHasil SPL:");
                         System.out.println(SPL.displaySPL(mHasil));
-                        simpan(SPL.displaySPL(mHasil));
+                        UI.simpan(SPL.displaySPL(mHasil));
 
                         notValid2 = true;
                     }
@@ -180,7 +155,7 @@ public class SPL extends Matrix {
                         // ======== jawaban-end==========//
                         System.out.println("\nHasil SPL:");
                         System.out.println(SPL.displaySPL(mHasil));
-                        simpan(SPL.displaySPL(mHasil));
+                        UI.simpan(SPL.displaySPL(mHasil));
 
                         notValid2 = true;
                     }
@@ -228,10 +203,10 @@ public class SPL extends Matrix {
                         if (mHasil == null) {
                             String hasil = "SPL ini memiliki solusi banyak (lebih dari satu) atau SPL tidak memiliki solusi karena tidak memiliki invers.";
                             System.out.println(hasil);
-                            simpan(hasil);
+                            UI.simpan(hasil);
                         } else {
                             System.out.println(SPL.displaySPL(mHasil));
-                            simpan(SPL.displaySPL(mHasil));
+                            UI.simpan(SPL.displaySPL(mHasil));
                         }
 
                         notValid2 = true;
@@ -276,10 +251,10 @@ public class SPL extends Matrix {
                         if (mHasil == null) {
                             String hasil = "SPL ini memiliki solusi banyak atau SPL tidak memiliki solusi karena tidak memiliki invers.";
                             System.out.println(hasil);
-                            simpan(hasil);
+                            UI.simpan(hasil);
                         } else {
                             System.out.println(SPL.displaySPL(mHasil));
-                            simpan(SPL.displaySPL(mHasil));
+                            UI.simpan(SPL.displaySPL(mHasil));
                         }
 
                         notValid2 = true;
@@ -327,7 +302,7 @@ public class SPL extends Matrix {
                         // ======== jawaban-end==========//
                         System.out.println("\nHasil SPL:");
                         System.out.println(SPL.displaySPL(mHasil));
-                        simpan(SPL.displaySPL(mHasil));
+                        UI.simpan(SPL.displaySPL(mHasil));
 
                         notValid2 = true;
                     }
@@ -371,10 +346,10 @@ public class SPL extends Matrix {
                         if (mHasil == null) {
                             String hasil = "SPL memiliki solusi banyak atau tidak memiliki solusi karena determinan matrix sama dengan 0.";
                             System.out.println(hasil);
-                            simpan(hasil);
+                            UI.simpan(hasil);
                         } else {
                             System.out.println(SPL.displaySPL(mHasil));
-                            simpan(SPL.displaySPL(mHasil));
+                            UI.simpan(SPL.displaySPL(mHasil));
                         }
 
                         notValid2 = true;
@@ -425,7 +400,7 @@ public class SPL extends Matrix {
         } else if (m_sol.col == 1) {
             
             for (int i = 0; i <= m_sol.getLastIdxRow(); i++) {
-                hasil += String.format("x_%d = %.3f\n", i, m_sol.getELMT(i, 0));
+                hasil += String.format("x_%d = %.4f\n", i, m_sol.getELMT(i, 0));
             }
 
         } else {
@@ -479,11 +454,11 @@ public class SPL extends Matrix {
                                 continue;
                             } else {                            
                                 if (m_sol.getELMT(i, j) > 0 && j != m_sol.satuUtamaIdx(i) + 1) {
-                                    hasil += String.format(" + %.3f" + colType.get(j), m_sol.getELMT(i, j), j + 1);
+                                    hasil += String.format(" + %.4f" + colType.get(j), m_sol.getELMT(i, j), j + 1);
                                 } else if (m_sol.getELMT(i, j) < 0) {
-                                    hasil += String.format(" - %.3f" + colType.get(j), -m_sol.getELMT(i, j), j + 1);
+                                    hasil += String.format(" - %.4f" + colType.get(j), -m_sol.getELMT(i, j), j + 1);
                                 } else {
-                                    hasil += String.format(" %.3f" + colType.get(j), m_sol.getELMT(i, j), j + 1);
+                                    hasil += String.format(" %.4f" + colType.get(j), m_sol.getELMT(i, j), j + 1);
                                 }
                             }
                             
@@ -492,11 +467,11 @@ public class SPL extends Matrix {
                                 continue;
                             } else {                            
                                 if (m_sol.getELMT(i, j) > 0 && j != m_sol.satuUtamaIdx(i) + 1) {
-                                    hasil += String.format(" + %.3f", m_sol.getELMT(i, j), j + 1);
+                                    hasil += String.format(" + %.4f", m_sol.getELMT(i, j), j + 1);
                                 } else if (m_sol.getELMT(i, j) < 0) {
-                                    hasil += String.format(" - %.3f", -m_sol.getELMT(i, j), j + 1);
+                                    hasil += String.format(" - %.4f", -m_sol.getELMT(i, j), j + 1);
                                 } else {
-                                    hasil += String.format(" %.3f", m_sol.getELMT(i, j), j + 1);
+                                    hasil += String.format(" %.4f", m_sol.getELMT(i, j), j + 1);
                                 }
                             }
                         }                
@@ -530,11 +505,11 @@ public class SPL extends Matrix {
             b.setELMT(i, 0, augm.getELMT(i, augm.col - 1));
         }
 
-        float x = A.determinantOBE();
+        double x = A.determinantOBE();
         if (x == 0) {
             return null;
         }
-        float hasil;
+        double hasil;
         Matrix m2;
         Matrix mHasil = new Matrix(A.col, 1);
         //mHasil.displayMatrix();
@@ -561,7 +536,7 @@ public class SPL extends Matrix {
                 boolean cp = false;
                 for (int k = i + 1; k < augm.row; k++){
                     if (augm.getELMT(k, j) != 0){
-                        float[] temp = augm.data[i];
+                        double[] temp = augm.data[i];
                         augm.data[i] = augm.data[k];
                         augm.data[k] = temp;
                         cp = true;
@@ -569,7 +544,7 @@ public class SPL extends Matrix {
                     }
                 }
                 if (augm.rowZero(i) && i != augm.getLastIdxRow()){
-                    float[] temp = augm.data[i];
+                    double[] temp = augm.data[i];
                     augm.data[i] = augm.data[i+1];
                     augm.data[i+1] = temp;
                 }
@@ -584,7 +559,7 @@ public class SPL extends Matrix {
             }
 
             if (augm.getELMT(i, j) != 0){
-                float ratio = 1;
+                double ratio = 1;
                 if (augm.getELMT(i, j) != 1){
                     ratio = augm.getELMT(i, j);
                     for (int k = j; k < augm.col; k++){
@@ -611,7 +586,7 @@ public class SPL extends Matrix {
         // augm.displayMatrix();
         if (augm.isUniqueSolution()) {
             
-            float hasil;
+            double hasil;
 
             for (int i = augm.getLastIdxRow(); i >= 0; i--) {
                 hasil = augm.getELMT(i, augm.getLastIdxCol());
@@ -642,7 +617,7 @@ public class SPL extends Matrix {
 
 
     public static Matrix gaussJordan(Matrix augm){
-        float pengali = 1; 
+        double pengali = 1; 
         Matrix mHasil = new Matrix(augm.col-1, 1);          // Inisialisasi output matrix hasil    
 
         makeSatuUtama(augm);
@@ -704,10 +679,10 @@ public class SPL extends Matrix {
         return m_sol;
     }
 
-    public static String interpolPolinom(Matrix koordinat, float val){       // input matrix ukuran (n, 2)
+    public static String interpolPolinom(Matrix koordinat, double val){       // input matrix ukuran (n, 2)
         Matrix augm = new Matrix(koordinat.row, koordinat.row + 1);
         Matrix mHasil;
-        float hasil=0;
+        double hasil=0;
         String fx = "f(x) =";
         String fval = "f("+val+") ="; 
         String sOut;
@@ -717,7 +692,7 @@ public class SPL extends Matrix {
             for (int j = 0; j<=augm.getLastIdxCol()-1; j++) {
                 //System.out.println(koordinat.getELMT(j, 0) + "^" + k);
                 //System.out.println(Math.pow(koordinat.getELMT(j, 0), k));
-                augm.setELMT(i, j, (float) Math.pow(koordinat.getELMT(i, 0), j));
+                augm.setELMT(i, j, Math.pow(koordinat.getELMT(i, 0), j));
             }
         }
 
@@ -727,15 +702,15 @@ public class SPL extends Matrix {
 
         mHasil = gauss(augm);
         for (int i = 0; i<=mHasil.getLastIdxRow(); i++) {
-            hasil += ((float) Math.pow(val, i))*mHasil.getELMT(i, 0);
+            hasil += (Math.pow(val, i))*mHasil.getELMT(i, 0);
             if (i!=0) {
                 if (mHasil.getELMT(i, 0)>=0) {
                     fx += " + " + mHasil.getELMT(i, 0) + "x^"+i;
-                    fval += " + " + mHasil.getELMT(i, 0) +"*"+((float) Math.pow(val, i));
+                    fval += " + " + mHasil.getELMT(i, 0) +"*"+(Math.pow(val, i));
                 }
                 else {
                     fx += " - " + (-1)*mHasil.getELMT(i, 0) + "x^"+i;
-                    fval += " - " + (-1)*mHasil.getELMT(i, 0) +"*"+((float) Math.pow(val, i));
+                    fval += " - " + (-1)*mHasil.getELMT(i, 0) +"*"+(Math.pow(val, i));
                 }
                 
             }
@@ -765,7 +740,7 @@ public class SPL extends Matrix {
 
         while (!notValid) {
             Matrix koordinat;
-            float val;
+            double val;
             String hasil;
             System.out.println("\nJenis input yang tersedia");
             System.out.println("    1. Terminal");
@@ -783,11 +758,11 @@ public class SPL extends Matrix {
                 koordinat.readMatrix();
                 sc = new Scanner(System.in);
                 System.out.print("\nMasukkan titik yang ingin ditaksir nilainya: ");
-                val = sc.nextFloat();
+                val = sc.nextDouble();
 
                 hasil = SPL.interpolPolinom(koordinat, val); 
                 System.out.print("\n");
-                simpan(hasil);
+                UI.simpan(hasil);
                 notValid = true;
             }
 
@@ -827,12 +802,12 @@ public class SPL extends Matrix {
 
                 sc = new Scanner(System.in);
                 System.out.print("\nMasukkan titik yang ingin ditaksir nilainya: ");
-                val = sc.nextFloat();
+                val = sc.nextDouble();
 
 
                 hasil = SPL.interpolPolinom(koordinat, val); 
                 System.out.print("\n");
-                simpan(hasil);
+                UI.simpan(hasil);
                 notValid = true;
             }
             else {

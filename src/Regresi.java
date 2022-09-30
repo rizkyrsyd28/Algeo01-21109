@@ -1,8 +1,10 @@
-public class Regresi extends UI {
-    public static float[] getCoefRegresi(float[][] m){
-        
-        float[][] augMat = new float[m.length][m[1].length + 1];
-        
+import src.libTubes.*;
+
+public class Regresi {
+
+    public static double[] getCoefRegresi(double[][] m){
+        double[][] augMat = new double[m.length][m[1].length + 1];
+
         // tambah kolom di awal untuk koef b0, isinya 1 
         for (int i = 0; i < m.length; i++){
             augMat[i][0] = 1;    
@@ -15,7 +17,7 @@ public class Regresi extends UI {
             }
         }
         // normal estimation equation 
-        float[][] NEE = new float[m[1].length][m[1].length + 1];
+        double[][] NEE = new double[m[1].length][m[1].length + 1];
 
         for (int i = 0; i < m[i].length; i++){
             for (int j = 0; j <= m[i].length; j++){
@@ -26,7 +28,7 @@ public class Regresi extends UI {
             }
         }
 
-        Matrix nee = new Matrix(NEE.length, NEE[1].length);
+        libTubes.Matrix nee = new libTubes.Matrix(NEE.length, NEE[1].length);
 
         nee.data = NEE;
         
@@ -36,9 +38,9 @@ public class Regresi extends UI {
         SPL.gaussJordan(nee);
         
 
-        float [] coef = new float[nee.row];
+        double [] coef = new double[nee.getLastIdxRow()+1];
 
-        for (int i = 0; i < nee.row; i++){
+        for (int i = 0; i < nee.getLastIdxRow(); i++){
             coef[i] = nee.getELMT(i, nee.getLastIdxCol());
         }
 
@@ -48,39 +50,39 @@ public class Regresi extends UI {
     public static void MultiRegresi(){
         System.out.println("pilihan input\n1. Input Terminal\n2. Input File");
         int mode; 
-        float[][] augm;
-        mode = Pilih(2);
+        double[][] augm;
+        mode = UI.Pilih(2);
 
         if (mode == 1){
             int n, m;
 
             System.out.print("Masukan peubah : ");
-            n = sc.nextInt();             
+            n = UI.sc.nextInt();             
             System.out.print("Masukan banyak persamaan : ");
-            m = sc.nextInt();
+            m = UI.sc.nextInt();
             System.out.printf("Masukan %d persamaan\n", m);
-            augm = new float[m][n+1];
+            augm = new double[m][n+1];
             for (int i = 0; i < m; i++){
                 for (int j = 0; j < n; j++){
-                    augm[i][j] = sc.nextFloat();
+                    augm[i][j] = UI.sc.nextDouble();
                 }
             }
         } else {
             String fileName; 
 
             System.out.print("Masukkan nama file\n> ");
-            fileName = sc.next();
+            fileName = UI.sc.next();
 
             while(!IOFile.isFileExist(fileName)){
                 System.out.println("Masukkan salah, silahkan masukkan ulang!");
                 System.out.print("Masukkan nama file\n> ");
-                fileName = sc.nextLine();
+                fileName = UI.sc.nextLine();
             }
-            augm = new float[IOFile.getRow(fileName)][IOFile.getCol(fileName)];
+            augm = new double[IOFile.getRow(fileName)][IOFile.getCol(fileName)];
             augm = IOFile.readFileMat(fileName).data;
         }
         
-        float[] coef = getCoefRegresi(augm);
+        double[] coef = getCoefRegresi(augm);
 
         System.out.println("Persamaan regresi linier berganda : ");
         
@@ -107,56 +109,45 @@ public class Regresi extends UI {
         System.out.println("Menaksir nilai fungsi");
         System.out.printf("Masukkan %d peubah yang akan ditaksir nilai fungsinyan\n", coef.length - 1);
 
-        float taksir = coef[0];
+        double taksir = coef[0];
         
-        float[] input = new float[coef.length-1];
+        double[] input = new double[coef.length-1];
 
         for (int i = 0; i < coef.length-1; i++){
-            input[0]=  sc.nextFloat();
+            input[0]=  UI.sc.nextDouble();
         }
         for (int i = 0; i < input.length; i++){
             taksir += input[0] * coef[i+1];
         }
 
         System.out.printf("Nilai taksirannya adalah %f\n\n", taksir);
+        
+        String output = "Persamaan Regresi Linier yang diperoleh\n";
 
-        boolean saveFile = save2File();
-
-        if (saveFile){
-            String output = "Persamaan Regresi Linier yang diperoleh\n";
-
-            if (coef[0] == 0){
-                output += ("y = " + coef[1] + " x1");
-                for (int i = 2; i < coef.length; i++){
-                    if (coef[i] > 0){
-                        output += (" + " + coef[i] + "x" + i);
-                    } else if (coef[i] < 0){
-                        output += (" - " + (-1 * coef[i]) + "x" + i);
-                    }
-                }
-            } else {
-                output += ("y = " + coef[0]);
-                for (int i = 1; i < coef.length; i++){
-                    if (coef[i] > 0){
-                        output += (" + " + coef[i] + "x" + i);
-                    } else if (coef[i] < 0){
-                        output += (" - " + (-1 * coef[i]) + "x" + i);
-                    }
+        if (coef[0] == 0){
+            output += ("y = " + coef[1] + " x1");
+            for (int i = 2; i < coef.length; i++){
+                if (coef[i] > 0){
+                    output += (" + " + coef[i] + "x" + i);
+                } else if (coef[i] < 0){
+                    output += (" - " + (-1 * coef[i]) + "x" + i);
                 }
             }
-            output += ("\nNilai taksirannya adalah " + taksir);
-
-
-            System.out.print("Masukkan nama File\n> ");
-            String fileDir = sc.next();
-            if (!IOFile.isFileExist(fileDir)){
-                IOFile.createEmptyFile(fileDir);
+        } else {
+            output += ("y = " + coef[0]);
+            for (int i = 1; i < coef.length; i++){
+                if (coef[i] > 0){
+                    output += (" + " + coef[i] + "x" + i);
+                } else if (coef[i] < 0){
+                    output += (" - " + (-1 * coef[i]) + "x" + i);
+                }
             }
-            IOFile.writeString(fileDir, output);
-
         }
+        output += ("\nNilai taksirannya adalah " + taksir);
+        UI.simpan(output);
 
-        // float[] ans;
+
+        // double[] ans;
         // // ans = solveRegresi(m.data);
 
         // System.out.print(ans[0]);
