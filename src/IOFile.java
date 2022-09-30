@@ -7,7 +7,7 @@ public class IOFile{
     public static int getRow(String fileName){
         FileReader file = null;
         try {
-            file = new FileReader("test/" + fileName);
+            file = new FileReader(fileName);
         } catch (FileNotFoundException notFound){
             System.out.println("File tidak ditemukan");
         }
@@ -29,7 +29,7 @@ public class IOFile{
     public static int getCol(String fileName){
         FileReader file = null;
         try {
-            file = new FileReader("test/" + fileName);
+            file = new FileReader(fileName);
         } catch (FileNotFoundException notFound){
             System.out.println("File tidak ditemukan");
         }
@@ -57,7 +57,7 @@ public class IOFile{
         FileReader file = null;
 
         try {
-            file = new FileReader("test/" + fileName);
+            file = new FileReader(fileName);
             int row = getRow(fileName), col = getCol(fileName);
 
             Scanner rowScan = new Scanner(file);
@@ -85,7 +85,7 @@ public class IOFile{
         FileReader file = null;
 
         try {
-            file = new FileReader("test/" + fileName);
+            file = new FileReader(fileName);
             int row = getRow(fileName) - 1, col = getCol(fileName);
 
             Scanner rowScan = new Scanner(file);
@@ -113,7 +113,7 @@ public class IOFile{
         float[] coor = new float[2];
 
         try {
-            file = new FileReader("test/" + fileName);
+            file = new FileReader(fileName);
 
             Scanner rowScan = new Scanner(file);
             
@@ -143,7 +143,7 @@ public class IOFile{
 
     public static void createEmptyFile(String fileName){
         try{
-            File myFile = new File("test/output/" + fileName);
+            File myFile = new File("test/output/" + fileName + ".txt");
             if(myFile.createNewFile()){
                 System.out.println("File created: " + myFile.getName());
             } else {
@@ -157,7 +157,7 @@ public class IOFile{
     public static void writeMatrix(String fileName, Matrix data){
         try {
 
-            FileWriter myWrite = new FileWriter("test/output/" + fileName);
+            FileWriter myWrite = new FileWriter("test/output/" + fileName + ".txt");
 
             for (int i = 0; i <= data.getLastIdxRow(); i++){
                 for(int j = 0; j <= data.getLastIdxCol(); j++){
@@ -166,7 +166,7 @@ public class IOFile{
                 myWrite.write("\n");
             }
             myWrite.close();
-            System.out.println("Berhasil menyimpan hasil ke file " + fileName + " di folder ./test/output");
+            System.out.println("Berhasil menyimpan hasil ke file " + fileName + ".txt di folder ./test/output");
         }
         catch (IOException e){
             System.out.println("duar ERROR");
@@ -176,11 +176,11 @@ public class IOFile{
     public static void writeString(String fileName, String s){
         try {
 
-            FileWriter myWrite = new FileWriter("test/output/" + fileName);
+            FileWriter myWrite = new FileWriter("test/output/" + fileName + ".txt");
             myWrite.write(s);
 
             myWrite.close();
-            System.out.println("Berhasil menyimpan hasil ke file " + fileName + " di folder ./test/output");
+            System.out.println("Berhasil menyimpan hasil ke file " + fileName + ".txt di folder ./test/output");
         }
         catch (IOException e){
             System.out.println("duar ERROR");
@@ -190,7 +190,7 @@ public class IOFile{
     public static boolean isFileExist(String fileName){
         FileReader file = null;
         try {
-            file = new FileReader("test/" + fileName);
+            file = new FileReader(fileName);
         } catch (FileNotFoundException notFound){
             return false;
         }
