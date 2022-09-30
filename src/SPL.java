@@ -704,10 +704,14 @@ public class SPL extends Matrix {
         return m_sol;
     }
 
-    public static float interpolPolinom(Matrix koordinat, float val){       // input matrix ukuran (n, 2)
+    public static String interpolPolinom(Matrix koordinat, float val){       // input matrix ukuran (n, 2)
         Matrix augm = new Matrix(koordinat.row, koordinat.row + 1);
         Matrix mHasil;
         float hasil=0;
+        String fx = "f(x) =";
+        String fval = "f("+val+") ="; 
+        String sOut;
+
 
         for (int i = 0; i<=augm.getLastIdxRow(); i++) {
             for (int j = 0; j<=augm.getLastIdxCol()-1; j++) {
@@ -724,13 +728,118 @@ public class SPL extends Matrix {
         mHasil = gauss(augm);
         for (int i = 0; i<=mHasil.getLastIdxRow(); i++) {
             hasil += ((float) Math.pow(val, i))*mHasil.getELMT(i, 0);
+            if (i!=0) {
+                if (mHasil.getELMT(i, 0)>=0) {
+                    fx += " + " + mHasil.getELMT(i, 0) + "x^"+i;
+                    fval += " + " + mHasil.getELMT(i, 0) +"*"+((float) Math.pow(val, i));
+                }
+                else {
+                    fx += " - " + (-1)*mHasil.getELMT(i, 0) + "x^"+i;
+                    fval += " - " + (-1)*mHasil.getELMT(i, 0) +"*"+((float) Math.pow(val, i));
+                }
+                
+            }
+            else {
+                if (mHasil.getELMT(i, 0)>=0) {
+                    fx+= " " + mHasil.getELMT(i, 0);
+                    fval += " " + mHasil.getELMT(i, 0);
+                }
+                else {
+                    fx+= " - " +  mHasil.getELMT(i, 0);
+                    fval += " - " + mHasil.getELMT(i, 0);
+                }
+                
+            }
         }
 
-        return hasil;
+        sOut = fx + "\n" + fval + "\n" + "f("+val+") = "+hasil; 
+        System.out.println(sOut);
 
+        return sOut;
     }
 
+    public static void driverInterpolPolinom(){
+        int x;
+        Scanner sc = new Scanner(System.in);
+        boolean notValid = false;
 
+        while (!notValid) {
+            Matrix koordinat;
+            float val;
+            String hasil;
+            System.out.println("\nJenis input yang tersedia");
+            System.out.println("    1. Terminal");
+            System.out.println("    2. File txt");
+            System.out.print("Pilih jenis input yang diinginkan: ");
+            x = sc.nextInt();
+
+            if (x == 1) {
+                int n;
+
+                System.out.print("\nMasukkan nilai n: ");
+                n = sc.nextInt();
+                koordinat = new Matrix(n+1, 2);
+                System.out.println("Masukkan koordinat dalam format \nx0 y0\nx1 y1\n..\ndst sampai n kali\n");
+                koordinat.readMatrix();
+                sc = new Scanner(System.in);
+                System.out.print("\nMasukkan titik yang ingin ditaksir nilainya: ");
+                val = sc.nextFloat();
+
+                hasil = SPL.interpolPolinom(koordinat, val); 
+                System.out.print("\n");
+                simpan(hasil);
+                notValid = true;
+            }
+
+            else if (x==2) {
+                String fileName;
+                int row=0, col=0;
+
+                System.out.println("Format koordinat dalam file adalah \nx1 y1\nx2 y2\n..\ndst sampai n kali");
+                System.out.print("\nMasukkan nama file: ");
+
+                sc = new Scanner(System.in);
+
+                fileName = sc.nextLine();
+                koordinat = IOFile.readFileMat("test/" + fileName + ".txt");
+
+                if (koordinat != null) {
+                    col = IOFile.getCol("test/" + fileName + ".txt");
+                }
+
+                while (koordinat == null | col!=2) {
+                    if (koordinat != null) {
+                        col = IOFile.getCol("test/" + fileName + ".txt");
+                        if (col!=2) {
+                            System.out.println("Tidak sesuai format !");
+                        }
+                    }
+
+                    System.out.print("\nUlangi masukkan nama file: ");
+                    fileName = sc.nextLine();
+                    koordinat = IOFile.readFileMat("test/" + fileName + ".txt");
+                    
+                    if (koordinat != null) {
+                        col = IOFile.getCol("test/" + fileName + ".txt");
+                    }
+                    
+                }
+
+                sc = new Scanner(System.in);
+                System.out.print("\nMasukkan titik yang ingin ditaksir nilainya: ");
+                val = sc.nextFloat();
+
+
+                hasil = SPL.interpolPolinom(koordinat, val); 
+                System.out.print("\n");
+                simpan(hasil);
+                notValid = true;
+            }
+            else {
+                System.out.println("Input tidak valid! Ulangi");
+            }
+        }
+    }
 }
 
 
