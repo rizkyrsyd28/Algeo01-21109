@@ -6,7 +6,7 @@ public class Bicubic extends SPL {
         super(row, col);
     }
 
-    public static float bicubicInterpolation(Matrix m, float a, float b) {
+    public static double bicubicInterpolation(Matrix m, double a, double b) {
         Matrix X = new Matrix(16, 16);
         Matrix Y = new Matrix(16, 1);
         
@@ -15,7 +15,7 @@ public class Bicubic extends SPL {
             for (int j = 0; j < X.col; j++) {
 
                // Assignment of matrix X
-                X.data[i][j] = (float)(Math.pow(x, k) * Math.pow(y, l));
+                X.data[i][j] = (Math.pow(x, k) * Math.pow(y, l));
                 k += 1;
                 if (k == 4) {
                     k = 0;
@@ -50,10 +50,10 @@ public class Bicubic extends SPL {
         // a_koef.displayMatrix();
         // System.out.println();
 
-        float value_I = 0.0f;
+        double value_I = 0.0f;
         k = 0; l = 0;
         for (int i = 0; i < a_koef.row; i++) {
-            value_I += a_koef.data[i][0] * (float)(Math.pow(a, k) * Math.pow(b, l));
+            value_I += a_koef.data[i][0] * (double)(Math.pow(a, k) * Math.pow(b, l));
             k += 1;
             if (k == 4) {
                 k = 0;
@@ -65,11 +65,11 @@ public class Bicubic extends SPL {
     }
 
     public static void driverBicubic() {
-        boolean notValid = false;        
+        boolean notValid = false;
         int x;
         while (!notValid) {
             String sHasil = "";
-            float interpolate_val, a, b;
+            double interpolate_val, a, b;
             Matrix m;
             Scanner sc = new Scanner(System.in);
             System.out.println("\nJenis input yang tersedia");
@@ -87,9 +87,9 @@ public class Bicubic extends SPL {
                 System.out.print("Masukkan koordinat (a, b) yang akan diinterpolasi (Interval nilai a dan b adalah [0,1]): \n");
                 sc = new Scanner(System.in);
                 System.out.print("a: ");
-                a = sc.nextFloat();
+                a = sc.nextDouble();
                 System.out.print("b: ");
-                b = sc.nextFloat();
+                b = sc.nextDouble();
                 
                 interpolate_val = Bicubic.bicubicInterpolation(m, a, b);
                 System.out.println();
@@ -105,7 +105,7 @@ public class Bicubic extends SPL {
                 System.out.print("\nMasukkan nama file: ");
                 fileName = sc.nextLine();
                 m = IOFile.readBcb("test/" + fileName + ".txt");
-                float[] coor = IOFile.coorBcb("test/" + fileName + ".txt");
+                double[] coor = IOFile.coorBcb("test/" + fileName + ".txt");
 
                 while (m == null || coor == null || m.row != 4 || m.col != 4 || coor.length != 2) {
                     System.out.print("\nUlangi masukkan nama file: ");

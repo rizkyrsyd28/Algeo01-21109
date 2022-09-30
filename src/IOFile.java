@@ -1,7 +1,6 @@
 import java.io.*;
 import java.util.*;
 
-
 public class IOFile{
 
     public static int getRow(String fileName){
@@ -42,9 +41,9 @@ public class IOFile{
             row = rowScan.nextLine();
         }
         colScan = new Scanner(row);
-        while (colScan.hasNextFloat()){
+        while (colScan.hasNextDouble()){
             colVal++;
-            colScan.nextFloat();
+            colScan.nextDouble();
         } 
         
         rowScan.close();
@@ -65,7 +64,7 @@ public class IOFile{
 
             for (int i = 0; i < row; i++){
                 for (int j = 0; j < col; j++){
-                    mOut.setELMT(i, j, rowScan.nextFloat());
+                    mOut.setELMT(i, j, rowScan.nextDouble());
                 }
             }
 
@@ -93,7 +92,7 @@ public class IOFile{
 
             for (int i = 0; i < row; i++){
                 for (int j = 0; j < col; j++){
-                    mOut.setELMT(i, j, rowScan.nextFloat());
+                    mOut.setELMT(i, j, rowScan.nextDouble());
                 }
             }
 
@@ -108,9 +107,9 @@ public class IOFile{
         return null;
     }
 
-    public static float[] coorBcb(String fileName){
+    public static double[] coorBcb(String fileName){
         FileReader file = null;
-        float[] coor = new float[2];
+        double[] coor = new double[2];
 
         try {
             file = new FileReader(fileName);
@@ -124,8 +123,8 @@ public class IOFile{
             Scanner colScan = new Scanner(row);
 
             int i = 0;
-            while (colScan.hasNextFloat()){
-                coor[i] = colScan.nextFloat();
+            while (colScan.hasNextDouble()){
+                coor[i] = colScan.nextDouble();
                 i++;
             } 
             colScan.close();
@@ -161,7 +160,7 @@ public class IOFile{
 
             for (int i = 0; i <= data.getLastIdxRow(); i++){
                 for(int j = 0; j <= data.getLastIdxCol(); j++){
-                    myWrite.write(Float.toString(data.getELMT(i, j)) + " ");
+                    myWrite.write(Double.toString(data.getELMT(i, j)) + " ");
                 }
                 myWrite.write("\n");
             }

@@ -3,26 +3,26 @@ import java.util.*;
 public class Matrix {
     protected int row;
     protected int col;
-    protected float data[][];
+    protected double data[][];
 
     public Matrix(int row, int col) {       // driver checked
         this.row = row;
         this.col = col;
-        this.data = new float[row][col];
+        this.data = new double[row][col];
     }
 
     
     /* *** Selektor "Dunia Matrix" *** */
 
-    public void setELMT(int i, int j, float val) {         // driver checked
+    public void setELMT(int i, int j, double val) {         // driver checked
         this.data[i][j] = val;
     }
 
-    public float getELMT(int i, int j) {               // driver checked
+    public double getELMT(int i, int j) {               // driver checked
         return this.data[i][j];
     }
 
-    public float[][] getData(){
+    public double[][] getData(){
         return this.data;
     }
 
@@ -46,7 +46,7 @@ public class Matrix {
     }
 
 
-    public float getElmtDiagonal(int i)           // driver checked
+    public double getElmtDiagonal(int i)           // driver checked
     /* Mengirimkan elemen m(i,i) */
     {
         return getELMT(i, i);
@@ -71,7 +71,7 @@ public class Matrix {
         System.out.println("Masukkan value matrix: ");
         for (int i = 0; i<=getLastIdxRow(); i++) {
             for (int j = 0; j<=getLastIdxCol(); j++) {
-                setELMT(i, j, sc.nextFloat());
+                setELMT(i, j, sc.nextDouble());
             }
         }
 
@@ -86,7 +86,7 @@ public class Matrix {
         for (int i = 0; i<=getLastIdxRow(); i++) {
             for (int j = 0; j<=getLastIdxCol(); j++) {
                 System.out.print("a["+i+"]["+j+"]: ");
-                setELMT(i, j, sc.nextFloat());
+                setELMT(i, j, sc.nextDouble());
             }
         }
 
@@ -102,7 +102,7 @@ public class Matrix {
         for (int i = 0; i<=getLastIdxRow(); i++) {
             for (int j = 0; j<=getLastIdxCol(); j++) {
                 System.out.print("b["+i+"]: ");
-                setELMT(i, j, sc.nextFloat());
+                setELMT(i, j, sc.nextDouble());
             }
         }
 
@@ -206,8 +206,8 @@ public class Matrix {
         return subMat;
     }
     
-    public float determinanKof(){
-        float det = 0; 
+    public double determinanKof(){
+        double det = 0; 
         int sign = 1; 
         
         if (this.row == 1){
@@ -227,24 +227,24 @@ public class Matrix {
         
     }
 
-    public float determinantOBE()
+    public double determinantOBE()
     /* Prekondisi: isSquare(m) */
     /* Menghitung nilai determinan m menggunakan metode operasi baris elementer*/
     {
         // Kamus
         int rowSwitch = -1;       
-        float pengali = 1, det = 1, tempfloat;
+        double pengali = 1, det = 1, tempdouble;
         Matrix mcopy = copyMatrix();
 
         // Algoritma
         if (!mcopy.isSquare()) {
             System.out.println("Harus matrix berbentuk persegi (ukuran n x n)! ");
-            return Float.NaN;
+            return Double.NaN;
         }
 
         else {
             if (mcopy.countElmt()==1) {      // Cek jika hanya 1 elemen
-                return (float) mcopy.getELMT(0, 0);
+                return (double) mcopy.getELMT(0, 0);
             }    
             else {
                 for (int j = 0; j<=mcopy.getLastIdxCol(); j++) {
@@ -256,13 +256,13 @@ public class Matrix {
                                 }
                             } 
                             if (rowSwitch == -1) {
-                                return (float) 0;
+                                return (double) 0;
                             }
                             else {
                                 for (int k = 0; k<=mcopy.getLastIdxCol(); k++) {
-                                    tempfloat = mcopy.getELMT(rowSwitch, k);
+                                    tempdouble = mcopy.getELMT(rowSwitch, k);
                                     mcopy.setELMT(rowSwitch, k, mcopy.getELMT(j, k));
-                                    mcopy.setELMT(j, k, tempfloat);
+                                    mcopy.setELMT(j, k, tempdouble);
                                 }
                                 rowSwitch = -1;
                                 det *= -1;
@@ -287,7 +287,7 @@ public class Matrix {
         
     }
     // Mengalikan setiap elemen matriks dengan suatu konstanta
-    public void multiplyByConst(float f) {
+    public void multiplyByConst(double f) {
         for (int i = 0; i < this.row; i++) {
             for (int j = 0; j < this.col; j++) {
                 this.setELMT(i, j, this.getELMT(i, j) * f);
@@ -297,7 +297,7 @@ public class Matrix {
     
     // Transpose matrix
     public void transposeMatrix() {
-        float temp;
+        double temp;
 
         for (int i = 1; i < this.row; i++) {
             for (int j = 0; j < i; j++) {
@@ -332,7 +332,7 @@ public class Matrix {
     public Matrix inverseMatrix() {
         Matrix invMat = new Matrix(this.row, this.col);
 
-        float m_det = this.determinantOBE();
+        double m_det = this.determinantOBE();
         if (m_det == 0) {
             System.out.println("Determinan matriks sama dengan nol. Sehingga matriks tidak mempunyai invers.");
             return null;
@@ -378,7 +378,7 @@ public class Matrix {
         return mOut;
     }
 
-    public void setMatFromFile(float[][] m){
+    public void setMatFromFile(double[][] m){
         this.data = m;
     }
 
@@ -460,7 +460,7 @@ public class Matrix {
             x = sc.nextInt();
             if (x==1) {
                 int n, x2;
-                float hasil;
+                double hasil;
                 String sHasil = ""; 
                 boolean notValid2 = false;
                 Matrix m;
@@ -480,7 +480,7 @@ public class Matrix {
                         System.out.print("\n");
                         sHasil += "Determinan dari matrix\n";
                         sHasil += m.matrixToString();
-                        sHasil += "adalah: " + Float.toString(hasil);
+                        sHasil += "adalah: " + Double.toString(hasil);
                         System.out.println(sHasil);
                         SPL.simpan(sHasil);
 
@@ -521,7 +521,7 @@ public class Matrix {
                         System.out.print("\n");
                         sHasil += "Determinan dari matrix\n";
                         sHasil += m.matrixToString();
-                        sHasil += "adalah: " + Float.toString(hasil);
+                        sHasil += "adalah: " + Double.toString(hasil);
                         System.out.println(sHasil);
                         SPL.simpan(sHasil);
 
@@ -536,7 +536,7 @@ public class Matrix {
 
             else if (x==2) {
                 int n, x2;
-                float hasil;
+                double hasil;
                 String sHasil = ""; 
                 boolean notValid2 = false;
                 Matrix m;
@@ -556,7 +556,7 @@ public class Matrix {
                         System.out.print("\n");
                         sHasil += "Determinan dari matrix\n";
                         sHasil += m.matrixToString();
-                        sHasil += "adalah: " + Float.toString(hasil);
+                        sHasil += "adalah: " + Double.toString(hasil);
                         System.out.println(sHasil);
                         SPL.simpan(sHasil);
 
@@ -597,7 +597,7 @@ public class Matrix {
                         System.out.print("\n");
                         sHasil += "Determinan dari matrix\n";
                         sHasil += m.matrixToString();
-                        sHasil += "adalah: " + Float.toString(hasil);
+                        sHasil += "adalah: " + Double.toString(hasil);
                         System.out.println(sHasil);
                         SPL.simpan(sHasil);
 

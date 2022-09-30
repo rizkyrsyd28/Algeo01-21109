@@ -1,7 +1,7 @@
 public class Regresi extends UI {
-    public static float[] getCoefRegresi(float[][] m){
+    public static double[] getCoefRegresi(double[][] m){
         
-        float[][] augMat = new float[m.length][m[1].length + 1];
+        double[][] augMat = new double[m.length][m[1].length + 1];
         
         // tambah kolom di awal untuk koef b0, isinya 1 
         for (int i = 0; i < m.length; i++){
@@ -15,7 +15,7 @@ public class Regresi extends UI {
             }
         }
         // normal estimation equation 
-        float[][] NEE = new float[m[1].length][m[1].length + 1];
+        double[][] NEE = new double[m[1].length][m[1].length + 1];
 
         for (int i = 0; i < m[i].length; i++){
             for (int j = 0; j <= m[i].length; j++){
@@ -36,7 +36,7 @@ public class Regresi extends UI {
         SPL.gaussJordan(nee);
         
 
-        float [] coef = new float[nee.row];
+        double [] coef = new double[nee.row];
 
         for (int i = 0; i < nee.row; i++){
             coef[i] = nee.getELMT(i, nee.getLastIdxCol());
@@ -48,7 +48,7 @@ public class Regresi extends UI {
     public static void MultiRegresi(){
         System.out.println("pilihan input\n1. Input Terminal\n2. Input File");
         int mode; 
-        float[][] augm;
+        double[][] augm;
         mode = Pilih(2);
 
         if (mode == 1){
@@ -59,10 +59,10 @@ public class Regresi extends UI {
             System.out.print("Masukan banyak persamaan : ");
             m = sc.nextInt();
             System.out.printf("Masukan %d persamaan\n", m);
-            augm = new float[m][n+1];
+            augm = new double[m][n+1];
             for (int i = 0; i < m; i++){
                 for (int j = 0; j < n; j++){
-                    augm[i][j] = sc.nextFloat();
+                    augm[i][j] = sc.nextDouble();
                 }
             }
         } else {
@@ -76,11 +76,11 @@ public class Regresi extends UI {
                 System.out.print("Masukkan nama file\n> ");
                 fileName = sc.nextLine();
             }
-            augm = new float[IOFile.getRow(fileName)][IOFile.getCol(fileName)];
+            augm = new double[IOFile.getRow(fileName)][IOFile.getCol(fileName)];
             augm = IOFile.readFileMat(fileName).data;
         }
         
-        float[] coef = getCoefRegresi(augm);
+        double[] coef = getCoefRegresi(augm);
 
         System.out.println("Persamaan regresi linier berganda : ");
         
@@ -107,12 +107,12 @@ public class Regresi extends UI {
         System.out.println("Menaksir nilai fungsi");
         System.out.printf("Masukkan %d peubah yang akan ditaksir nilai fungsinyan\n", coef.length - 1);
 
-        float taksir = coef[0];
+        double taksir = coef[0];
         
-        float[] input = new float[coef.length-1];
+        double[] input = new double[coef.length-1];
 
         for (int i = 0; i < coef.length-1; i++){
-            input[0]=  sc.nextFloat();
+            input[0]=  sc.nextDouble();
         }
         for (int i = 0; i < input.length; i++){
             taksir += input[0] * coef[i+1];
@@ -156,7 +156,7 @@ public class Regresi extends UI {
 
         }
 
-        // float[] ans;
+        // double[] ans;
         // // ans = solveRegresi(m.data);
 
         // System.out.print(ans[0]);
