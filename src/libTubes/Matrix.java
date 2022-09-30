@@ -1,9 +1,10 @@
+package libTubes;
 import java.util.*;
 
 public class Matrix {
     protected int row;
     protected int col;
-    protected double data[][];
+    public double data[][];
 
     public Matrix(int row, int col) {       // driver checked
         this.row = row;
@@ -415,14 +416,14 @@ public class Matrix {
     
     // Multiply matrix
     // m1.multiplyMatrix(m2) == m1 * m2
-    public Matrix multiplyMatrix(Matrix m) {
-        Matrix m_mult = new Matrix(this.row, m.col);
+    public Matrix multiplyMatrix(Matrix y) {
+        Matrix m_mult = new Matrix(this.getLastIdxCol()+1, y.getLastIdxCol()+1);
 
         for (int i = 0; i < this.row; i++) {
-            for (int j = 0; j < m.col; j++) {
+            for (int j = 0; j < y.getLastIdxCol()+1; j++) {
 
                 for (int k = 0; k < this.col; k++) {
-                    m_mult.data[i][j] += this.data[i][k] * m.data[k][j];
+                    m_mult.data[i][j] += this.data[i][k] * y.data[k][j];
                 }
             }
         }
@@ -482,7 +483,7 @@ public class Matrix {
                         sHasil += m.matrixToString();
                         sHasil += "adalah: " + Double.toString(hasil);
                         System.out.println(sHasil);
-                        SPL.simpan(sHasil);
+                        UI.simpan(sHasil);
 
                         notValid2 = true;
                     }
@@ -523,7 +524,7 @@ public class Matrix {
                         sHasil += m.matrixToString();
                         sHasil += "adalah: " + Double.toString(hasil);
                         System.out.println(sHasil);
-                        SPL.simpan(sHasil);
+                        UI.simpan(sHasil);
 
                         notValid2 = true;
                     }
@@ -558,7 +559,7 @@ public class Matrix {
                         sHasil += m.matrixToString();
                         sHasil += "adalah: " + Double.toString(hasil);
                         System.out.println(sHasil);
-                        SPL.simpan(sHasil);
+                        UI.simpan(sHasil);
 
                         notValid2 = true;
                     }
@@ -599,7 +600,7 @@ public class Matrix {
                         sHasil += m.matrixToString();
                         sHasil += "adalah: " + Double.toString(hasil);
                         System.out.println(sHasil);
-                        SPL.simpan(sHasil);
+                        UI.simpan(sHasil);
 
                         notValid2 = true;
                     }
@@ -645,7 +646,7 @@ public class Matrix {
                 sHasil += "Inverse dari matrix input adalah:\n";
                 sHasil += mhasil.matrixToString();
                 System.out.println(sHasil);
-                SPL.simpan(sHasil);
+                UI.simpan(sHasil);
 
             } else if (x == 2) {
                 notValid = true;
@@ -689,7 +690,7 @@ public class Matrix {
                 sHasil += "Inverse dari matrix input adalah:\n";
                 sHasil += mhasil.matrixToString();
                 System.out.println(sHasil);
-                SPL.simpan(sHasil);
+                UI.simpan(sHasil);
             } else {
                 System.out.println("Input tidak valid! Ulangi.");
             }

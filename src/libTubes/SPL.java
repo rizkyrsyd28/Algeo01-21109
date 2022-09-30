@@ -1,35 +1,10 @@
+package libTubes;
 import java.util.HashMap;
 import java.util.*;
 public class SPL extends Matrix {
     
     public SPL(int row, int col) {
         super(row, col);
-    }
-
-    public static void simpan(String output) {
-        boolean notValid = false;
-        Scanner sc = new Scanner(System.in);
-        while (!notValid) {
-            Character c;
-            System.out.print("Apakah jawabannya mau disimpan?(y/n): ");
-            c = sc.next().charAt(0);
-            if (c == 'y') {
-                sc = new Scanner(System.in); 
-                String fileName;
-                System.out.print("Jawaban tersebut mau disimpan dengan nama file apa?: ");
-                fileName = sc.nextLine();
-                IOFile.writeString(fileName, output);
-                System.out.println("Jawabanmu telah disimpan!");
-                notValid = true;
-            }
-            else if (c=='n') {
-                System.out.println("Jawabanmu tidak disimpan!");
-                notValid = true;
-            }
-            else {
-                System.out.println("Input salah! Ulangi");
-            }
-        }
     }
 
     public static void driverSPL() {
@@ -83,7 +58,7 @@ public class SPL extends Matrix {
                         // ======== jawaban-end==========//
                         System.out.println("\nHasil SPL:");
                         System.out.println(SPL.displaySPL(mHasil));
-                        simpan(SPL.displaySPL(mHasil));
+                        UI.simpan(SPL.displaySPL(mHasil));
 
                         notValid2 = true;
                     }
@@ -107,7 +82,7 @@ public class SPL extends Matrix {
                         // ======== jawaban-end==========//
                         System.out.println("\nHasil SPL:");
                         System.out.println(SPL.displaySPL(mHasil));
-                        simpan(SPL.displaySPL(mHasil));
+                        UI.simpan(SPL.displaySPL(mHasil));
 
                         notValid2 = true;
                     }
@@ -156,7 +131,7 @@ public class SPL extends Matrix {
                         // ======== jawaban-end==========//
                         System.out.println("\nHasil SPL:");
                         System.out.println(SPL.displaySPL(mHasil));
-                        simpan(SPL.displaySPL(mHasil));
+                        UI.simpan(SPL.displaySPL(mHasil));
 
                         notValid2 = true;
                     }
@@ -180,7 +155,7 @@ public class SPL extends Matrix {
                         // ======== jawaban-end==========//
                         System.out.println("\nHasil SPL:");
                         System.out.println(SPL.displaySPL(mHasil));
-                        simpan(SPL.displaySPL(mHasil));
+                        UI.simpan(SPL.displaySPL(mHasil));
 
                         notValid2 = true;
                     }
@@ -228,10 +203,10 @@ public class SPL extends Matrix {
                         if (mHasil == null) {
                             String hasil = "SPL ini memiliki solusi banyak (lebih dari satu) atau SPL tidak memiliki solusi karena tidak memiliki invers.";
                             System.out.println(hasil);
-                            simpan(hasil);
+                            UI.simpan(hasil);
                         } else {
                             System.out.println(SPL.displaySPL(mHasil));
-                            simpan(SPL.displaySPL(mHasil));
+                            UI.simpan(SPL.displaySPL(mHasil));
                         }
 
                         notValid2 = true;
@@ -276,10 +251,10 @@ public class SPL extends Matrix {
                         if (mHasil == null) {
                             String hasil = "SPL ini memiliki solusi banyak atau SPL tidak memiliki solusi karena tidak memiliki invers.";
                             System.out.println(hasil);
-                            simpan(hasil);
+                            UI.simpan(hasil);
                         } else {
                             System.out.println(SPL.displaySPL(mHasil));
-                            simpan(SPL.displaySPL(mHasil));
+                            UI.simpan(SPL.displaySPL(mHasil));
                         }
 
                         notValid2 = true;
@@ -327,7 +302,7 @@ public class SPL extends Matrix {
                         // ======== jawaban-end==========//
                         System.out.println("\nHasil SPL:");
                         System.out.println(SPL.displaySPL(mHasil));
-                        simpan(SPL.displaySPL(mHasil));
+                        UI.simpan(SPL.displaySPL(mHasil));
 
                         notValid2 = true;
                     }
@@ -371,10 +346,10 @@ public class SPL extends Matrix {
                         if (mHasil == null) {
                             String hasil = "SPL memiliki solusi banyak atau tidak memiliki solusi karena determinan matrix sama dengan 0.";
                             System.out.println(hasil);
-                            simpan(hasil);
+                            UI.simpan(hasil);
                         } else {
                             System.out.println(SPL.displaySPL(mHasil));
-                            simpan(SPL.displaySPL(mHasil));
+                            UI.simpan(SPL.displaySPL(mHasil));
                         }
 
                         notValid2 = true;
@@ -787,7 +762,7 @@ public class SPL extends Matrix {
 
                 hasil = SPL.interpolPolinom(koordinat, val); 
                 System.out.print("\n");
-                simpan(hasil);
+                UI.simpan(hasil);
                 notValid = true;
             }
 
@@ -832,7 +807,7 @@ public class SPL extends Matrix {
 
                 hasil = SPL.interpolPolinom(koordinat, val); 
                 System.out.print("\n");
-                simpan(hasil);
+                UI.simpan(hasil);
                 notValid = true;
             }
             else {
