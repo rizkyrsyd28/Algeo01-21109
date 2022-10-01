@@ -254,6 +254,7 @@ public class Matrix {
                             for (int k = j+1; k<=mcopy.getLastIdxRow(); k++) {
                                 if (mcopy.getELMT(k, j) != 0) {
                                     rowSwitch = k;
+                                    break;
                                 }
                             } 
                             if (rowSwitch == -1) {
@@ -277,7 +278,7 @@ public class Matrix {
                     }
                 } 
     
-                //mcopy.displayMatrix();
+                mcopy.displayMatrix();
                 for (int i  = 0; i<=mcopy.getLastIdxCol(); i++) {
                     det*=mcopy.getELMT(i, i);
                 }
