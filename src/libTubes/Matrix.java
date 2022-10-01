@@ -278,7 +278,7 @@ public class Matrix {
                     }
                 } 
     
-                mcopy.displayMatrix();
+                //mcopy.displayMatrix();
                 for (int i  = 0; i<=mcopy.getLastIdxCol(); i++) {
                     det*=mcopy.getELMT(i, i);
                 }
