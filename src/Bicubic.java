@@ -5,7 +5,7 @@ import src.libTubes.*;
 
 public class Bicubic {
 
-    public static double bicubicInterpolation(libTubes.Matrix m, double a, double b) {
+    public static libTubes.Matrix bicubicInterpolationKoef(libTubes.Matrix m) {
         libTubes.Matrix X = new libTubes.Matrix(16, 16);
         libTubes.Matrix Y = new libTubes.Matrix(16, 1);
         
@@ -37,10 +37,15 @@ public class Bicubic {
         
         // Coefficient calculation
         libTubes.Matrix augm = X.concatCol(Y);
-        libTubes.Matrix a_koef = libTubes.SPL.gaussJordan(augm);
+        libTubes.Matrix a_koef = libTubes.SPL.inverseSPL(augm);
 
+        return a_koef;
+        
+    }
+    
+    public static double bicubicInterpolationVal(libTubes.Matrix a_koef, double a, double b) {
         double value_I = 0.0;
-        k = 0; l = 0;
+        int k = 0, l = 0;
         for (int i = 0; i <= a_koef.getLastIdxRow(); i++) { 
             value_I += a_koef.getELMT(i, 0) * (Math.pow(a, k) * Math.pow(b, l));
             k += 1;
@@ -50,7 +55,6 @@ public class Bicubic {
             }
         }
         return value_I;
-    
     }
 
     public static void driverBicubic() {
@@ -80,7 +84,8 @@ public class Bicubic {
                 System.out.print("b :\n>> ");
                 b = sc.nextDouble();
                 
-                interpolate_val = Bicubic.bicubicInterpolation(m, a, b);
+                libTubes.Matrix a_koef = Bicubic.bicubicInterpolationKoef(m);
+                interpolate_val = Bicubic.bicubicInterpolationVal(a_koef, a, b);
                 System.out.println();
                 sHasil += String.format("Nilai f(%.2f, %.2f) = %.4f", a, b, interpolate_val);
                 System.out.println(sHasil);
@@ -104,7 +109,8 @@ public class Bicubic {
                     coor = IOFile.coorBcb("test/" + fileName + ".txt");
                 }
 
-                interpolate_val = Bicubic.bicubicInterpolation(m, coor[0], coor[1]);
+                libTubes.Matrix a_koef = Bicubic.bicubicInterpolationKoef(m);
+                interpolate_val = Bicubic.bicubicInterpolationVal(a_koef, coor[0], coor[1]);
                 System.out.println();
                 sHasil += String.format("Nilai f(%.2f, %.2f) = %.4f", coor[0], coor[1], interpolate_val);
                 System.out.println(sHasil);

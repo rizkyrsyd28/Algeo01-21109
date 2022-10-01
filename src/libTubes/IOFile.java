@@ -1,5 +1,7 @@
 package libTubes;
 
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
 import java.io.*;
 import java.util.*;
 
@@ -196,5 +198,29 @@ public class IOFile{
             return false;
         }
         return true;
+    }
+
+    // fileName pada readImage dan writeImageResize harus lengkap dengan extension file nya.
+    public static BufferedImage readImage(String fileName) {
+        
+        try {
+            File f_img = new File("test/" + fileName);
+            BufferedImage img = ImageIO.read(f_img);
+            return img;
+        } catch (IOException notFound) {
+            System.out.println("File tidak ditemukan");
+            return null;
+        }
+
+    }
+
+    public static void writeImageResize(BufferedImage resultImg, String fileName, String fileExtension) {
+        try {
+            File f_img = new File("test/output/" + fileName + "." + fileExtension);
+            ImageIO.write(resultImg, fileExtension, f_img);
+            System.out.println("Berhasil menyimpan file gambar " + fileName + "." + fileExtension + " di folder ./test/output");
+        } catch (IOException e) {
+            System.out.println("duar ERROR");
+        }
     }
 }
