@@ -318,9 +318,9 @@ public class Matrix {
                 Matrix m_sub = this.subMatrix(i, j);
 
                 if ((i + j) % 2 == 0) {
-                    adjMat.setELMT(i, j, m_sub.determinantOBE());
+                    adjMat.setELMT(i, j, m_sub.determinanKof());
                 } else {
-                    adjMat.setELMT(i, j, -m_sub.determinantOBE());
+                    adjMat.setELMT(i, j, -m_sub.determinanKof());
                 }
             }
         }
@@ -333,7 +333,7 @@ public class Matrix {
     public Matrix inverseMatrix() {
         Matrix invMat = new Matrix(this.row, this.col);
 
-        double m_det = this.determinantOBE();
+        double m_det = this.determinanKof();
         if (m_det == 0) {
             System.out.println("Determinan matriks sama dengan nol. Sehingga matriks tidak mempunyai invers.");
             return null;
