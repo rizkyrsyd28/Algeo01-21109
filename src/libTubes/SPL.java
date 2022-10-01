@@ -18,7 +18,7 @@ public class SPL extends Matrix {
             System.out.println("    3. Matrix Balikan");
             System.out.println("    4. Kaidah Cramer");
             Scanner sc = new Scanner(System.in);
-            System.out.print("Pilih metode yang diinginkan: ");
+            System.out.print("Pilih metode yang diinginkan\n>> ");
             x = sc.nextInt();
             if (x == 1) {       //1. Eliminasi gauss
                 boolean notValid2 = false;
@@ -30,26 +30,26 @@ public class SPL extends Matrix {
                     System.out.println("\nJenis input yang tersedia");
                     System.out.println("    1. Terminal");
                     System.out.println("    2. File txt");
-                    System.out.print("Pilih jenis input yang diinginkan: ");
+                    System.out.print("Pilih jenis input yang diinginkan\n>> ");
                     x2 = sc.nextInt();
                     if (x2 == 1) {
                         int m, n;
                         Matrix a, b;
                         sc = new Scanner(System.in);
 
-                        System.out.print("\nMasukkan jumlah baris peubah m: ");
+                        System.out.print("\nMasukkan jumlah baris peubah m\n>> ");
                         m = sc.nextInt();
-                        System.out.print("Masukkan jumlah kolom peubah n: ");
+                        System.out.print("Masukkan jumlah kolom peubah n\n>> ");
                         n = sc.nextInt();
             
                         a = new Matrix(m, n);
                         b = new Matrix(m, 1);
                         System.out.print("\n");
             
-                        System.out.println("Masukkan value matrix peubah dengan ukuran m x n: ");
+                        System.out.println("Masukkan value matrix peubah dengan ukuran m x n\n>> ");
                         a.readMatrixPeubah();
                         System.out.print("\n");
-                        System.out.println("Masukkan value matrix hasil dengan ukuran m x 1: ");
+                        System.out.println("Masukkan value matrix hasil dengan ukuran m x 1\n>> ");
                         b.readMatrixHasil();
 
                         // ======== jawaban-start==========//
@@ -67,12 +67,12 @@ public class SPL extends Matrix {
                         sc = new Scanner(System.in);
                         String fileName;
 
-                        System.out.print("\nMasukkan nama file: ");
+                        System.out.print("\nMasukkan nama file\n>> ");
                         fileName = sc.nextLine();
                         augm = IOFile.readFileMat("test/" + fileName + ".txt");
 
                         while (augm == null) {
-                            System.out.print("\nUlangi masukkan nama file: ");
+                            System.out.print("\nUlangi masukkan nama file\n>> ");
                             fileName = sc.nextLine();
                             augm = IOFile.readFileMat("test/" + fileName + ".txt");
                         }
@@ -103,26 +103,26 @@ public class SPL extends Matrix {
                     System.out.println("\nJenis input yang tersedia");
                     System.out.println("    1. Terminal");
                     System.out.println("    2. File txt");
-                    System.out.print("Pilih jenis input yang diinginkan: ");
+                    System.out.print("Pilih jenis input yang diinginkan\n>> ");
                     x2 = sc.nextInt();
                     if (x2 == 1) {
                         int m, n;
                         Matrix a, b;
                         sc = new Scanner(System.in);
 
-                        System.out.print("\nMasukkan jumlah baris peubah m: ");
+                        System.out.print("\nMasukkan jumlah baris peubah m\n>> ");
                         m = sc.nextInt();
-                        System.out.print("Masukkan jumlah kolom peubah n: ");
+                        System.out.print("Masukkan jumlah kolom peubah n\n>> ");
                         n = sc.nextInt();
             
                         a = new Matrix(m, n);
                         b = new Matrix(m, 1);
                         System.out.print("\n");
             
-                        System.out.println("Masukkan value matrix peubah dengan ukuran m x n: ");
+                        System.out.println("Masukkan value matrix peubah dengan ukuran m x n\n>> ");
                         a.readMatrixPeubah();
                         System.out.print("\n");
-                        System.out.println("Masukkan value matrix hasil dengan ukuran m x 1: ");
+                        System.out.println("Masukkan value matrix hasil dengan ukuran m x 1\n>> ");
                         b.readMatrixHasil();
 
                         // ======== jawaban-start==========//
@@ -140,12 +140,12 @@ public class SPL extends Matrix {
                         sc = new Scanner(System.in);
                         String fileName;
 
-                        System.out.print("\nMasukkan nama file: ");
+                        System.out.print("\nMasukkan nama file\n>> ");
                         fileName = sc.nextLine();
                         augm = IOFile.readFileMat("test/" + fileName + ".txt");
 
                         while (augm == null) {
-                            System.out.print("\nUlangi masukkan nama file: ");
+                            System.out.print("\nUlangi masukkan nama file\n>> ");
                             fileName = sc.nextLine();
                             augm = IOFile.readFileMat("test/" + fileName + ".txt");
                         }
@@ -175,24 +175,24 @@ public class SPL extends Matrix {
                     System.out.println("\nJenis input yang tersedia");
                     System.out.println("    1. Terminal");
                     System.out.println("    2. File txt");
-                    System.out.print("Pilih jenis input yang diinginkan: ");
+                    System.out.print("Pilih jenis input yang diinginkan\n>> ");
                     x2 = sc.nextInt();
                     if (x2 == 1) {
                         int n;
                         Matrix a, b;
                         sc = new Scanner(System.in);
 
-                        System.out.print("\nMasukkan jumlah baris dan kolom peubah n: ");
+                        System.out.print("\nMasukkan jumlah baris dan kolom peubah n\n>> ");
                         n = sc.nextInt();
             
                         a = new Matrix(n, n);
                         b = new Matrix(n, 1);
                         System.out.print("\n");
             
-                        System.out.println("Masukkan value matrix peubah dengan ukuran n x n: ");
+                        System.out.println("Masukkan value matrix peubah dengan ukuran n x n\n>> ");
                         a.readMatrixPeubah();
                         System.out.print("\n");
-                        System.out.println("Masukkan value matrix hasil dengan ukuran n x 1: ");
+                        System.out.println("Masukkan value matrix hasil dengan ukuran n x 1\n>> ");
                         b.readMatrixHasil();
 
                         // ======== jawaban-start==========//
@@ -217,7 +217,7 @@ public class SPL extends Matrix {
                         String fileName;
                         int row=0, col=0;
 
-                        System.out.print("\nMasukkan nama file: ");
+                        System.out.print("\nMasukkan nama file\n>> ");
                         fileName = sc.nextLine();
                         augm = IOFile.readFileMat("test/" + fileName + ".txt");
 
@@ -235,7 +235,7 @@ public class SPL extends Matrix {
                                 }
                             }
 
-                            System.out.print("\nUlangi masukkan nama file: ");
+                            System.out.print("\nUlangi masukkan nama file\n>> ");
                             fileName = sc.nextLine();
                             augm = IOFile.readFileMat("test/" + fileName + ".txt");
                             if (augm != null) {
@@ -276,24 +276,24 @@ public class SPL extends Matrix {
                     System.out.println("\nJenis input yang tersedia");
                     System.out.println("    1. Terminal");
                     System.out.println("    2. File txt");
-                    System.out.print("Pilih jenis input yang diinginkan: ");
+                    System.out.print("Pilih jenis input yang diinginkan\n>> ");
                     x2 = sc.nextInt();
                     if (x2 == 1) {
                         int n;
                         Matrix a, b;
                         sc = new Scanner(System.in);
 
-                        System.out.print("\nMasukkan jumlah baris dan kolom peubah n: ");
+                        System.out.print("\nMasukkan jumlah baris dan kolom peubah n\n>> ");
                         n = sc.nextInt();
             
                         a = new Matrix(n, n);
                         b = new Matrix(n, 1);
                         System.out.print("\n");
             
-                        System.out.println("Masukkan value matrix peubah dengan ukuran n x n: ");
+                        System.out.println("Masukkan value matrix peubah dengan ukuran n x n\n>> ");
                         a.readMatrixPeubah();
                         System.out.print("\n");
-                        System.out.println("Masukkan value matrix hasil dengan ukuran n x 1: ");
+                        System.out.println("Masukkan value matrix hasil dengan ukuran n x 1\n>> ");
                         b.readMatrixHasil();
 
                         // ======== jawaban-start==========//
@@ -312,7 +312,7 @@ public class SPL extends Matrix {
                         String fileName;
                         int row=0, col=0;
 
-                        System.out.print("\nMasukkan nama file: ");
+                        System.out.print("\nMasukkan nama file\n>> ");
                         fileName = sc.nextLine();
                         augm = IOFile.readFileMat("test/" + fileName + ".txt");
 
@@ -330,7 +330,7 @@ public class SPL extends Matrix {
                                 }
                             }
 
-                            System.out.print("\nUlangi masukkan nama file: ");
+                            System.out.print("\nUlangi masukkan nama file\n>> ");
                             fileName = sc.nextLine();
                             augm = IOFile.readFileMat("test/" + fileName + ".txt");
                             if (augm != null) {
@@ -364,6 +364,7 @@ public class SPL extends Matrix {
             else {
                 System.out.println("\n======Input tidak valid! Ulangi======");
             }
+
         }
     }
 
@@ -745,19 +746,19 @@ public class SPL extends Matrix {
             System.out.println("\nJenis input yang tersedia");
             System.out.println("    1. Terminal");
             System.out.println("    2. File txt");
-            System.out.print("Pilih jenis input yang diinginkan: ");
+            System.out.print("Pilih jenis input yang diinginkan\n>> ");
             x = sc.nextInt();
 
             if (x == 1) {
                 int n;
 
-                System.out.print("\nMasukkan nilai n: ");
+                System.out.print("\nMasukkan nilai n\n>> ");
                 n = sc.nextInt();
                 koordinat = new Matrix(n+1, 2);
                 System.out.println("Masukkan koordinat dalam format \nx0 y0\nx1 y1\n..\ndst sampai n kali\n");
                 koordinat.readMatrix();
                 sc = new Scanner(System.in);
-                System.out.print("\nMasukkan titik yang ingin ditaksir nilainya: ");
+                System.out.print("\nMasukkan titik yang ingin ditaksir nilainya\n>> ");
                 val = sc.nextDouble();
 
                 hasil = SPL.interpolPolinom(koordinat, val); 
@@ -771,7 +772,7 @@ public class SPL extends Matrix {
                 int row=0, col=0;
 
                 System.out.println("Format koordinat dalam file adalah \nx1 y1\nx2 y2\n..\ndst sampai n kali");
-                System.out.print("\nMasukkan nama file: ");
+                System.out.print("\nMasukkan nama file\n>> ");
 
                 sc = new Scanner(System.in);
 
@@ -790,7 +791,7 @@ public class SPL extends Matrix {
                         }
                     }
 
-                    System.out.print("\nUlangi masukkan nama file: ");
+                    System.out.print("\nUlangi masukkan nama file\n>> ");
                     fileName = sc.nextLine();
                     koordinat = IOFile.readFileMat("test/" + fileName + ".txt");
                     
@@ -801,7 +802,7 @@ public class SPL extends Matrix {
                 }
 
                 sc = new Scanner(System.in);
-                System.out.print("\nMasukkan titik yang ingin ditaksir nilainya: ");
+                System.out.print("\nMasukkan titik yang ingin ditaksir nilainya\n>> ");
                 val = sc.nextDouble();
 
 

@@ -64,20 +64,20 @@ public class Bicubic {
             System.out.println("\nJenis input yang tersedia");
             System.out.println("    1. Terminal");
             System.out.println("    2. File txt");
-            System.out.print("Pilih jenis input yang diinginkan: ");
+            System.out.print("Pilih jenis input yang diinginkan\n>> ");
             x = sc.nextInt();
 
             if (x == 1) {
                 notValid = true;
-                System.out.print("Masukkan tiap elemen dari matrix 4 x 4: \n");
+                System.out.print("Masukkan tiap elemen dari matrix 4 x 4:\n");
                 m = new libTubes.Matrix(4, 4);
                 m.readMatrixPeubah();
                 
-                System.out.print("Masukkan koordinat (a, b) yang akan diinterpolasi (Interval nilai a dan b adalah [0,1]): \n");
+                System.out.print("Masukkan koordinat (a, b) yang akan diinterpolasi (Interval nilai a dan b adalah [0,1]):");
                 sc = new Scanner(System.in);
-                System.out.print("a: ");
+                System.out.print("a :\n>> ");
                 a = sc.nextDouble();
-                System.out.print("b: ");
+                System.out.print("b :\n>> ");
                 b = sc.nextDouble();
                 
                 interpolate_val = Bicubic.bicubicInterpolation(m, a, b);
@@ -86,18 +86,19 @@ public class Bicubic {
                 System.out.println(sHasil);
                 UI.simpan(sHasil);
 
+
             } else if (x == 2) {
                 notValid = true;
                 sc = new Scanner(System.in);
                 String fileName;
 
-                System.out.print("\nMasukkan nama file: ");
+                System.out.print("\nMasukkan nama file\n>> ");
                 fileName = sc.nextLine();
                 m = IOFile.readBcb("test/" + fileName + ".txt");
                 double[] coor = IOFile.coorBcb("test/" + fileName + ".txt");
 
                 while (m == null || coor == null || m.getLastIdxRow()+1 != 4 || m.getLastIdxCol()+1 != 4 || coor.length != 2) {
-                    System.out.print("\nUlangi masukkan nama file: ");
+                    System.out.print("\nUlangi masukkan nama file\n>> ");
                     fileName = sc.nextLine();
                     m = IOFile.readBcb("test/" + fileName + ".txt");
                     coor = IOFile.coorBcb("test/" + fileName + ".txt");
@@ -108,9 +109,11 @@ public class Bicubic {
                 sHasil += String.format("Nilai f(%.2f, %.2f) = %.4f", coor[0], coor[1], interpolate_val);
                 System.out.println(sHasil);
                 UI.simpan(sHasil);
+
             } else {
                 System.out.println("Input tidak valid! Ulangi.");
             }
+
         }
     }
 

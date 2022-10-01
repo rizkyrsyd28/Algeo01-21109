@@ -457,7 +457,7 @@ public class Matrix {
             System.out.println("    1. Reduksi Baris");
             System.out.println("    2. Ekspansi Kofaktor");
             Scanner sc = new Scanner(System.in);
-            System.out.print("Pilih metode yang diinginkan: ");
+            System.out.print("Pilih metode yang diinginkan\n>> ");
             x = sc.nextInt();
             if (x==1) {
                 int n, x2;
@@ -470,10 +470,10 @@ public class Matrix {
                     System.out.println("\nJenis input yang tersedia");
                     System.out.println("    1. Terminal");
                     System.out.println("    2. File txt");
-                    System.out.print("Pilih jenis input yang diinginkan: ");
+                    System.out.print("Pilih jenis input yang diinginkan\n>> ");
                     x2 = sc.nextInt();
                     if (x2 == 1) {
-                        System.out.print("Masukkan jumlah baris dan kolom matrix n: ");
+                        System.out.print("Masukkan jumlah baris dan kolom matrix n\n>> ");
                         n = sc.nextInt();
                         m = new Matrix(n, n);
                         m.readMatrixPeubah();
@@ -492,7 +492,7 @@ public class Matrix {
                         String fileName;
                         int row=0, col=0;
 
-                        System.out.print("\nMasukkan nama file: ");
+                        System.out.print("\nMasukkan nama file\n>> ");
                         fileName = sc.nextLine();
                         m = IOFile.readFileMat("test/" + fileName + ".txt");
 
@@ -510,7 +510,7 @@ public class Matrix {
                                 }
                             }
 
-                            System.out.print("\nUlangi masukkan nama file: ");
+                            System.out.print("\nUlangi masukkan nama file\n>> ");
                             fileName = sc.nextLine();
                             m = IOFile.readFileMat("test/" + fileName + ".txt");
                             if (m != null) {
@@ -546,10 +546,10 @@ public class Matrix {
                     System.out.println("\nJenis input yang tersedia");
                     System.out.println("    1. Terminal");
                     System.out.println("    2. File txt");
-                    System.out.print("Pilih jenis input yang diinginkan: ");
+                    System.out.print("Pilih jenis input yang diinginkan\n>> ");
                     x2 = sc.nextInt();
                     if (x2 == 1) {
-                        System.out.print("Masukkan jumlah baris dan kolom matrix n: ");
+                        System.out.print("Masukkan jumlah baris dan kolom matrix n\n>> ");
                         n = sc.nextInt();
                         m = new Matrix(n, n);
                         m.readMatrixPeubah();
@@ -568,7 +568,7 @@ public class Matrix {
                         String fileName;
                         int row=0, col=0;
 
-                        System.out.print("\nMasukkan nama file: ");
+                        System.out.print("\nMasukkan nama file\n>> ");
                         fileName = sc.nextLine();
                         m = IOFile.readFileMat("test/" + fileName + ".txt");
 
@@ -586,7 +586,7 @@ public class Matrix {
                                 }
                             }
 
-                            System.out.print("\nUlangi masukkan nama file: ");
+                            System.out.print("\nUlangi masukkan nama file\n>> ");
                             fileName = sc.nextLine();
                             m = IOFile.readFileMat("test/" + fileName + ".txt");
                             if (m != null) {
@@ -627,13 +627,13 @@ public class Matrix {
             System.out.println("\nJenis input yang tersedia");
             System.out.println("    1. Terminal");
             System.out.println("    2. File txt");
-            System.out.print("Pilih jenis input yang diinginkan: ");
+            System.out.print("Pilih jenis input yang diinginkan\n>> ");
             x = sc.nextInt();
 
             if (x == 1) {
                 notValid = true;
                 int n;
-                System.out.print("Masukkan jumlah baris dan kolom matrix n: ");
+                System.out.print("Masukkan jumlah baris dan kolom matrix n\n>> ");
                 sc = new Scanner(System.in);
                 n = sc.nextInt();
                 m = new Matrix(n, n);
@@ -655,7 +655,7 @@ public class Matrix {
                 String fileName;
                 int row=0, col=0;
 
-                System.out.print("\nMasukkan nama file: ");
+                System.out.print("\nMasukkan nama file\n>> ");
                 fileName = sc.nextLine();
                 m = IOFile.readFileMat("test/" + fileName + ".txt");
 
@@ -673,7 +673,7 @@ public class Matrix {
                         }
                     }
 
-                    System.out.print("\nUlangi masukkan nama file: ");
+                    System.out.print("\nUlangi masukkan nama file\n>> ");
                     fileName = sc.nextLine();
                     m = IOFile.readFileMat("test/" + fileName + ".txt");
                     if (m != null) {

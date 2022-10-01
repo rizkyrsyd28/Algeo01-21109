@@ -17,11 +17,12 @@ public class UI{
 
 
     public static int Pilih(int n){
+
         int input = 0; boolean valid = false;
         System.out.println("Pilih fitur diatas: ");
         
         while(!valid){
-            System.out.print("> ");
+            System.out.print(">> ");
             input = sc.nextInt();
             if (input > 0 && input <= n){
                 valid = true;
@@ -29,7 +30,6 @@ public class UI{
                 System.out.println("Input pilihan invalid, Silakan input ulang ! ");
             }
         }
-
         return input;
     }
 
@@ -38,12 +38,12 @@ public class UI{
         Scanner sc = new Scanner(System.in);
         while (!notValid) {
             Character c;
-            System.out.print("Apakah jawabannya mau disimpan?(y/n): ");
+            System.out.print("Apakah jawabannya mau disimpan?(y/n)\n>> ");
             c = sc.next().charAt(0);
             if (c == 'y') {
                 sc = new Scanner(System.in); 
                 String fileName;
-                System.out.print("Jawaban tersebut mau disimpan dengan nama file apa?: ");
+                System.out.print("Jawaban tersebut mau disimpan dengan nama file apa?\n>> ");
                 fileName = sc.nextLine();
                 IOFile.writeString(fileName, output);
                 System.out.println("Jawabanmu telah disimpan!");
