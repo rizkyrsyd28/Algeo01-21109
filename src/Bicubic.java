@@ -1,6 +1,5 @@
 import java.lang.Math;
 import java.util.*;
-
 import src.libTubes.*;
 
 
@@ -27,7 +26,7 @@ public class Bicubic {
 
             }
             
-            Y.setELMT(i, 0, m.getELMT(y+1, x+1));
+            Y.setELMT(i, 0, m.getELMT(x+1, y+1));
             x += 1;
             if (x == 3) {
                 x = -1;
@@ -37,23 +36,13 @@ public class Bicubic {
         }
         
         // Coefficient calculation
-        libTubes.Matrix X_inv = X.inverseMatrix();
-        libTubes.Matrix a_koef = X_inv.multiplyMatrix(Y);
-        
-        // Value Checking (can be erased later)
-        // Matrix test = X_inv.copyMatrix();
-        // test.multiplyByConst(36.0f);
-        // test.displayMatrix();
-        // System.out.println();
-        // X_inv.displayMatrix();
-        // System.out.println();
-        // a_koef.displayMatrix();
-        // System.out.println();
+        libTubes.Matrix augm = X.concatCol(Y);
+        libTubes.Matrix a_koef = libTubes.SPL.gaussJordan(augm);
 
-        double value_I = 0.0f;
+        double value_I = 0.0;
         k = 0; l = 0;
         for (int i = 0; i <= a_koef.getLastIdxRow(); i++) { 
-            value_I += a_koef.getELMT(i, 0) * (double)(Math.pow(a, k) * Math.pow(b, l));
+            value_I += a_koef.getELMT(i, 0) * (Math.pow(a, k) * Math.pow(b, l));
             k += 1;
             if (k == 4) {
                 k = 0;
