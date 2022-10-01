@@ -1,3 +1,5 @@
+import java.util.*;
+import libTubes.Matrix;
 import src.libTubes.*;
 
 public class Regresi {
@@ -32,7 +34,7 @@ public class Regresi {
 
         nee.data = NEE;
         
-        
+        System.out.println("\nBentuk Normal Estimation Equation untuk Regresi Linier Barganda :\n");
         nee.displayMatrix();
         
         SPL.gaussJordan(nee);
@@ -48,43 +50,51 @@ public class Regresi {
     }
 
     public static void MultiRegresi(){
-        System.out.println("pilihan input\n1. Input Terminal\n2. Input File");
+        System.out.println("pilihan input\n    1. Input Terminal\n    2. Input File");
         int mode; 
-        double[][] augm;
+        Matrix augm;
         mode = UI.Pilih(2);
 
         if (mode == 1){
             int n, m;
 
-            System.out.print("Masukan peubah : ");
+            System.out.print("Masukan peubah\n>> ");
             n = UI.sc.nextInt();             
-            System.out.print("Masukan banyak persamaan : ");
+            System.out.print("Masukan banyak persamaan\n>> ");
             m = UI.sc.nextInt();
-            System.out.printf("Masukan %d persamaan\n", m);
-            augm = new double[m][n+1];
-            for (int i = 0; i < m; i++){
-                for (int j = 0; j < n; j++){
-                    augm[i][j] = UI.sc.nextDouble();
-                }
+            while (m <= n + 1){
+                System.out.printf("Banyak persamaan harus lebih dari %d\n", n+1);
+                System.out.print("Input ulang banyak persamaan\n>> ");
+                m = UI.sc.nextInt();
             }
+            System.out.printf("Masukkan %d Persamaan dalam bentuk matrix augmented\n\n", m);
+            augm = new Matrix(m, n+1);
+            augm.readMatrix();
         } else {
             String fileName; 
 
-            System.out.print("Masukkan nama file\n> ");
+            System.out.print("Masukkan nama file\n>> ");
             fileName = UI.sc.next();
 
-            while(!IOFile.isFileExist(fileName)){
+            while(!IOFile.isFileExist("test/" + fileName + ".txt")){
                 System.out.println("Masukkan salah, silahkan masukkan ulang!");
-                System.out.print("Masukkan nama file\n> ");
+                System.out.print("Masukkan nama file\n>> ");
                 fileName = UI.sc.nextLine();
             }
-            augm = new double[IOFile.getRow(fileName)][IOFile.getCol(fileName)];
-            augm = IOFile.readFileMat(fileName).data;
+
+            while(IOFile.getRow("test/" + fileName + ".txt") <= IOFile.getCol("test/" + fileName + ".txt")){
+                Scanner scc = new Scanner(System.in);
+                System.out.println("Ukuran matrix augmented tidak sesuai! pastikan kolom > baris\n");
+                System.out.print("Masukkan nama file\n>> ");
+                fileName = scc.nextLine();
+            }
+            // augm = new double[IOFile.getRow(fileName)][IOFile.getCol(fileName)];
+            augm = IOFile.readFileMat("test/" + fileName + ".txt");
         }
         
-        double[] coef = getCoefRegresi(augm);
+        double[] coef = getCoefRegresi(augm.data);
 
-        System.out.println("Persamaan regresi linier berganda : ");
+        System.out.println("\nHasil persamaan Regresi Linier Berganda :\n");
         
         if (coef[0] == 0){
             System.out.printf("y = %fx1", coef[1]);
@@ -106,8 +116,8 @@ public class Regresi {
             }
         }
 
-        System.out.println("Menaksir nilai fungsi");
-        System.out.printf("Masukkan %d peubah yang akan ditaksir nilai fungsinyan\n", coef.length - 1);
+        System.out.println("\n\nMenaksir nilai dari fungsi Reegresi Linier");
+        System.out.printf("Masukkan %d peubah yang akan ditaksir nilai fungsinya\n>> ", coef.length - 1);
 
         double taksir = coef[0];
         
@@ -145,15 +155,5 @@ public class Regresi {
         }
         output += ("\nNilai taksirannya adalah " + taksir);
         UI.simpan(output);
-
-
-        // double[] ans;
-        // // ans = solveRegresi(m.data);
-
-        // System.out.print(ans[0]);
-        // for (int i = 1; i < ans.length; i++){
-        //     System.out.print(" + " + ans[i] + "x" + i);
-        // }
-        // System.out.println(" ");
     }
 }
