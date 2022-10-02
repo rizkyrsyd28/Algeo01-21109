@@ -1,12 +1,11 @@
 import java.lang.Math;
 import java.util.*;
-
 import src.libTubes.*;
 
 
 public class Bicubic {
 
-    public static double bicubicInterpolation(libTubes.Matrix m, double a, double b) {
+    public static libTubes.Matrix bicubicInterpolationKoef(libTubes.Matrix m) {
         libTubes.Matrix X = new libTubes.Matrix(16, 16);
         libTubes.Matrix Y = new libTubes.Matrix(16, 1);
         
@@ -27,7 +26,7 @@ public class Bicubic {
 
             }
             
-            Y.setELMT(i, 0, m.getELMT(y+1, x+1));
+            Y.setELMT(i, 0, m.getELMT(x+1, y+1));
             x += 1;
             if (x == 3) {
                 x = -1;
@@ -37,23 +36,18 @@ public class Bicubic {
         }
         
         // Coefficient calculation
-        libTubes.Matrix X_inv = X.inverseMatrix();
-        libTubes.Matrix a_koef = X_inv.multiplyMatrix(Y);
-        
-        // Value Checking (can be erased later)
-        // Matrix test = X_inv.copyMatrix();
-        // test.multiplyByConst(36.0f);
-        // test.displayMatrix();
-        // System.out.println();
-        // X_inv.displayMatrix();
-        // System.out.println();
-        // a_koef.displayMatrix();
-        // System.out.println();
+        libTubes.Matrix augm = X.concatCol(Y);
+        libTubes.Matrix a_koef = libTubes.SPL.inverseSPL(augm);
 
-        double value_I = 0.0f;
-        k = 0; l = 0;
+        return a_koef;
+        
+    }
+    
+    public static double bicubicInterpolationVal(libTubes.Matrix a_koef, double a, double b) {
+        double value_I = 0.0;
+        int k = 0, l = 0;
         for (int i = 0; i <= a_koef.getLastIdxRow(); i++) { 
-            value_I += a_koef.getELMT(i, 0) * (double)(Math.pow(a, k) * Math.pow(b, l));
+            value_I += a_koef.getELMT(i, 0) * (Math.pow(a, k) * Math.pow(b, l));
             k += 1;
             if (k == 4) {
                 k = 0;
@@ -61,7 +55,6 @@ public class Bicubic {
             }
         }
         return value_I;
-    
     }
 
     public static void driverBicubic() {
@@ -91,7 +84,8 @@ public class Bicubic {
                 System.out.print("b :\n>> ");
                 b = sc.nextDouble();
                 
-                interpolate_val = Bicubic.bicubicInterpolation(m, a, b);
+                libTubes.Matrix a_koef = Bicubic.bicubicInterpolationKoef(m);
+                interpolate_val = Bicubic.bicubicInterpolationVal(a_koef, a, b);
                 System.out.println();
                 sHasil += String.format("Nilai f(%.2f, %.2f) = %.4f", a, b, interpolate_val);
                 System.out.println(sHasil);
@@ -115,7 +109,8 @@ public class Bicubic {
                     coor = IOFile.coorBcb("test/" + fileName + ".txt");
                 }
 
-                interpolate_val = Bicubic.bicubicInterpolation(m, coor[0], coor[1]);
+                libTubes.Matrix a_koef = Bicubic.bicubicInterpolationKoef(m);
+                interpolate_val = Bicubic.bicubicInterpolationVal(a_koef, coor[0], coor[1]);
                 System.out.println();
                 sHasil += String.format("Nilai f(%.2f, %.2f) = %.4f", coor[0], coor[1], interpolate_val);
                 System.out.println(sHasil);
