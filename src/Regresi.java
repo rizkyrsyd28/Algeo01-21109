@@ -42,7 +42,7 @@ public class Regresi {
 
         double [] coef = new double[nee.getLastIdxRow()+1];
 
-        for (int i = 0; i < nee.getLastIdxRow(); i++){
+        for (int i = 0; i <= nee.getLastIdxRow(); i++){
             coef[i] = nee.getELMT(i, nee.getLastIdxCol());
         }
 
