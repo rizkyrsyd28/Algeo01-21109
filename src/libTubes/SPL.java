@@ -584,7 +584,7 @@ public class SPL extends Matrix {
     public static Matrix gauss(Matrix augm){          
         makeSatuUtama(augm);
         Matrix mHasil = new Matrix(augm.col-1, 1);      // Inisialisasi output matrix hasil
-        augm.displayMatrix();
+        // augm.displayMatrix();
         if (augm.isUniqueSolution()) {
             
             double hasil;
@@ -632,9 +632,8 @@ public class SPL extends Matrix {
                 }
             }
         }
-        augm.displayMatrix();
+        // augm.displayMatrix();
         if (augm.isUniqueSolution()) {
-            System.out.println("Test...aaaaa");
             for (int i = 0; i < mHasil.row; i++) {
                 mHasil.setELMT(i, 0, augm.getELMT(i, augm.getLastIdxCol()));
             }
@@ -642,7 +641,6 @@ public class SPL extends Matrix {
         } else if (augm.isNoSolution()) {
             return null;
         } else {
-            System.out.println("Test...");
             augm = SolFormatting(augm);
             return augm;
         }
