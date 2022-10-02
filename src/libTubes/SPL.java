@@ -448,18 +448,20 @@ public class SPL extends Matrix {
                     continue;
                 } else {
                     hasil += String.format("x_%d =", m_sol.satuUtamaIdx(i) + 1);
+                    boolean first = true;
                     for (int j = m_sol.satuUtamaIdx(i) + 1; j <= m_sol.getLastIdxCol(); j++) {
                         if (j != m_sol.getLastIdxCol()) {
                             
                             if (m_sol.getELMT(i, j) == 0) {
                                 continue;
                             } else {                            
-                                if (m_sol.getELMT(i, j) > 0 && j != m_sol.satuUtamaIdx(i) + 1) {
+                                if (m_sol.getELMT(i, j) > 0 && !first) {
                                     hasil += String.format(" + %.4f" + colType.get(j), m_sol.getELMT(i, j), j + 1);
                                 } else if (m_sol.getELMT(i, j) < 0) {
                                     hasil += String.format(" - %.4f" + colType.get(j), -m_sol.getELMT(i, j), j + 1);
                                 } else {
                                     hasil += String.format(" %.4f" + colType.get(j), m_sol.getELMT(i, j), j + 1);
+                                    first = false;
                                 }
                             }
                             
