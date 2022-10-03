@@ -2,24 +2,25 @@ package libTubes;
 import java.util.*;
 
 public class Matrix {
+    
+    // Deklarasi variabel baris, kolom, dan data matrix
     protected int row;
     protected int col;
     public double data[][];
 
-    public Matrix(int row, int col) {       // driver checked
+    // Konstruktor
+    public Matrix(int row, int col) {       
         this.row = row;
         this.col = col;
         this.data = new double[row][col];
     }
 
-    
-    /* *** Selektor "Dunia Matrix" *** */
-
-    public void setELMT(int i, int j, double val) {         // driver checked
+    /* *** SELEKTOR *** */
+    public void setELMT(int i, int j, double val) {         
         this.data[i][j] = val;
     }
 
-    public double getELMT(int i, int j) {               // driver checked
+    public double getELMT(int i, int j) {               
         return this.data[i][j];
     }
 
@@ -27,47 +28,35 @@ public class Matrix {
         return this.data;
     }
 
-    public boolean isMatrixIdxValid(int i, int j)             // driver checked    
+    
+    /* *** Selektor: Untuk sebuah matriks m yang terdefinisi: *** */
+    /* Mengirimkan Index baris terbesar m */
+    public int getLastIdxRow()               
+    {
+        return this.row-1;
+    }
+    
+    /* Mengirimkan Index kolom terbesar m */
+    public int getLastIdxCol()                
+    {
+        return this.col-1;
+    }
+    
+    /* Mengirimkan elemen m(i,i) */
+    public double getElmtDiagonal(int i)           
+    {
+        return getELMT(i, i);
+    }
+    
     /* Mengirimkan true jika i, j adalah index yang valid untuk matriks apa pun */
+    public boolean isMatrixIdxValid(int i, int j)                 
     {
         return ((i<=getLastIdxRow()) && (i>=0) && (j<=getLastIdxCol()) && (j>=0));
     }
 
-    /* *** Selektor: Untuk sebuah matriks m yang terdefinisi: *** */
-    public int getLastIdxRow()               // driver checked
-    /* Mengirimkan Index baris terbesar m */
-    {
-        return this.row-1;
-    }
-
-    public int getLastIdxCol()                // driver checked
-    /* Mengirimkan Index kolom terbesar m */
-    {
-        return this.col-1;
-    }
-
-
-    public double getElmtDiagonal(int i)           // driver checked
-    /* Mengirimkan elemen m(i,i) */
-    {
-        return getELMT(i, i);
-    }
-
-
-    /* ********** KELOMPOK BACA/TULIS ********** */
-
-    public void readMatrix()           //driver checked
-    /* I.S. isIdxValid(nRow,nCol) */
-    /* F.S. m terdefinisi nilai elemen efektifnya, berukuran nRow x nCol */
-    /* Proses: Melakukan CreateMatrix(m,nRow,nCol) dan mengisi nilai efektifnya */
-    /* Selanjutnya membaca nilai elemen per baris dan kolom */
-    /* Contoh: Jika nRow = 3 dan nCol = 3, maka contoh cara membaca isi matriks :
-    1 2 3
-    4 5 6
-    8 9 10 
-    */
-    {
-        // Kamus
+    /* *** KELOMPOK BACA/TULIS *** */
+    // Pembacaan Matrix
+    public void readMatrix() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Masukkan value matrix: ");
         for (int i = 0; i<=getLastIdxRow(); i++) {
@@ -75,14 +64,11 @@ public class Matrix {
                 setELMT(i, j, sc.nextDouble());
             }
         }
-
-        //sc.close();
-        
     }
-    public void readMatrixPeubah()           //Khusus input matrix peubah
-    //input berupa a[i][j] 
-    {
-        // Kamus
+
+    // Pembacaan Matrix Peubah
+    public void readMatrixPeubah() {
+        //input berupa a[i][j] 
         Scanner sc = new Scanner(System.in);
         for (int i = 0; i<=getLastIdxRow(); i++) {
             for (int j = 0; j<=getLastIdxCol(); j++) {
@@ -90,14 +76,10 @@ public class Matrix {
                 setELMT(i, j, sc.nextDouble());
             }
         }
-
-        //sc.close();
-        
     }
 
-    public void readMatrixHasil()            //Khusus input matrix hasil
-   //input berupa b[i]
-    {
+    public void readMatrixHasil() {
+        //input berupa b[i]
         // Kamus
         Scanner sc = new Scanner(System.in);
         for (int i = 0; i<=getLastIdxRow(); i++) {
@@ -111,20 +93,8 @@ public class Matrix {
         
     }    
 
-    public void displayMatrix()                //driver checked
-    /* I.S. m terdefinisi */
-    /* F.S. Nilai m(i,j) ditulis ke layar per baris per kolom, masing-masing elemen per baris 
-    dipisahkan sebuah spasi. Baris terakhir tidak diakhiri dengan newline */
-    /* Proses: Menulis nilai setiap elemen m ke layar dengan traversal per baris dan per kolom */
-    /* Contoh: menulis matriks 3x3 (ingat di akhir tiap baris, tidak ada spasi)
-    1 2 3
-    4 5 6
-    8 9 10
-    */
-    {
-        // Kamus
-
-        // Algoritma   
+    // Menuliskan matrix ke layar, masing-masing elemen per baris dipisahkan sebuah spasi.
+    public void displayMatrix() {
         for (int i = 0; i<=getLastIdxRow(); i++) {
             for (int j = 0; j<=getLastIdxCol(); j++) {
                 System.out.print(String.format("%.4f", getELMT(i, j)));
@@ -134,14 +104,11 @@ public class Matrix {
             }
             System.out.print("\n");   
         }     
-        //System.out.print("=====================\n");
     }
 
-    public String matrixToString()                
-    {
-        // Kamus
-        String hasil="";
-        // Algoritma   
+    // Mengubah data matrix menjadi sebuah string dengan format yang sama seperti method displayMatrix()
+    public String matrixToString() {
+        String hasil=""; 
         for (int i = 0; i<=getLastIdxRow(); i++) {
             for (int j = 0; j<=getLastIdxCol(); j++) {
                 hasil += String.format("%.4f", getELMT(i, j));
@@ -154,28 +121,23 @@ public class Matrix {
         return hasil;
     }
 
-    /* ********** Operasi lain ********** */
-    public int countElmt()                      //driver checked
+    /* *** OPERASI LAIN *** */
+    public int countElmt() {
     /* Mengirimkan banyaknya elemen m */
-    {
         return this.row*this.col;
     }
 
     /* ********** KELOMPOK TEST TERHADAP Matrix ********** */
-    public boolean isSquare()                      //driver checked
+    public boolean isSquare() {
     /* Mengirimkan true jika m adalah matriks dg ukuran baris dan kolom sama */
-    {
         return this.row == this.col;
     }
 
-    /* ********** Assignment  Matrix ********** */
-    public Matrix copyMatrix()                      // driver checked
+    /* ********** Assignment Matrix ********** */
+    public Matrix copyMatrix() {
     /* Melakukan assignment mOut <- mIn */
-    {
-        // Kamus
         Matrix mOut = new Matrix(this.row, this.col);
 
-        // Algoritma
         for (int i = 0; i<=getLastIdxRow(); i++) {
             for (int j = 0; j<=getLastIdxCol(); j++) {
                 mOut.setELMT(i, j, this.getELMT(i, j)); 
@@ -184,6 +146,8 @@ public class Matrix {
         return mOut;
     }    
 
+    /* *** LAIN-LAIN *** */
+    // Mengembalikan matrix yang kolom dan baris tertentu sudah dihapus terlebih dahulu
     public Matrix subMatrix(int rowDel, int colDel){
         int rowSub, colSub; 
 
@@ -207,6 +171,7 @@ public class Matrix {
         return subMat;
     }
     
+    // Menghitung determinan dengan metode Kofaktor
     public double determinanKof(){
         double det = 0; 
         int sign = 1; 
@@ -228,10 +193,8 @@ public class Matrix {
         
     }
 
-    public double determinantOBE()
-    /* Prekondisi: isSquare(m) */
-    /* Menghitung nilai determinan m menggunakan metode operasi baris elementer*/
-    {
+    // Menghitung determinan matrix dengan cara OBE
+    public double determinantOBE() {
         // Kamus
         int rowSwitch = -1;       
         double pengali = 1, det = 1, tempdouble;
@@ -288,6 +251,7 @@ public class Matrix {
         }
         
     }
+    
     // Mengalikan setiap elemen matriks dengan suatu konstanta
     public void multiplyByConst(double f) {
         for (int i = 0; i < this.row; i++) {
@@ -310,7 +274,7 @@ public class Matrix {
         }
     }
 
-    // Menghasilkan adjoint dari suatu matrix
+    // Menghasilkan matrix adjoint dari suatu matrix
     public Matrix adjointMatrix() {
         Matrix adjMat = new Matrix(this.row, this.col);
 
@@ -345,6 +309,7 @@ public class Matrix {
         }
     }
 
+    // Mengecek apakah seluruh elemen dari suatu baris adalah 0
     public boolean rowZero(int row){
         for (int j = 0; j < this.col; j++){
             if (getELMT(row, j) != 0){
@@ -354,6 +319,7 @@ public class Matrix {
         return true;
     }
 
+    // Mengembalikan nilai index kolom dari satu utama
     public int satuUtamaIdx(int row){
 
         for (int j = 0; j < this.col; j++){
@@ -365,8 +331,8 @@ public class Matrix {
         return -1;
     }
    
+    // Switch suatu kolom dengan matrix tertentu yang memiliki ukuran (row, 1)
     public Matrix switchCol(Matrix mCol, int colIdx) {  
-        // Switch suatu kolom dengan matrix tertentu yang memiliki ukuran (row, 1)
         Matrix mOut = copyMatrix();
 
         for (int i = 0; i<=mOut.getLastIdxRow(); i++) {
@@ -375,10 +341,7 @@ public class Matrix {
         return mOut;
     }
 
-    public void setMatFromFile(double[][] m){
-        this.data = m;
-    }
-
+    // Pengecekan solusi parametrik
     public boolean isParametricSolution(){
         if (!isNoSolution()) {
             if (this.row <  this.col-1){
@@ -401,6 +364,7 @@ public class Matrix {
         }
     }
 
+    // Pengecekan apakah ada solusi atau tidak
     public boolean isNoSolution(){
         for (int i = this.getLastIdxRow(); i >= 0; i--) {
             if (this.satuUtamaIdx(i) == this.getLastIdxCol()) {
@@ -413,11 +377,12 @@ public class Matrix {
         return false;
     }
 
+    // Pengecekan apakah solusinya Unique atau tidak
     public boolean isUniqueSolution(){
         return (!this.isParametricSolution() && !this.isNoSolution());
     }
     
-    // Multiply matrix
+    // Perkalian matrix
     // m1.multiplyMatrix(m2) == m1 * m2
     public Matrix multiplyMatrix(Matrix y) {
         Matrix m_mult = new Matrix(this.getLastIdxCol()+1, y.getLastIdxCol()+1);
@@ -433,6 +398,7 @@ public class Matrix {
         return m_mult;
     }
 
+    // Menggabungkan dua matrix (secara kolom)
     public Matrix concatCol(Matrix m) {  // jumlah baris harus sama
         Matrix mOut = new Matrix(m.row, this.col + m.col);
 
@@ -451,6 +417,7 @@ public class Matrix {
         return mOut;
     }
 
+    // Driver perhitungan determinan
     public static void driverDeterminan() {
         boolean notValid = false;
 
@@ -620,6 +587,7 @@ public class Matrix {
 
     }
 
+    // Driver Inverse Matrix
     public static void driverInverse() {
         boolean notValid = false;        
         int x;
@@ -701,7 +669,3 @@ public class Matrix {
     }
 
 }
-
-// 1 2 3
-// 0 1 4
-// 0 0 1
