@@ -5,6 +5,7 @@ import src.libTubes.*;
 
 public class Bicubic {
 
+    // Perhitungan koefisien a pada f(x, y)
     public static libTubes.Matrix bicubicInterpolationKoef(libTubes.Matrix m) {
         libTubes.Matrix X = new libTubes.Matrix(16, 16);
         libTubes.Matrix Y = new libTubes.Matrix(16, 1);
@@ -13,7 +14,7 @@ public class Bicubic {
         for (int i = 0; i <= X.getLastIdxRow(); i++) {
             for (int j = 0; j <= X.getLastIdxCol(); j++) {
 
-               // Assignment of matrix X
+               // Assign matrix X
                 X.setELMT(i, j, (Math.pow(x, k) * Math.pow(y, l)));
                 k += 1;
                 if (k == 4) {
@@ -26,6 +27,7 @@ public class Bicubic {
 
             }
             
+            // Assign matrix Y
             Y.setELMT(i, 0, m.getELMT(x+1, y+1));
             x += 1;
             if (x == 3) {
@@ -35,7 +37,7 @@ public class Bicubic {
 
         }
         
-        // Coefficient calculation
+        // Perhitungan koefisien
         libTubes.Matrix augm = X.concatCol(Y);
         libTubes.Matrix a_koef = libTubes.SPL.inverseSPL(augm);
 
@@ -43,6 +45,7 @@ public class Bicubic {
         
     }
     
+    // Perhitungan nilai pada koordinat yang diinterpolasi
     public static double bicubicInterpolationVal(libTubes.Matrix a_koef, double a, double b) {
         double value_I = 0.0;
         int k = 0, l = 0;
@@ -57,6 +60,7 @@ public class Bicubic {
         return value_I;
     }
 
+    // Driver Interpolasi Bicubic
     public static void driverBicubic() {
         boolean notValid = false;
         int x;
