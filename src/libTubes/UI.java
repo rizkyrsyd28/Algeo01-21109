@@ -4,6 +4,7 @@ import java.util.*;
 public class UI{
     public static Scanner sc = new Scanner(System.in);
 
+    // Menampilkan main menu pada layar
     public static void printMainMenu(){
         System.out.println("MAIN MENU");
         System.out.println("    1. Sistem Persamaan Linier");
@@ -16,7 +17,7 @@ public class UI{
         System.out.println("    8. Keluar");
     }
 
-
+    // Menentukan berapa banyak jenis input yang bisa dimasukkan
     public static int Pilih(int n){
 
         int input = 0; boolean valid = false;
@@ -34,6 +35,7 @@ public class UI{
         return input;
     }
 
+    // Menyimpan output ke dalam suatu file
     public static void simpan(String output) {
         boolean notValid = false;
         Scanner sc = new Scanner(System.in);
