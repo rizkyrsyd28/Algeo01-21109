@@ -204,7 +204,7 @@ public class IOFile{
     public static BufferedImage readImage(String fileName) {
         
         try {
-            File f_img = new File("test/" + fileName);
+            File f_img = new File("test/input-bonus/" + fileName);
             BufferedImage img = ImageIO.read(f_img);
             return img;
         } catch (IOException notFound) {
@@ -216,9 +216,9 @@ public class IOFile{
 
     public static void writeImageResize(BufferedImage resultImg, String fileName, String fileExtension) {
         try {
-            File f_img = new File("test/output/" + fileName + "." + fileExtension);
+            File f_img = new File("test/output-bonus/" + fileName + "." + fileExtension);
             ImageIO.write(resultImg, fileExtension, f_img);
-            System.out.println("Berhasil menyimpan file gambar " + fileName + "." + fileExtension + " di folder ./test/output");
+            System.out.println("Berhasil menyimpan file gambar " + fileName + "." + fileExtension + " di folder ./test/output-bonus");
         } catch (IOException e) {
             System.out.println("duar ERROR");
         }
