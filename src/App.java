@@ -30,7 +30,7 @@ public class App{
                         Matrix.driverInverse();
                         break;
                 case 4:
-                        SPL.driverInterpolPolinom();
+                        InterpolasiPolinom.driverInterpolPolinom();
                         break;
                 case 5:
                         Bicubic.driverBicubic();
