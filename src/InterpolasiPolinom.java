@@ -6,7 +6,7 @@ import src.libTubes.UI;
 
 public class InterpolasiPolinom {
 
-    public static String interpolPolinom(Matrix koordinat, double val){       // input matrix ukuran (n, 2)
+    public static String interpolPolinom(libTubes.Matrix koordinat, double val){       // input matrix ukuran (n, 2)
         libTubes.Matrix augm = new libTubes.Matrix(koordinat.getLastIdxRow()+1, koordinat.getLastIdxRow()+2);
         libTubes.Matrix mHasil;
         double hasil=0;
@@ -87,7 +87,7 @@ public class InterpolasiPolinom {
                 System.out.print("\nMasukkan titik yang ingin ditaksir nilainya: ");
                 val = sc.nextDouble();
 
-                hasil = SPL.interpolPolinom(koordinat, val); 
+                hasil = InterpolasiPolinom.interpolPolinom(koordinat, val); 
                 System.out.print("\n");
                 UI.simpan(hasil);
                 notValid = true;
@@ -132,7 +132,7 @@ public class InterpolasiPolinom {
                 val = sc.nextDouble();
 
 
-                hasil = SPL.interpolPolinom(koordinat, val); 
+                hasil = InterpolasiPolinom.interpolPolinom(koordinat, val); 
                 System.out.print("\n");
                 UI.simpan(hasil);
                 notValid = true;
