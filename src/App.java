@@ -38,10 +38,10 @@ public class App{
                 case 6: 
                         Regresi.MultiRegresi();
                         break;
-                case 8:
+                case 7:
                         ImageResize.driverImageResize();
                         break;
-                case 7:
+                case 8:
                         run = false;
             }
             System.out.println("\n====================================================================================\n");
