@@ -3,10 +3,334 @@ import java.util.HashMap;
 import java.util.*;
 public class SPL extends Matrix {
     
+    // Konstruktor
     public SPL(int row, int col) {
         super(row, col);
     }
 
+    // Prosedur untuk membentuk matrix segitiga bawah
+    public static void makeSatuUtama(Matrix augm) {
+        int i = 0, j = 0; 
+        while (i < augm.row && j < augm.col){
+            if (augm.getELMT(i, j) == 0){
+                boolean cp = false;
+                for (int k = i + 1; k < augm.row; k++){
+                    if (augm.getELMT(k, j) != 0){
+                        double[] temp = augm.data[i];
+                        augm.data[i] = augm.data[k];
+                        augm.data[k] = temp;
+                        cp = true;
+                        break;
+                    }
+                }
+                if (augm.rowZero(i) && i != augm.getLastIdxRow()){
+                    double[] temp = augm.data[i];
+                    augm.data[i] = augm.data[i+1];
+                    augm.data[i+1] = temp;
+                }
+                if (!cp){
+                    j++;
+                }
+                // this.displayMatrix();
+            }
+            // safety  breaker
+            if (i >= augm.row || j >= augm.col){
+                break;
+            }
+
+            if (augm.getELMT(i, j) != 0){
+                double ratio = 1;
+                if (augm.getELMT(i, j) != 1){
+                    ratio = augm.getELMT(i, j);
+                    for (int k = j; k < augm.col; k++){
+                        augm.setELMT(i, k, augm.getELMT(i, k)/ratio);
+                    }
+                }
+                ratio = 1;
+                for (int k = i + 1; k < augm.row; k++){
+                    ratio = augm.getELMT(k, j)/augm.getELMT(i, j);
+                    for (int l = j; l < augm.col; l++){
+                        augm.setELMT(k, l, augm.getELMT(k, l) - ratio*augm.getELMT(i, l));
+                    }
+                }
+                i++;
+                j++;
+                // this.displayMatrix();
+            }
+        }
+    }
+
+    // Formatting untuk solusi parametrik
+    public static Matrix SolFormatting(Matrix m_sol) {
+
+        for (int i = m_sol.getLastIdxRow(); i >= 0; i--) {
+            // boolean foundUtama = false;
+            
+            if (m_sol.satuUtamaIdx(i) < 0) {    // Tidak ada satu utama di baris tersebut
+                continue;
+            } else {
+                for (int j = m_sol.satuUtamaIdx(i) + 1; j <= m_sol.getLastIdxCol(); j++) {
+                    if (j != m_sol.getLastIdxCol()) {
+                        m_sol.setELMT(i, j, m_sol.getELMT(i, j) * -1);
+                    }
+                }
+            }
+        }
+        for (int i = m_sol.getLastIdxRow(); i >= 0; i--) {
+            // boolean foundUtama = false;
+            
+            if (m_sol.satuUtamaIdx(i) < 0) {    // Tidak ada satu utama di baris tersebut
+                continue;
+            } else {
+                for (int j = i - 1; j >= 0; j--) {
+                    for (int k = m_sol.satuUtamaIdx(i) + 1; k <= m_sol.getLastIdxCol(); k++) {
+                        // m_sol.displayMatrix(); System.out.println();
+                        m_sol.setELMT(j, k, m_sol.getELMT(i, k) * m_sol.getELMT(j, m_sol.satuUtamaIdx(i)) + m_sol.getELMT(j, k));
+                    }
+                    m_sol.setELMT(j, m_sol.satuUtamaIdx(i), 0);
+                } 
+            }
+        }
+        return m_sol;
+    }
+
+    // Fungsi yang menghasilkan solusi dari SPL dengan metode Gauss
+    public static Matrix gauss(Matrix augm){
+        makeSatuUtama(augm);
+
+        // Inisialisasi matrix
+        Matrix mHasil = new Matrix(augm.col-1, 1);
+        
+        // Percabangan Unique Solution, Parametric Solution, atau No Solution
+        if (augm.isUniqueSolution()) {
+            
+            double hasil;
+            for (int i = augm.getLastIdxCol() - 1; i >= 0; i--) {
+                hasil = augm.getELMT(i, augm.getLastIdxCol());
+                for (int j = i + 1; j <= augm.getLastIdxCol()-1 ; j++) {
+                    hasil -= augm.getELMT(i, j)*mHasil.getELMT(j,0);
+                }
+                mHasil.setELMT(i, 0, hasil);
+            }
+
+            return mHasil;
+
+        } else if (augm.isParametricSolution()) {
+
+            augm = SolFormatting(augm);
+            return augm;
+
+        } else {
+            return null;
+        }
+    }   
+
+    // Fungsi yang menghasilkan solusi dari SPL dengan metode Gauss
+    public static Matrix gaussJordan(Matrix augm){
+        
+        // Inisialisasi matrix hasil
+        Matrix mHasil = new Matrix(augm.col-1, 1);  
+        
+        double pengali = 1; 
+        makeSatuUtama(augm);
+        for (int i = 0; i < augm.row - 1; i++){
+            for (int k = i+1; k < augm.row; k++){
+                if (augm.satuUtamaIdx(k)!=-1) {
+                    pengali = augm.getELMT(i, augm.satuUtamaIdx(k))/augm.getELMT(k, augm.satuUtamaIdx(k));
+                    for (int j = augm.satuUtamaIdx(k); j < augm.col; j++){
+                        augm.setELMT(i, j, augm.getELMT(i, j) - pengali * augm.getELMT(k, j));
+                    }
+                }
+            }
+        }
+        
+        // Percabangan Unique Solution, Parametric Solution, atau No Solution
+        if (augm.isUniqueSolution()) {
+            for (int i = 0; i < mHasil.row; i++) {
+                mHasil.setELMT(i, 0, augm.getELMT(i, augm.getLastIdxCol()));
+            }
+            return mHasil;
+        } else if (augm.isNoSolution()) {
+            return null;
+        } else {
+            augm = SolFormatting(augm);
+            return augm;
+        }
+    }
+    
+    // Fungsi yang menghasilkan solusi dari SPL dengan metode Balikan
+    public static Matrix inverseSPL(Matrix augm) {
+        Matrix A = new Matrix(augm.row, augm.col - 1);
+        Matrix b = new Matrix(augm.row, 1);
+
+        for (int i = 0; i < A.row; i++) {
+            for (int j = 0; j < A.col; j++) {
+                A.setELMT(i, j, augm.getELMT(i, j));
+            }
+        }
+
+        for (int i = 0; i < b.row; i++) {
+            b.setELMT(i, 0, augm.getELMT(i, augm.col - 1));
+        }
+
+        Matrix invMat = A.inverseMatrix();
+        if (invMat == null) {
+            return null;
+        } else {
+            Matrix x = invMat.multiplyMatrix(b);
+            return x;
+        }
+    }
+    
+    // Fungsi yang menghasilkan solusi dari SPL dengan metode Cramer
+    public static Matrix cramer(Matrix augm) {
+        // Inisialisasi matrix A dan b
+        Matrix A = new Matrix(augm.row, augm.col - 1);
+        Matrix b = new Matrix(augm.row, 1);
+
+        // Pengisian elemen matrix A
+        for (int i = 0; i < A.row; i++) {
+            for (int j = 0; j < A.col; j++) {
+                A.setELMT(i, j, augm.getELMT(i, j));
+            }
+        }
+
+        // Pengisian elemen matrix b
+        for (int i = 0; i < b.row; i++) {
+            b.setELMT(i, 0, augm.getELMT(i, augm.col - 1));
+        }
+
+        double x = A.determinantOBE();
+        if (x == 0) {
+            return null;
+        }
+        
+        // Matrix hasil penukaran kolom
+        Matrix m2;
+        
+        // Inisialisasi Matrix hasil
+        Matrix mHasil = new Matrix(A.col, 1);
+        
+        double hasil;
+        if (A.isSquare()) {
+            for (int i = 0; i<=A.getLastIdxCol(); i++) {
+                m2 = A.switchCol(b, i);
+                hasil = m2.determinantOBE()/x;
+                mHasil.setELMT(i, 0, hasil);
+            }
+        }
+        return mHasil;
+
+    }
+
+    // Fungsi yang menghasilkan string dari hasil SPL
+    public static String displaySPL(Matrix m_sol) {
+        String hasil = "";
+        if (m_sol == null) {    // String yang dihasilkan jika tidak ada solusi
+            
+            hasil += "SPL tidak memiliki solusi.";
+            return hasil;
+
+        } else if (m_sol.col == 1) {    // String yang dihasilkan jika diperoleh Unique Solution
+            
+            for (int i = 0; i <= m_sol.getLastIdxRow(); i++) {
+                hasil += String.format("x_%d = %.4f\n", i, m_sol.getELMT(i, 0));
+            }
+
+        } else {    // String yang dihasilkan jika diperoleh Parametric Solution
+
+            // HashMap untuk penyimpanan index kolom dari satu utama tiap baris
+            HashMap<Integer, Integer> idxColSatuUtama = new HashMap<Integer, Integer>();
+            
+            HashMap<Integer, String> colType = new HashMap<Integer, String>();
+            // Jenis kolom dinyatakan dalam bentuk string, yaitu a, b, a_idxPar.
+            // a : kolom satu utama
+            // b : kolom kosong (nilainya 0 semua)
+            // a_idxPar : kolom dengan variabel yang dinyatakan dengan parametrik
+
+            // Penyimpanan index kolom satu utama
+            for (int i = 0; i <= m_sol.getLastIdxRow(); i++) {
+                idxColSatuUtama.put(i, m_sol.satuUtamaIdx(i));
+            }
+            
+            // Penyimpanan jenis dari tiap kolom di dalam HashMap
+            int idxPar = 0;
+            for (int j = 0; j < m_sol.getLastIdxCol(); j++) {
+                boolean allZeroCol = true;
+                for (int i = 0; i <= m_sol.getLastIdxRow(); i++) {
+                    if (j == idxColSatuUtama.get(i)) {
+                        colType.put(j, "a");
+                        break;
+                    }
+
+                    if (m_sol.getELMT(i, j) != 0) {
+                        allZeroCol = false;
+                    }
+
+                    if (i == m_sol.getLastIdxRow()) {
+                        if (allZeroCol) {
+                            colType.put(j, "b");
+                        } else {
+                            colType.put(j, String.format("a_%d", idxPar));
+                            idxPar++;
+                        }
+                    }
+                }
+            }
+            
+            // Penulisan string untuk solusi parametrik
+            for (int i = 0; i <= m_sol.getLastIdxRow(); i++) {
+                if (m_sol.satuUtamaIdx(i) < 0) {
+                    continue;
+                } else {
+                    hasil += String.format("x_%d =", m_sol.satuUtamaIdx(i) + 1);
+                    boolean first = true;
+                    for (int j = m_sol.satuUtamaIdx(i) + 1; j <= m_sol.getLastIdxCol(); j++) {
+                        if (j != m_sol.getLastIdxCol()) {
+                            
+                            if (m_sol.getELMT(i, j) == 0) {
+                                continue;
+                            } else {                            
+                                if (m_sol.getELMT(i, j) > 0 && !first) {
+                                    hasil += String.format(" + %.4f" + colType.get(j), m_sol.getELMT(i, j), j + 1);
+                                } else if (m_sol.getELMT(i, j) < 0) {
+                                    hasil += String.format(" - %.4f" + colType.get(j), -m_sol.getELMT(i, j), j + 1);
+                                } else {
+                                    hasil += String.format(" %.4f" + colType.get(j), m_sol.getELMT(i, j), j + 1);
+                                    first = false;
+                                }
+                            }
+                            
+                        } else {
+                            if (m_sol.getELMT(i, j) == 0) {
+                                continue;
+                            } else {                            
+                                if (m_sol.getELMT(i, j) > 0 && j != m_sol.satuUtamaIdx(i) + 1) {
+                                    hasil += String.format(" + %.4f", m_sol.getELMT(i, j), j + 1);
+                                } else if (m_sol.getELMT(i, j) < 0) {
+                                    hasil += String.format(" - %.4f", -m_sol.getELMT(i, j), j + 1);
+                                } else {
+                                    hasil += String.format(" %.4f", m_sol.getELMT(i, j), j + 1);
+                                }
+                            }
+                        }                
+                    }
+                    hasil += "\n";
+                }
+            }
+
+            for (int j = 0; j < m_sol.getLastIdxCol(); j++) {
+                if (colType.get(j) != "a" && colType.get(j) != "b") {
+                    hasil += String.format("x_%d = " + colType.get(j), j + 1);
+                    hasil += "\n";
+                }
+            }
+        }
+
+        return hasil;
+    }
+
+    // Driver untuk penyelesaian SPL
     public static void driverSPL() {
         boolean notValid = false;
 
@@ -368,319 +692,6 @@ public class SPL extends Matrix {
         }
     }
 
-    public static Matrix inverseSPL(Matrix augm) {
-        Matrix A = new Matrix(augm.row, augm.col - 1);
-        Matrix b = new Matrix(augm.row, 1);
-
-        for (int i = 0; i < A.row; i++) {
-            for (int j = 0; j < A.col; j++) {
-                A.setELMT(i, j, augm.getELMT(i, j));
-            }
-        }
-
-        for (int i = 0; i < b.row; i++) {
-            b.setELMT(i, 0, augm.getELMT(i, augm.col - 1));
-        }
-
-        Matrix invMat = A.inverseMatrix();
-        if (invMat == null) {
-            return null;
-        } else {
-            Matrix x = invMat.multiplyMatrix(b);
-            return x;
-        }
-    }
-    
-    public static String displaySPL(Matrix m_sol) {
-        String hasil = "";
-        if (m_sol == null) {
-            
-            hasil += "SPL tidak memiliki solusi.";
-            return hasil;
-
-        } else if (m_sol.col == 1) {
-            
-            for (int i = 0; i <= m_sol.getLastIdxRow(); i++) {
-                hasil += String.format("x_%d = %.4f\n", i, m_sol.getELMT(i, 0));
-            }
-
-        } else {
-
-            HashMap<Integer, String> colType = new HashMap<Integer, String>();
-            HashMap<Integer, Integer> idxColSatuUtama = new HashMap<Integer, Integer>();
-            // Bisa tiga jenis nilai char, yaitu a, b, c.
-            // a : kolom satu utama
-            // b : kolom kosong (nilainya 0 semua)
-            // a_idxPar : kolom dengan variabel yang dinyatakan dengan parametrik
-
-            for (int i = 0; i <= m_sol.getLastIdxRow(); i++) {
-                idxColSatuUtama.put(i, m_sol.satuUtamaIdx(i));
-            }
-            
-            int idxPar = 0;
-
-            for (int j = 0; j < m_sol.getLastIdxCol(); j++) {
-                boolean allZeroCol = true;
-                for (int i = 0; i <= m_sol.getLastIdxRow(); i++) {
-                    if (j == idxColSatuUtama.get(i)) {
-                        colType.put(j, "a");
-                        break;
-                    }
-
-                    if (m_sol.getELMT(i, j) != 0) {
-                        allZeroCol = false;
-                    }
-
-                    if (i == m_sol.getLastIdxRow()) {
-                        if (allZeroCol) {
-                            colType.put(j, "b");
-                        } else {
-                            colType.put(j, String.format("a_%d", idxPar));
-                            idxPar++;
-                        }
-                    }
-                }
-            }
-            
-            
-            for (int i = 0; i <= m_sol.getLastIdxRow(); i++) {
-                if (m_sol.satuUtamaIdx(i) < 0) {
-                    continue;
-                } else {
-                    hasil += String.format("x_%d =", m_sol.satuUtamaIdx(i) + 1);
-                    boolean first = true;
-                    for (int j = m_sol.satuUtamaIdx(i) + 1; j <= m_sol.getLastIdxCol(); j++) {
-                        if (j != m_sol.getLastIdxCol()) {
-                            
-                            if (m_sol.getELMT(i, j) == 0) {
-                                continue;
-                            } else {                            
-                                if (m_sol.getELMT(i, j) > 0 && !first) {
-                                    hasil += String.format(" + %.4f" + colType.get(j), m_sol.getELMT(i, j), j + 1);
-                                } else if (m_sol.getELMT(i, j) < 0) {
-                                    hasil += String.format(" - %.4f" + colType.get(j), -m_sol.getELMT(i, j), j + 1);
-                                } else {
-                                    hasil += String.format(" %.4f" + colType.get(j), m_sol.getELMT(i, j), j + 1);
-                                    first = false;
-                                }
-                            }
-                            
-                        } else {
-                            if (m_sol.getELMT(i, j) == 0) {
-                                continue;
-                            } else {                            
-                                if (m_sol.getELMT(i, j) > 0 && j != m_sol.satuUtamaIdx(i) + 1) {
-                                    hasil += String.format(" + %.4f", m_sol.getELMT(i, j), j + 1);
-                                } else if (m_sol.getELMT(i, j) < 0) {
-                                    hasil += String.format(" - %.4f", -m_sol.getELMT(i, j), j + 1);
-                                } else {
-                                    hasil += String.format(" %.4f", m_sol.getELMT(i, j), j + 1);
-                                }
-                            }
-                        }                
-                    }
-                    hasil += "\n";
-                }
-            }
-
-            for (int j = 0; j < m_sol.getLastIdxCol(); j++) {
-                if (colType.get(j) != "a" && colType.get(j) != "b") {
-                    hasil += String.format("x_%d = " + colType.get(j), j + 1);
-                    hasil += "\n";
-                }
-            }
-        }
-
-        return hasil;
-    }
-
-    public static Matrix cramer(Matrix augm) {          // Driver checked
-        Matrix A = new Matrix(augm.row, augm.col - 1);
-        Matrix b = new Matrix(augm.row, 1);
-
-        for (int i = 0; i < A.row; i++) {
-            for (int j = 0; j < A.col; j++) {
-                A.setELMT(i, j, augm.getELMT(i, j));
-            }
-        }
-
-        for (int i = 0; i < b.row; i++) {
-            b.setELMT(i, 0, augm.getELMT(i, augm.col - 1));
-        }
-
-        double x = A.determinantOBE();
-        if (x == 0) {
-            return null;
-        }
-        double hasil;
-        Matrix m2;
-        Matrix mHasil = new Matrix(A.col, 1);
-        //mHasil.displayMatrix();
-        //System.out.println(x);
-
-        if (A.isSquare()) {           // Jika berbentuk kotak
-            for (int i = 0; i<=A.getLastIdxCol(); i++) {
-                m2 = A.switchCol(b, i);
-                //m2.displayMatrix();
-                hasil = m2.determinantOBE()/x;
-                //System.out.println(i);
-                //System.out.println(m2.determinantOBE() + " / " + x + "-> x"+(i+1)+" : "+hasil);
-                mHasil.setELMT(i, 0, hasil);
-            }
-        }
-        return mHasil;
-
-    }
-
-    public static void makeSatuUtama(Matrix augm) {       // Bikin bentuk matrix jd punya satu utama di semua baris
-        int i = 0, j = 0; 
-        while (i < augm.row && j < augm.col){
-            if (augm.getELMT(i, j) == 0){
-                boolean cp = false;
-                for (int k = i + 1; k < augm.row; k++){
-                    if (augm.getELMT(k, j) != 0){
-                        double[] temp = augm.data[i];
-                        augm.data[i] = augm.data[k];
-                        augm.data[k] = temp;
-                        cp = true;
-                        break;
-                    }
-                }
-                if (augm.rowZero(i) && i != augm.getLastIdxRow()){
-                    double[] temp = augm.data[i];
-                    augm.data[i] = augm.data[i+1];
-                    augm.data[i+1] = temp;
-                }
-                if (!cp){
-                    j++;
-                }
-                // this.displayMatrix();
-            }
-            // safety  breaker
-            if (i >= augm.row || j >= augm.col){
-                break;
-            }
-
-            if (augm.getELMT(i, j) != 0){
-                double ratio = 1;
-                if (augm.getELMT(i, j) != 1){
-                    ratio = augm.getELMT(i, j);
-                    for (int k = j; k < augm.col; k++){
-                        augm.setELMT(i, k, augm.getELMT(i, k)/ratio);
-                    }
-                }
-                ratio = 1;
-                for (int k = i + 1; k < augm.row; k++){
-                    ratio = augm.getELMT(k, j)/augm.getELMT(i, j);
-                    for (int l = j; l < augm.col; l++){
-                        augm.setELMT(k, l, augm.getELMT(k, l) - ratio*augm.getELMT(i, l));
-                    }
-                }
-                i++;
-                j++;
-                // this.displayMatrix();
-            }
-        }
-    }
-
-    public static Matrix gauss(Matrix augm){          
-        makeSatuUtama(augm);
-        Matrix mHasil = new Matrix(augm.col-1, 1);      // Inisialisasi output matrix hasil
-        // augm.displayMatrix();
-        if (augm.isUniqueSolution()) {
-            
-            double hasil;
-
-            for (int i = augm.getLastIdxCol() - 1; i >= 0; i--) {
-                hasil = augm.getELMT(i, augm.getLastIdxCol());
-                for (int j = i + 1; j <= augm.getLastIdxCol()-1 ; j++) {
-                    //mHasil.displayMatrix();
-                    //System.out.println(augm.getLastIdxRow() + " - " + i);
-                    //System.out.println(hasil + " - " + augm.getELMT(i, j) + " * " + mHasil.getELMT(mHasil.getLastIdxRow() - i,0));
-                    hasil -= augm.getELMT(i, j)*mHasil.getELMT(j,0);
-                    //System.out.println(i +" " + j);
-                }
-                //System.out.println(i);
-                //System.out.println(" ======== " + hasil + " ======== ");
-                mHasil.setELMT(i, 0, hasil);
-            }
-
-            return mHasil;
-
-        } else if (augm.isParametricSolution()) {
-
-            augm = SolFormatting(augm);
-            return augm;
-
-        } else {
-            return null;
-        }
-    }   
-
-
-
-    public static Matrix gaussJordan(Matrix augm){
-        double pengali = 1; 
-        Matrix mHasil = new Matrix(augm.col-1, 1);          // Inisialisasi output matrix hasil    
-
-        makeSatuUtama(augm);
-        for (int i = 0; i < augm.row - 1; i++){
-            for (int k = i+1; k < augm.row; k++){
-                if (augm.satuUtamaIdx(k)!=-1) {
-                    pengali = augm.getELMT(i, augm.satuUtamaIdx(k))/augm.getELMT(k, augm.satuUtamaIdx(k));
-                    for (int j = augm.satuUtamaIdx(k); j < augm.col; j++){
-                        augm.setELMT(i, j, augm.getELMT(i, j) - pengali * augm.getELMT(k, j));
-                    }
-                }
-            }
-        }
-        // augm.displayMatrix();
-        if (augm.isUniqueSolution()) {
-            for (int i = 0; i < mHasil.row; i++) {
-                mHasil.setELMT(i, 0, augm.getELMT(i, augm.getLastIdxCol()));
-            }
-            return mHasil;
-        } else if (augm.isNoSolution()) {
-            return null;
-        } else {
-            augm = SolFormatting(augm);
-            return augm;
-        }
-    }
-
-
-    public static Matrix SolFormatting(Matrix m_sol) {
-
-        for (int i = m_sol.getLastIdxRow(); i >= 0; i--) {
-            // boolean foundUtama = false;
-            
-            if (m_sol.satuUtamaIdx(i) < 0) {    // Tidak ada satu utama di baris tersebut
-                continue;
-            } else {
-                for (int j = m_sol.satuUtamaIdx(i) + 1; j <= m_sol.getLastIdxCol(); j++) {
-                    if (j != m_sol.getLastIdxCol()) {
-                        m_sol.setELMT(i, j, m_sol.getELMT(i, j) * -1);
-                    }
-                }
-            }
-        }
-        for (int i = m_sol.getLastIdxRow(); i >= 0; i--) {
-            // boolean foundUtama = false;
-            
-            if (m_sol.satuUtamaIdx(i) < 0) {    // Tidak ada satu utama di baris tersebut
-                continue;
-            } else {
-                for (int j = i - 1; j >= 0; j--) {
-                    for (int k = m_sol.satuUtamaIdx(i) + 1; k <= m_sol.getLastIdxCol(); k++) {
-                        // m_sol.displayMatrix(); System.out.println();
-                        m_sol.setELMT(j, k, m_sol.getELMT(i, k) * m_sol.getELMT(j, m_sol.satuUtamaIdx(i)) + m_sol.getELMT(j, k));
-                    }
-                    m_sol.setELMT(j, m_sol.satuUtamaIdx(i), 0);
-                } 
-            }
-        }
-        return m_sol;
-    }
 }
 
 
