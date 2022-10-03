@@ -104,7 +104,7 @@ public class ImageResize extends Bicubic{
         
         BufferedImage img = libTubes.IOFile.readImage(filename);
         while (img == null) {
-            System.out.print("\nUlangi masukkan nama file\n>>");
+            System.out.print("\nUlangi masukkan nama file\n>> ");
             filename = sc.nextLine();
             img = libTubes.IOFile.readImage(filename);
         }

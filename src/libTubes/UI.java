@@ -12,7 +12,8 @@ public class UI{
         System.out.println("    4. Interpolasi Polinom");
         System.out.println("    5. Interpolasi Bicubic");
         System.out.println("    6. Regresi Linier Berganda");
-        System.out.println("    7. Keluar");
+        System.out.println("    7. Resize Image");
+        System.out.println("    8. Keluar");
     }
 
 
