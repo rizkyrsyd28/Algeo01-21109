@@ -5,40 +5,61 @@ import java.util.*;
 
 public class ImageResize extends Bicubic{
     
-    
+    // Fungsi untuk pembesaran citra dengan ukuran n menjadi 2n-1
     public static BufferedImage imageResize(BufferedImage img) {
+        // Inisialisasi variabel gambar
         BufferedImage paddedImg = null;
         BufferedImage resultImg = null;
         
         int imgWidth = img.getWidth();
         int imgHeight = img.getHeight();
 
+        // Raster dari gambar awal
         WritableRaster imgRaster = img.getRaster();
         
+        // Inisialisasi array untuk menyimpan nilai pixel gambar
         double[] imgPixels = new double[imgWidth * imgHeight];
         double[] imgPixelsLeft = new double[imgHeight];
         double[] imgPixelsUp = new double[imgWidth];
         double[] imgPixelsDown = new double[imgWidth];
         double[] imgPixelsRight = new double[imgHeight];
-        
-        imgPixels = imgRaster.getPixels(0, 0, imgWidth, imgHeight, imgPixels);
-        
-        imgPixelsLeft = imgRaster.getPixels(0, 0, 1, imgHeight, imgPixelsLeft);
-        
-        imgPixelsRight = imgRaster.getPixels(imgWidth - 1, 0, 1, imgHeight, imgPixelsRight);
-        
-        imgPixelsUp = imgRaster.getPixels(0, 0, imgWidth, 1, imgPixelsUp);
-        
-        imgPixelsDown = imgRaster.getPixels(0, imgHeight - 1, imgWidth, 1, imgPixelsDown);
+        double[] imgPixelUpLeftCorner = new double[1];
+        double[] imgPixelUpRightCorner = new double[1];
+        double[] imgPixelDownLeftCorner = new double[1];
+        double[] imgPixelDownRightCorner = new double[1];
 
         
+        // Nilai seluruh pixel gambar
+        imgPixels = imgRaster.getPixels(0, 0, imgWidth, imgHeight, imgPixels);
+        
+        // Nilai pixel gambar di sisi paling kiri
+        imgPixelsLeft = imgRaster.getPixels(0, 0, 1, imgHeight, imgPixelsLeft);
+        
+        // Nilai pixel gambar di sisi paling kanan
+        imgPixelsRight = imgRaster.getPixels(imgWidth - 1, 0, 1, imgHeight, imgPixelsRight);
+        
+        // Nilai pixel gambar di sisi paling atas
+        imgPixelsUp = imgRaster.getPixels(0, 0, imgWidth, 1, imgPixelsUp);
+        
+        // Nilai pixel gambar di sisi paling bawah
+        imgPixelsDown = imgRaster.getPixels(0, imgHeight - 1, imgWidth, 1, imgPixelsDown);
+
+        // Nilai pixel ujung2 gambar
+        imgPixelUpLeftCorner = imgRaster.getPixel(0, 0, imgPixelUpLeftCorner);
+        imgPixelUpRightCorner = imgRaster.getPixel(imgWidth - 1, 0, imgPixelUpRightCorner);
+        imgPixelDownLeftCorner = imgRaster.getPixel(0, imgHeight - 1, imgPixelDownLeftCorner);
+        imgPixelDownRightCorner = imgRaster.getPixel(imgWidth - 1, imgHeight - 1, imgPixelDownRightCorner);
+
+        // Inisialisasi gambar yang akan di-padding
         paddedImg = new BufferedImage(imgWidth + 2, imgHeight + 2, BufferedImage.TYPE_BYTE_GRAY);
         
         int paddedImgWidth = paddedImg.getWidth();
         int paddedImgHeight = paddedImg.getHeight();
         
+        // Raster dari padded image
         WritableRaster paddedImgRaster = paddedImg.getRaster();
         
+        // Set pixel pada sisi-sisi padded image
         paddedImgRaster.setPixels(1, 1, imgWidth, imgHeight, imgPixels);
         
         paddedImgRaster.setPixels(0, 1, 1, imgHeight, imgPixelsLeft);
@@ -49,6 +70,16 @@ public class ImageResize extends Bicubic{
         
         paddedImgRaster.setPixels(1, paddedImgHeight - 1, imgWidth, 1, imgPixelsDown);
 
+        // Set pixel pada ujung-ujung padded image
+        paddedImgRaster.setPixel(0, 0, imgPixelUpLeftCorner);
+        
+        paddedImgRaster.setPixel(paddedImgWidth - 1, 0, imgPixelUpRightCorner);
+        
+        paddedImgRaster.setPixel(0, paddedImgHeight - 1, imgPixelDownLeftCorner);
+        
+        paddedImgRaster.setPixel(paddedImgWidth - 1, paddedImgHeight - 1, imgPixelDownRightCorner);
+
+        // Inisialisasi variabel gambar hasil
         resultImg = new BufferedImage(imgWidth * 2 - 1, imgHeight * 2 - 1, BufferedImage.TYPE_BYTE_GRAY);
         WritableRaster resultImgRaster = resultImg.getRaster();
 
@@ -59,9 +90,12 @@ public class ImageResize extends Bicubic{
         double percent = 0;
         for (int i = 0; i < imgHeight - 1; i++) {
             for (int j = 0; j < imgWidth - 1; j++) {
+                // Persentase proses
                 System.out.print(String.format("%.2f", (percent / (total_process - 1)) * 100));
                 percent++;
                 System.out.println("%...");
+                
+                // Pengambilan sub image 4x4 untuk proses interpolasi
                 subImg = paddedImgRaster.getPixels(j, i, 4, 4, subImg);
                 int idxSub = 0;
                 for (int k = 0; k < 4; k++) {
@@ -70,6 +104,8 @@ public class ImageResize extends Bicubic{
                         idxSub++;
                     }
                 }
+                
+                // Proses interpolasi
                 double a = 0, b = 0;
                 libTubes.Matrix a_koef = bicubicInterpolationKoef(m);
                 for (int k = 0; k < 9; k++) {
@@ -89,6 +125,7 @@ public class ImageResize extends Bicubic{
                     }
                 }
 
+                // Set pixel gambar hasil
                 resultImgRaster.setPixels(j * 2, i * 2, 3, 3, resultBicubic);
             }
         }
@@ -96,6 +133,7 @@ public class ImageResize extends Bicubic{
         return resultImg;
     }
     
+    // Driver pembesaran citra
     public static void driverImageResize() {
         System.out.print("\nMasukkan nama file gambar lengkap dengan extensionnnya (Ex: img.jpg)\n>> ");
         Scanner sc = new Scanner(System.in);
