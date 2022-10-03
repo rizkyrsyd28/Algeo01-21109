@@ -364,12 +364,7 @@ public class Matrix {
         
         return -1;
     }
-
-    
-
-// 1 2 3
-// 0 1 4
-// 0 0 1    
+   
     public Matrix switchCol(Matrix mCol, int colIdx) {  
         // Switch suatu kolom dengan matrix tertentu yang memiliki ukuran (row, 1)
         Matrix mOut = copyMatrix();
@@ -385,30 +380,37 @@ public class Matrix {
     }
 
     public boolean isParametricSolution(){
-        if (this.row <  this.col-1){
-            return true;
-
-        }
-        else {
-            for (int j = 0; j < this.col; j++){
-                if (getELMT(this.getLastIdxRow(), j) != 0){
-                    return false; 
+        if (!isNoSolution()) {
+            if (this.row <  this.col-1){
+                return true;
+    
+            } else {
+                int countRowAllZero = 0;
+                for (int i = this.getLastIdxRow(); i >= 0; i--) {
+                    if (this.satuUtamaIdx(i) == -1) {
+                        countRowAllZero++;
+                    }
+                    if (this.satuUtamaIdx(i) > 0) {
+                        break;
+                    }
                 }
+                return (this.row - countRowAllZero) < (this.col - 1);
             }
-            return true;
+        } else {
+            return false;
         }
     }
 
     public boolean isNoSolution(){
-        for( int j = 0; j < this.col; j++){
-            if(j != this.getLastIdxCol() && getELMT(this.getLastIdxRow(), j) != 0){
-                return false;                
+        for (int i = this.getLastIdxRow(); i >= 0; i--) {
+            if (this.satuUtamaIdx(i) == this.getLastIdxCol()) {
+                return true;
             }
-            else if (j == this.getLastIdxCol() && getELMT(this.getLastIdxRow(), j) == 0){
-                return false;
+            if (this.satuUtamaIdx(i) > 0) {
+                break;
             }
         }
-        return true;
+        return false;
     }
 
     public boolean isUniqueSolution(){

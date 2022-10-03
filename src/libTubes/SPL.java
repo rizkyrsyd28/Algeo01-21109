@@ -591,7 +591,7 @@ public class SPL extends Matrix {
             
             double hasil;
 
-            for (int i = augm.getLastIdxRow(); i >= 0; i--) {
+            for (int i = augm.getLastIdxCol() - 1; i >= 0; i--) {
                 hasil = augm.getELMT(i, augm.getLastIdxCol());
                 for (int j = i + 1; j <= augm.getLastIdxCol()-1 ; j++) {
                     //mHasil.displayMatrix();

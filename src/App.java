@@ -40,6 +40,7 @@ public class App{
                         break;
                 case 7:
                         ImageResize.driverImageResize();
+                        break;
                 case 8:
                         run = false;
             }
